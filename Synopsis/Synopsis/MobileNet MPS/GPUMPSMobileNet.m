@@ -10,6 +10,7 @@
 #import "GPUMPSMobileNetDataLoader.h"
 #import "SlimMPS.h"
 #import "MPSImage+Float.h"
+#import <Syphon/Syphon.h>
 
 @interface GPUMPSMobileNet ()
 {
@@ -151,6 +152,8 @@
 @property (readwrite, strong) GPUMPSMobileNetDataLoader* fc7_w;
 @property (readwrite, strong) GPUMPSMobileNetDataLoader* fc7_b;
 
+@property (readwrite, strong) id<SyphonServerMetal> server;
+
 @end
 
 
@@ -161,6 +164,8 @@
     self = [super initWithQualityHint:qualityHint device:device];
     if(self)
     {
+        self.server = [[SyphonServer alloc] initWithName:@"Synopsis Neural Net" device:self.device options:nil];
+        
         NSURL* labelURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"synset_words" withExtension:@"txt"];
         NSString* allLabels = [NSString stringWithContentsOfURL:labelURL encoding:NSUTF8StringEncoding error:nil];
         self.labels = [allLabels componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
@@ -667,7 +672,6 @@
     // layers of the neural network. For each layer we use a new "temporary"
     
 
-
 //    MPSImage to hold the results.
 //    MPSTemporaryImage* conv1_s2_img = [MPSTemporaryImage temporaryImageWithCommandBuffer:commandBuffer imageDescriptor:self.conv1_id];
     MPSImage* conv1_s2_img = [[MPSImage alloc] initWithDevice:self.device imageDescriptor:self.conv1_id];
@@ -796,6 +800,10 @@
       
         dispatch_async(self.completionQueue, ^{
 
+            id<MTLTexture> singleSlice = [conv2_1s_img.texture newTextureViewWithPixelFormat:conv2_1s_img.texture.pixelFormat textureType:MTLTextureType2D levels:NSMakeRange(0, 1) slices:NSMakeRange(0, 1)];
+            
+            [self.server publishFrameTexture:singleSlice imageRegion:NSMakeRect(0, 0, singleSlice.width, singleSlice.height)];
+            
             NSArray<NSNumber*>* featureVector = [fc7_img floatArray];
 
             NSArray<NSNumber*>* probabilities = [outputImage floatArray];
