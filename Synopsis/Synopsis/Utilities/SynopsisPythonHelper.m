@@ -59,7 +59,7 @@
         
         int argc = (int) floor(arguments.count + 1);
         
-        char * argv[argc];
+        const char * argv[argc];
         
         // pass in program name as argv 0
         argv[0] = [[scriptURL lastPathComponent] UTF8String];
@@ -69,7 +69,7 @@
             argv[i + 1] = [arguments[i] UTF8String];
         }
         
-        PySys_SetArgv(argc, argv);
+        PySys_SetArgv(argc, (char**)argv);
         
         // 1 - Close file before returning
         FILE *mainFile = fopen([scriptPath UTF8String], "r");

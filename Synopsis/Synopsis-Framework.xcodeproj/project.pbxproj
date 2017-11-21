@@ -71,11 +71,11 @@
 		1B2780AF1F228FC800658C0B /* SynopsisMetadataDecoderVersion2.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780A81F228F8500658C0B /* SynopsisMetadataDecoderVersion2.m */; };
 		1B2780EA1F2299EB00658C0B /* entropy_common.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780C91F2299DA00658C0B /* entropy_common.c */; };
 		1B2780EB1F2299EB00658C0B /* error_private.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780CA1F2299DA00658C0B /* error_private.c */; };
-		1B2780EC1F2299EB00658C0B /* fse_decompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780CD1F2299DA00658C0B /* fse_decompress.c */; };
+		1B2780EC1F2299EB00658C0B /* fse_decompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780CD1F2299DA00658C0B /* fse_decompress.c */; settings = {COMPILER_FLAGS = "-w"; }; };
 		1B2780ED1F2299EB00658C0B /* pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780D01F2299DA00658C0B /* pool.c */; };
 		1B2780EE1F2299EB00658C0B /* threading.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780D21F2299DA00658C0B /* threading.c */; };
 		1B2780EF1F2299EB00658C0B /* xxhash.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780D41F2299DA00658C0B /* xxhash.c */; };
-		1B2780F01F2299EB00658C0B /* zstd_common.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780D61F2299DA00658C0B /* zstd_common.c */; };
+		1B2780F01F2299EB00658C0B /* zstd_common.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780D61F2299DA00658C0B /* zstd_common.c */; settings = {COMPILER_FLAGS = "-w"; }; };
 		1B2780F11F2299EC00658C0B /* entropy_common.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780C91F2299DA00658C0B /* entropy_common.c */; };
 		1B2780F21F2299EC00658C0B /* error_private.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780CA1F2299DA00658C0B /* error_private.c */; };
 		1B2780F31F2299EC00658C0B /* fse_decompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780CD1F2299DA00658C0B /* fse_decompress.c */; };
@@ -83,14 +83,14 @@
 		1B2780F51F2299EC00658C0B /* threading.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780D21F2299DA00658C0B /* threading.c */; };
 		1B2780F61F2299EC00658C0B /* xxhash.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780D41F2299DA00658C0B /* xxhash.c */; };
 		1B2780F71F2299EC00658C0B /* zstd_common.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780D61F2299DA00658C0B /* zstd_common.c */; };
-		1B2780F81F2299F600658C0B /* fse_compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780DA1F2299DA00658C0B /* fse_compress.c */; };
-		1B2780F91F2299F600658C0B /* huf_compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780DB1F2299DA00658C0B /* huf_compress.c */; };
-		1B2780FA1F2299F600658C0B /* zstd_compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780DC1F2299DA00658C0B /* zstd_compress.c */; };
-		1B2780FB1F2299F600658C0B /* zstdmt_compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780DE1F2299DA00658C0B /* zstdmt_compress.c */; };
+		1B2780F81F2299F600658C0B /* fse_compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780DA1F2299DA00658C0B /* fse_compress.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		1B2780F91F2299F600658C0B /* huf_compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780DB1F2299DA00658C0B /* huf_compress.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		1B2780FA1F2299F600658C0B /* zstd_compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780DC1F2299DA00658C0B /* zstd_compress.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		1B2780FB1F2299F600658C0B /* zstdmt_compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780DE1F2299DA00658C0B /* zstdmt_compress.c */; settings = {COMPILER_FLAGS = "-w"; }; };
 		1B2780FC1F2299FB00658C0B /* huf_decompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780E11F2299DA00658C0B /* huf_decompress.c */; };
 		1B2780FD1F2299FB00658C0B /* zstd_decompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780E21F2299DA00658C0B /* zstd_decompress.c */; };
-		1B2780FE1F2299FB00658C0B /* huf_decompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780E11F2299DA00658C0B /* huf_decompress.c */; };
-		1B2780FF1F2299FB00658C0B /* zstd_decompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780E21F2299DA00658C0B /* zstd_decompress.c */; };
+		1B2780FE1F2299FB00658C0B /* huf_decompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780E11F2299DA00658C0B /* huf_decompress.c */; settings = {COMPILER_FLAGS = "-w"; }; };
+		1B2780FF1F2299FB00658C0B /* zstd_decompress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B2780E21F2299DA00658C0B /* zstd_decompress.c */; settings = {COMPILER_FLAGS = "-w"; }; };
 		1B2781021F22BFEB00658C0B /* dictionary.zstddict in Resources */ = {isa = PBXBuildFile; fileRef = 1B2781011F22BFEB00658C0B /* dictionary.zstddict */; };
 		1B2781031F22BFEB00658C0B /* dictionary.zstddict in Resources */ = {isa = PBXBuildFile; fileRef = 1B2781011F22BFEB00658C0B /* dictionary.zstddict */; };
 		1B3815001FA360110017564B /* GPUVisionMobileNet.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B3814FE1FA360110017564B /* GPUVisionMobileNet.h */; };
@@ -169,7 +169,6 @@
 		1B7358901DEF5FE40053BC06 /* MedianCutOpenCV.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358771DEF5FE40053BC06 /* MedianCutOpenCV.cpp */; };
 		1B7358931DEF5FE40053BC06 /* CPUModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B73587A1DEF5FE40053BC06 /* CPUModule.mm */; };
 		1B7358951DEF5FE40053BC06 /* MotionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B73587C1DEF5FE40053BC06 /* MotionModule.mm */; };
-		1B7358971DEF5FE40053BC06 /* PerceptualHashModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B73587E1DEF5FE40053BC06 /* PerceptualHashModule.mm */; };
 		1B73589B1DEF5FE40053BC06 /* StandardAnalyzerPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B7358821DEF5FE40053BC06 /* StandardAnalyzerPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B73589C1DEF5FE40053BC06 /* StandardAnalyzerPlugin.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358831DEF5FE40053BC06 /* StandardAnalyzerPlugin.mm */; };
 		1B73589E1DEF5FE40053BC06 /* TensorflowFeatureModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358851DEF5FE40053BC06 /* TensorflowFeatureModule.mm */; };
@@ -6053,7 +6052,7 @@
 		1BBB10D41D5542A200C22439 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = v002;
 				TargetAttributes = {
 					1B4446B71EE1FE4A0075575D = {
@@ -6313,7 +6312,6 @@
 				1B551E601EF9E305004C077B /* SynopsisMetadataDecoderVersion0.m in Sources */,
 				1B73588B1DEF5FE40053BC06 /* DominantColorModule.mm in Sources */,
 				1BED8C261FB1E7A800CEE001 /* GPUMPSMobileNetDataLoader.m in Sources */,
-				1B7358971DEF5FE40053BC06 /* PerceptualHashModule.mm in Sources */,
 				1BED8C1C1FB167CC00CEE001 /* GPUMPSMobileNet.m in Sources */,
 				1B4446AC1EE1FD3B0075575D /* SynopsisHistogramLayer.m in Sources */,
 				1B4446981EE1FD090075575D /* SynopsisMetadataDecoder.m in Sources */,
@@ -6482,14 +6480,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -6531,14 +6535,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -6569,7 +6579,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";

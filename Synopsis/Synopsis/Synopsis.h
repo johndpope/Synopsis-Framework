@@ -120,5 +120,5 @@ typedef enum : NSUInteger {
 #import <Synopsis/Color+linearRGBColor.h>
 
 // Method to check support files types for metadata introspection
-NSArray* SynopsisSupportedFileTypes();
+NSArray* SynopsisSupportedFileTypes(void);
 

@@ -92,8 +92,7 @@
                                    [DominantColorModule className],
                                    [HistogramModule className],
                                    [MotionModule className],
-//                                   [PerceptualHashModule className],
-//                                   [TensorflowFeatureModule className],
+                                   [TensorflowFeatureModule className],
 //                                   [TrackerModule className],
 //                                   [SaliencyModule className],
                                    ];
@@ -104,7 +103,7 @@
         self.gpuModuleClasses  = @[
 //                                  [GPUHistogramModule className],
 //                                  [GPUVisionMobileNet className],
-                                  [GPUMPSMobileNet className],
+//                                  [GPUMPSMobileNet className],
                                    ];
         
         NSMutableArray<SynopsisVideoFormatSpecifier*>*requiredSpecifiers = [NSMutableArray new];
