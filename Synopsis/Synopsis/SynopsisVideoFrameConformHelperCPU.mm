@@ -105,10 +105,10 @@
     SynopsisVideoFrameCache* cache = [[SynopsisVideoFrameCache alloc] init];
 
     // TODO: Use These!
-    BOOL doBGR = NO;
-    BOOL doFloat = NO;
-    BOOL doGray = NO;
-    BOOL doPerceptual = NO;
+//    BOOL doBGR = NO;
+//    BOOL doFloat = NO;
+//    BOOL doGray = NO;
+//    BOOL doPerceptual = NO;
     
     cv::Mat BGRAImage = [self imageFromBaseAddress:baseAddress width:width height:height bytesPerRow:bytesPerRow];
     
