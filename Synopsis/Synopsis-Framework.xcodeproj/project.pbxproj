@@ -250,6 +250,8 @@
 		1BCAACB81F966DDC0022B1A5 /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BCAACB71F966DDC0022B1A5 /* Python.framework */; };
 		1BCAACB91F9686590022B1A5 /* SynopsisRemoteFileHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BBED62A1F91259E003CE9C4 /* SynopsisRemoteFileHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BCFBEB61E1AC7F10008CB03 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BCFBEB51E1AC7F10008CB03 /* Accelerate.framework */; };
+		1BE8C5DB1FC2893A004CF878 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BE8C5D41FC28835004CF878 /* Syphon.framework */; };
+		1BE8C5DC1FC28A47004CF878 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1BE8C5D41FC28835004CF878 /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1BED8C1B1FB167CC00CEE001 /* GPUMPSMobileNet.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BED8C191FB167CC00CEE001 /* GPUMPSMobileNet.h */; };
 		1BED8C1C1FB167CC00CEE001 /* GPUMPSMobileNet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BED8C1A1FB167CC00CEE001 /* GPUMPSMobileNet.m */; };
 		1BED8C211FB1719000CEE001 /* SlimMPS.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BED8C1F1FB1719000CEE001 /* SlimMPS.h */; };
@@ -303,6 +305,23 @@
 		1BFB132E1F2135BF002C4651 /* SynopsisDenseFeature.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B4446991EE1FD270075575D /* SynopsisDenseFeature.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		1BE8C5D31FC28835004CF878 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BE8C5CE1FC28835004CF878 /* Syphon.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = Syphon;
+		};
+		1BE8C5D71FC28933004CF878 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BE8C5CE1FC28835004CF878 /* Syphon.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = Syphon;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		1B7358A91DEF68260053BC06 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -310,6 +329,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				1BE8C5DC1FC28A47004CF878 /* Syphon.framework in CopyFiles */,
 				1B7358AA1DEF68330053BC06 /* libtensorflow_cc.so in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2156,6 +2176,7 @@
 		1BCAACB21F966D040022B1A5 /* SynopsisPythonHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SynopsisPythonHelper.m; sourceTree = "<group>"; };
 		1BCAACB71F966DDC0022B1A5 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
 		1BCFBEB51E1AC7F10008CB03 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		1BE8C5CE1FC28835004CF878 /* Syphon.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Syphon.xcodeproj; path = "../../../../../Syphon/Syphon-Framework/Syphon.xcodeproj"; sourceTree = "<group>"; };
 		1BED8C191FB167CC00CEE001 /* GPUMPSMobileNet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPUMPSMobileNet.h; sourceTree = "<group>"; };
 		1BED8C1A1FB167CC00CEE001 /* GPUMPSMobileNet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPUMPSMobileNet.m; sourceTree = "<group>"; };
 		1BED8C1F1FB1719000CEE001 /* SlimMPS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SlimMPS.h; sourceTree = "<group>"; };
@@ -2181,6 +2202,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BE8C5DB1FC2893A004CF878 /* Syphon.framework in Frameworks */,
 				1B21EF621FA51AD2008A7462 /* CoreML.framework in Frameworks */,
 				1B756AD91FA5160A0050A96F /* Vision.framework in Frameworks */,
 				1BB7F6371F9FEF5F004ED69F /* Metal.framework in Frameworks */,
@@ -5692,6 +5714,7 @@
 		1BBB10D31D5542A200C22439 = {
 			isa = PBXGroup;
 			children = (
+				1BE8C5CE1FC28835004CF878 /* Syphon.xcodeproj */,
 				1BBB10DF1D5542A200C22439 /* Synopsis */,
 				1BBB12DC1D578A9F00C22439 /* Frameworks */,
 				1BBB10DE1D5542A200C22439 /* Products */,
@@ -5809,6 +5832,14 @@
 				1BB7F63A1F9FF51B004ED69F /* SynopsisVideoFrameConformHelperGPU.m */,
 			);
 			name = "Private Conform Classes";
+			sourceTree = "<group>";
+		};
+		1BE8C5CF1FC28835004CF878 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1BE8C5D41FC28835004CF878 /* Syphon.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		1BED8C1D1FB16E8900CEE001 /* MobileNet CoreML */ = {
@@ -5988,6 +6019,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				1BE8C5D81FC28933004CF878 /* PBXTargetDependency */,
 			);
 			name = "Synopsis-macOS";
 			productName = Synopsis;
@@ -6049,6 +6081,12 @@
 			mainGroup = 1BBB10D31D5542A200C22439;
 			productRefGroup = 1BBB10DE1D5542A200C22439 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1BE8C5CF1FC28835004CF878 /* Products */;
+					ProjectRef = 1BE8C5CE1FC28835004CF878 /* Syphon.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1BBB10DC1D5542A200C22439 /* Synopsis-macOS */,
@@ -6057,6 +6095,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1BE8C5D41FC28835004CF878 /* Syphon.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Syphon.framework;
+			remoteRef = 1BE8C5D31FC28835004CF878 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1B4446B61EE1FE4A0075575D /* Resources */ = {
@@ -6340,6 +6388,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1BE8C5D81FC28933004CF878 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Syphon;
+			targetProxy = 1BE8C5D71FC28933004CF878 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1B4446BE1EE1FE4A0075575D /* Debug */ = {
