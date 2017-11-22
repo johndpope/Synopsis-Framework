@@ -14,7 +14,7 @@
 
 @property (readonly, strong) NSOperationQueue* conformQueue;
 
-- (instancetype) initWithDevice:(id<MTLDevice>)device;
+- (instancetype) initWithDevice:(id<MTLDevice>)device inFlightBuffers:(NSUInteger)bufferCount;
 
 - (void) conformPixelBuffer:(CVPixelBufferRef)pixelbuffer
                   toFormats:(NSArray<SynopsisVideoFormatSpecifier*>*)formatSpecifiers
