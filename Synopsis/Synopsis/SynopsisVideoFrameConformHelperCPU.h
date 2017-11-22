@@ -14,6 +14,8 @@
 
 @property (readonly, strong) NSOperationQueue* conformQueue;
 
+- (id) initWithFlightBuffers:(NSUInteger)bufferCount;
+
 - (void) conformPixelBuffer:(CVPixelBufferRef)pixelbuffer
                   toFormats:(NSArray<SynopsisVideoFormatSpecifier*>*)formatSpecifiers
               withTransform:(CGAffineTransform)transform

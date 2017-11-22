@@ -24,11 +24,12 @@
     vImageConverterRef toLinearConverter;
 }
 @property (readwrite, strong) NSOperationQueue* conformQueue;
+@property (readwrite, strong) dispatch_semaphore_t inFlightBuffers;
 @end
 
 @implementation SynopsisVideoFrameConformHelperCPU
 
-- (id) init
+- (id) initWithFlightBuffers:(NSUInteger)bufferCount
 {
     self = [super init];
     if(self)
@@ -40,6 +41,7 @@
         self.conformQueue = [[NSOperationQueue alloc] init];
         self.conformQueue.maxConcurrentOperationCount = 1;
         self.conformQueue.qualityOfService = NSQualityOfServiceUserInitiated;
+        self.inFlightBuffers = dispatch_semaphore_create(bufferCount);
     }
     
     return self;
@@ -72,8 +74,10 @@
             completionBlock:(SynopsisVideoFrameConformSessionCompletionBlock)completionBlock;
 {
     
+    dispatch_semaphore_wait(self.inFlightBuffers, DISPATCH_TIME_FOREVER);
+
     NSBlockOperation* conformOperation = [NSBlockOperation blockOperationWithBlock:^{
-        
+    
         CVPixelBufferRef pixelBuffer = [self createPixelBuffer:buffer withTransform:transform withRect:rect];
         
         CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
@@ -90,11 +94,11 @@
         if(completionBlock)
         {
             completionBlock(cache, nil);
+            dispatch_semaphore_signal(self.inFlightBuffers);
         }
     }];
     
-    // TODO: OPTIMIZE THIS AWAY!
-    [self.conformQueue addOperations:@[conformOperation] waitUntilFinished:YES];
+    [self.conformQueue addOperations:@[conformOperation] waitUntilFinished:NO];
 }
 
 #pragma mark - OpenCV Format Conversion
