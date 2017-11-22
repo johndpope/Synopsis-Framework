@@ -24,14 +24,14 @@
 
 @implementation SynopsisVideoFrameConformSession
 
-- (instancetype) initWithRequiredFormatSpecifiers:(NSArray<SynopsisVideoFormatSpecifier*>*)formatSpecifiers device:(id<MTLDevice>)device
+- (instancetype) initWithRequiredFormatSpecifiers:(NSArray<SynopsisVideoFormatSpecifier*>*)formatSpecifiers device:(id<MTLDevice>)device inFlightBuffers:(NSUInteger)bufferCount
 {
     self = [super init];
     if(self)
     {
         self.device = device;
-        self.conformCPUHelper = [[SynopsisVideoFrameConformHelperCPU alloc] init];
-        self.conformGPUHelper = [[SynopsisVideoFrameConformHelperGPU alloc] initWithDevice:self.device];
+        self.conformCPUHelper = [[SynopsisVideoFrameConformHelperCPU alloc] initWithFlightBuffers:bufferCount];
+        self.conformGPUHelper = [[SynopsisVideoFrameConformHelperGPU alloc] initWithDevice:self.device inFlightBuffers:bufferCount];
 
         self.serialCompletionQueue = dispatch_queue_create("info.synopsis.formatConversion", DISPATCH_QUEUE_SERIAL);
         
@@ -106,19 +106,6 @@
             completionBlock(allFormatCache, nil);
         }
     });
-    
-    if(localCPUFormats.count)
-    {
-        dispatch_group_enter(formatConversionGroup);
-        [self.conformCPUHelper conformPixelBuffer:pixelBuffer
-                                        toFormats:localCPUFormats
-                                    withTransform:transform
-                                             rect:rect
-                                  completionBlock:^(SynopsisVideoFrameCache * cache, NSError *err) {
-                                      cpuCache = cache;
-                                      dispatch_group_leave(formatConversionGroup);
-                                  }];
-    }
 
     if(localGPUFormats.count)
     {
@@ -129,10 +116,25 @@
                                              rect:rect
                                   completionBlock:^(SynopsisVideoFrameCache * cache, NSError *err) {
                                       gpuCache = cache;
+                                      gpuError = err;
                                       dispatch_group_leave(formatConversionGroup);
                                   }];
     }
     
+    if(localCPUFormats.count)
+    {
+        dispatch_group_enter(formatConversionGroup);
+        [self.conformCPUHelper conformPixelBuffer:pixelBuffer
+                                        toFormats:localCPUFormats
+                                    withTransform:transform
+                                             rect:rect
+                                  completionBlock:^(SynopsisVideoFrameCache * cache, NSError *err) {
+                                      cpuCache = cache;
+                                      cpuError = err;
+                                      dispatch_group_leave(formatConversionGroup);
+                                  }];
+    }
+
     dispatch_group_leave(formatConversionGroup);
 }
 
