@@ -39,6 +39,35 @@ class Abs {
   ::tensorflow::Output y;
 };
 
+/// Returns the element-wise sum of a list of tensors.
+///
+/// `tf.accumulate_n_v2` performs the same operation as `tf.add_n`, but does not
+/// wait for all of its inputs to be ready before beginning to sum. This can
+/// save memory if inputs are ready at different times, since minimum temporary
+/// storage is proportional to the output size rather than the inputs size.
+///
+/// Unlike the original `accumulate_n`, `accumulate_n_v2` is differentiable.
+///
+/// Returns a `Tensor` of same shape and type as the elements of `inputs`.
+///
+/// Arguments:
+/// * scope: A Scope object
+/// * inputs: A list of `Tensor` objects, each with same shape and type.
+/// * shape: Shape of elements of `inputs`.
+///
+/// Returns:
+/// * `Output`: The sum tensor.
+class AccumulateNV2 {
+ public:
+  AccumulateNV2(const ::tensorflow::Scope& scope, ::tensorflow::InputList inputs,
+              PartialTensorShape shape);
+  operator ::tensorflow::Output() const { return sum; }
+  operator ::tensorflow::Input() const { return sum; }
+  ::tensorflow::Node* node() const { return sum.node(); }
+
+  ::tensorflow::Output sum;
+};
+
 /// Computes acos of x element-wise.
 ///
 /// Arguments:
@@ -49,6 +78,23 @@ class Abs {
 class Acos {
  public:
   Acos(const ::tensorflow::Scope& scope, ::tensorflow::Input x);
+  operator ::tensorflow::Output() const { return y; }
+  operator ::tensorflow::Input() const { return y; }
+  ::tensorflow::Node* node() const { return y.node(); }
+
+  ::tensorflow::Output y;
+};
+
+/// Computes inverse hyperbolic cosine of x element-wise.
+///
+/// Arguments:
+/// * scope: A Scope object
+///
+/// Returns:
+/// * `Output`: The y tensor.
+class Acosh {
+ public:
+  Acosh(const ::tensorflow::Scope& scope, ::tensorflow::Input x);
   operator ::tensorflow::Output() const { return y; }
   operator ::tensorflow::Input() const { return y; }
   ::tensorflow::Node* node() const { return y.node(); }
@@ -95,6 +141,27 @@ class AddN {
   ::tensorflow::Output sum;
 };
 
+/// Returns x + y element-wise.
+///
+/// *NOTE*: `Add` supports broadcasting. `AddN` does not. More about broadcasting
+/// [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
+///
+/// Arguments:
+/// * scope: A Scope object
+///
+/// Returns:
+/// * `Output`: The z tensor.
+class AddV2 {
+ public:
+  AddV2(const ::tensorflow::Scope& scope, ::tensorflow::Input x,
+      ::tensorflow::Input y);
+  operator ::tensorflow::Output() const { return z; }
+  operator ::tensorflow::Input() const { return z; }
+  ::tensorflow::Node* node() const { return z.node(); }
+
+  ::tensorflow::Output z;
+};
+
 /// Computes the "logical and" of elements across dimensions of a tensor.
 ///
 /// Reduces `input` along the dimensions given in `axis`. Unless
@@ -105,7 +172,8 @@ class AddN {
 /// Arguments:
 /// * scope: A Scope object
 /// * input: The tensor to reduce.
-/// * axis: The dimensions to reduce.
+/// * axis: The dimensions to reduce. Must be in the range
+/// `[-rank(input), rank(input))`.
 ///
 /// Optional attributes (see `Attrs`):
 /// * keep_dims: If true, retain reduced dimensions with length 1.
@@ -146,6 +214,58 @@ class All {
 };
 typedef All ReduceAll;
 
+/// Returns the argument of a complex number.
+///
+/// Given a tensor `input` of complex numbers, this operation returns a tensor of
+/// type `float` that is the argument of each element in `input`. All elements in
+/// `input` must be complex numbers of the form \\(a + bj\\), where *a*
+/// is the real part and *b* is the imaginary part.
+///
+/// The argument returned by this operation is of the form \\(atan2(b, a)\\).
+///
+/// For example:
+///
+/// ```
+/// # tensor 'input' is [-2.25 + 4.75j, 3.25 + 5.75j]
+/// tf.angle(input) ==> [2.0132, 1.056]
+/// ```
+///
+/// @compatibility(numpy)
+/// Equivalent to np.angle.
+/// @end_compatibility
+///
+/// Arguments:
+/// * scope: A Scope object
+///
+/// Returns:
+/// * `Output`: The output tensor.
+class Angle {
+ public:
+  /// Optional attribute setters for Angle
+  struct Attrs {
+    /// Defaults to DT_FLOAT
+    Attrs Tout(DataType x) {
+      Attrs ret = *this;
+      ret.Tout_ = x;
+      return ret;
+    }
+
+    DataType Tout_ = DT_FLOAT;
+  };
+  Angle(const ::tensorflow::Scope& scope, ::tensorflow::Input input);
+  Angle(const ::tensorflow::Scope& scope, ::tensorflow::Input input, const
+      Angle::Attrs& attrs);
+  operator ::tensorflow::Output() const { return output; }
+  operator ::tensorflow::Input() const { return output; }
+  ::tensorflow::Node* node() const { return output.node(); }
+
+  static Attrs Tout(DataType x) {
+    return Attrs().Tout(x);
+  }
+
+  ::tensorflow::Output output;
+};
+
 /// Computes the "logical or" of elements across dimensions of a tensor.
 ///
 /// Reduces `input` along the dimensions given in `axis`. Unless
@@ -156,7 +276,8 @@ typedef All ReduceAll;
 /// Arguments:
 /// * scope: A Scope object
 /// * input: The tensor to reduce.
-/// * axis: The dimensions to reduce.
+/// * axis: The dimensions to reduce. Must be in the range
+/// `[-rank(input), rank(input))`.
 ///
 /// Optional attributes (see `Attrs`):
 /// * keep_dims: If true, retain reduced dimensions with length 1.
@@ -234,40 +355,80 @@ class ApproximateEqual {
 
 /// Returns the index with the largest value across dimensions of a tensor.
 ///
+/// Note that in case of ties the identity of the return value is not guaranteed.
+///
 /// Arguments:
 /// * scope: A Scope object
-/// * dimension: int32, 0 <= dimension < rank(input).  Describes which dimension
-/// of the input Tensor to reduce across. For vectors, use dimension = 0.
+/// * dimension: int32 or int64, must be in the range `[-rank(input), rank(input))`.
+/// Describes which dimension of the input Tensor to reduce across. For vectors,
+/// use dimension = 0.
 ///
 /// Returns:
 /// * `Output`: The output tensor.
 class ArgMax {
  public:
+  /// Optional attribute setters for ArgMax
+  struct Attrs {
+    /// Defaults to DT_INT64
+    Attrs OutputType(DataType x) {
+      Attrs ret = *this;
+      ret.output_type_ = x;
+      return ret;
+    }
+
+    DataType output_type_ = DT_INT64;
+  };
   ArgMax(const ::tensorflow::Scope& scope, ::tensorflow::Input input,
        ::tensorflow::Input dimension);
+  ArgMax(const ::tensorflow::Scope& scope, ::tensorflow::Input input,
+       ::tensorflow::Input dimension, const ArgMax::Attrs& attrs);
   operator ::tensorflow::Output() const { return output; }
   operator ::tensorflow::Input() const { return output; }
   ::tensorflow::Node* node() const { return output.node(); }
+
+  static Attrs OutputType(DataType x) {
+    return Attrs().OutputType(x);
+  }
 
   ::tensorflow::Output output;
 };
 
 /// Returns the index with the smallest value across dimensions of a tensor.
 ///
+/// Note that in case of ties the identity of the return value is not guaranteed.
+///
 /// Arguments:
 /// * scope: A Scope object
-/// * dimension: int32, 0 <= dimension < rank(input).  Describes which dimension
-/// of the input Tensor to reduce across. For vectors, use dimension = 0.
+/// * dimension: int32 or int64, must be in the range `[-rank(input), rank(input))`.
+/// Describes which dimension of the input Tensor to reduce across. For vectors,
+/// use dimension = 0.
 ///
 /// Returns:
 /// * `Output`: The output tensor.
 class ArgMin {
  public:
+  /// Optional attribute setters for ArgMin
+  struct Attrs {
+    /// Defaults to DT_INT64
+    Attrs OutputType(DataType x) {
+      Attrs ret = *this;
+      ret.output_type_ = x;
+      return ret;
+    }
+
+    DataType output_type_ = DT_INT64;
+  };
   ArgMin(const ::tensorflow::Scope& scope, ::tensorflow::Input input,
        ::tensorflow::Input dimension);
+  ArgMin(const ::tensorflow::Scope& scope, ::tensorflow::Input input,
+       ::tensorflow::Input dimension, const ArgMin::Attrs& attrs);
   operator ::tensorflow::Output() const { return output; }
   operator ::tensorflow::Input() const { return output; }
   ::tensorflow::Node* node() const { return output.node(); }
+
+  static Attrs OutputType(DataType x) {
+    return Attrs().OutputType(x);
+  }
 
   ::tensorflow::Output output;
 };
@@ -282,6 +443,23 @@ class ArgMin {
 class Asin {
  public:
   Asin(const ::tensorflow::Scope& scope, ::tensorflow::Input x);
+  operator ::tensorflow::Output() const { return y; }
+  operator ::tensorflow::Input() const { return y; }
+  ::tensorflow::Node* node() const { return y.node(); }
+
+  ::tensorflow::Output y;
+};
+
+/// Computes inverse hyperbolic sine of x element-wise.
+///
+/// Arguments:
+/// * scope: A Scope object
+///
+/// Returns:
+/// * `Output`: The y tensor.
+class Asinh {
+ public:
+  Asinh(const ::tensorflow::Scope& scope, ::tensorflow::Input x);
   operator ::tensorflow::Output() const { return y; }
   operator ::tensorflow::Input() const { return y; }
   ::tensorflow::Node* node() const { return y.node(); }
@@ -306,6 +484,47 @@ class Atan {
   ::tensorflow::Output y;
 };
 
+/// Computes arctangent of `y/x` element-wise, respecting signs of the arguments.
+///
+/// This is the angle \( \theta \in [-\pi, \pi] \) such that
+/// \[ x = r \cos(\theta) \]
+/// and
+/// \[ y = r \sin(\theta) \]
+/// where \(r = \sqrt(x^2 + y^2) \).
+///
+/// Arguments:
+/// * scope: A Scope object
+///
+/// Returns:
+/// * `Output`: The z tensor.
+class Atan2 {
+ public:
+  Atan2(const ::tensorflow::Scope& scope, ::tensorflow::Input y,
+      ::tensorflow::Input x);
+  operator ::tensorflow::Output() const { return z; }
+  operator ::tensorflow::Input() const { return z; }
+  ::tensorflow::Node* node() const { return z.node(); }
+
+  ::tensorflow::Output z;
+};
+
+/// Computes inverse hyperbolic tangent of x element-wise.
+///
+/// Arguments:
+/// * scope: A Scope object
+///
+/// Returns:
+/// * `Output`: The y tensor.
+class Atanh {
+ public:
+  Atanh(const ::tensorflow::Scope& scope, ::tensorflow::Input x);
+  operator ::tensorflow::Output() const { return y; }
+  operator ::tensorflow::Input() const { return y; }
+  ::tensorflow::Node* node() const { return y.node(); }
+
+  ::tensorflow::Output y;
+};
+
 /// Multiplies slices of two tensors in batches.
 ///
 /// Multiplies all slices of `Tensor` `x` and `y` (each slice can be
@@ -315,10 +534,10 @@ class Atan {
 /// means to transpose and conjugate it) before multiplication by setting
 /// the `adj_x` or `adj_y` flag to `True`, which are by default `False`.
 ///
-/// The input tensors `x` and `y` are 3-D or higher with shape `[..., r_x, c_x]`
+/// The input tensors `x` and `y` are 2-D or higher with shape `[..., r_x, c_x]`
 /// and `[..., r_y, c_y]`.
 ///
-/// The output tensor is 3-D or higher with shape `[..., r_o, c_o]`, where:
+/// The output tensor is 2-D or higher with shape `[..., r_o, c_o]`, where:
 ///
 ///     r_o = c_x if adj_x else r_x
 ///     c_o = r_y if adj_y else c_y
@@ -329,8 +548,8 @@ class Atan {
 ///
 /// Arguments:
 /// * scope: A Scope object
-/// * x: 3-D or higher with shape `[..., r_x, c_x]`.
-/// * y: 3-D or higher with shape `[..., r_y, c_y]`.
+/// * x: 2-D or higher with shape `[..., r_x, c_x]`.
+/// * y: 2-D or higher with shape `[..., r_y, c_y]`.
 ///
 /// Optional attributes (see `Attrs`):
 /// * adj_x: If `True`, adjoint the slices of `x`. Defaults to `False`.
@@ -385,14 +604,14 @@ class BatchMatMul {
 ///
 /// The regularized incomplete beta integral is defined as:
 ///
-/// ```
-/// I_x(a, b) = \frac{B(x; a, b)}{B(a, b)}
-/// ```
+///
+/// \\(I_x(a, b) = \frac{B(x; a, b)}{B(a, b)}\\)
+///
 /// where
 ///
-/// ```
-/// B(x; a, b) = \int_0^x t^{a-1} (1 - t)^{b-1} dt
-/// ```
+///
+/// \\(B(x; a, b) = \int_0^x t^{a-1} (1 - t)^{b-1} dt\\)
+///
 ///
 /// is the incomplete beta function and \\(B(a, b)\\) is the *complete*
 /// beta function.
@@ -445,6 +664,41 @@ class Bincount {
   ::tensorflow::Output bins;
 };
 
+/// Bucketizes 'input' based on 'boundaries'.
+///
+/// For example, if the inputs are
+///     boundaries = [0, 10, 100]
+///     input = [[-5, 10000]
+///              [150,   10]
+///              [5,    100]]
+///
+/// then the output will be
+///     output = [[0, 3]
+///               [3, 2]
+///               [1, 3]]
+///
+/// Arguments:
+/// * scope: A Scope object
+/// * input: Any shape of Tensor contains with int or float type.
+/// * boundaries: A sorted list of floats gives the boundary of the buckets.
+///
+/// Returns:
+/// * `Output`: Same shape with 'input', each value of input replaced with bucket index.
+///
+/// @compatibility(numpy)
+/// Equivalent to np.digitize.
+/// @end_compatibility
+class Bucketize {
+ public:
+  Bucketize(const ::tensorflow::Scope& scope, ::tensorflow::Input input, const
+          gtl::ArraySlice<float>& boundaries);
+  operator ::tensorflow::Output() const { return output; }
+  operator ::tensorflow::Input() const { return output; }
+  ::tensorflow::Node* node() const { return output.node(); }
+
+  ::tensorflow::Output output;
+};
+
 /// Cast x of type SrcT to y of DstT.
 ///
 /// Arguments:
@@ -477,6 +731,50 @@ class Ceil {
   ::tensorflow::Node* node() const { return y.node(); }
 
   ::tensorflow::Output y;
+};
+
+/// Compare values of `input` to `threshold` and pack resulting bits into a `uint8`.
+///
+/// Each comparison returns a boolean `true` (if `input_value > threshold`)
+/// or and `false` otherwise.
+///
+/// This operation is useful for Locality-Sensitive-Hashing (LSH) and other
+/// algorithms that use hashing approximations of cosine and `L2` distances;
+/// codes can be generated from an input via:
+///
+/// ```python
+/// codebook_size = 50
+/// codebook_bits = codebook_size * 32
+/// codebook = tf.get_variable('codebook', [x.shape[-1].value, codebook_bits],
+///                            dtype=x.dtype,
+///                            initializer=tf.orthogonal_initializer())
+/// codes = compare_and_threshold(tf.matmul(x, codebook), threshold=0.)
+/// codes = tf.bitcast(codes, tf.int32)  # go from uint8 to int32
+/// # now codes has shape x.shape[:-1] + [codebook_size]
+/// ```
+///
+/// **NOTE**: Currently, the innermost dimension of the tensor must be divisible
+/// by 8.
+///
+/// Given an `input` shaped `[s0, s1, ..., s_n]`, the output is
+/// a `uint8` tensor shaped `[s0, s1, ..., s_n / 8]`.
+///
+/// Arguments:
+/// * scope: A Scope object
+/// * input: Values to compare against `threshold` and bitpack.
+/// * threshold: Threshold to compare against.
+///
+/// Returns:
+/// * `Output`: The bitpacked comparisons.
+class CompareAndBitpack {
+ public:
+  CompareAndBitpack(const ::tensorflow::Scope& scope, ::tensorflow::Input input,
+                  ::tensorflow::Input threshold);
+  operator ::tensorflow::Output() const { return output; }
+  operator ::tensorflow::Input() const { return output; }
+  ::tensorflow::Node* node() const { return output.node(); }
+
+  ::tensorflow::Output output;
 };
 
 /// Converts two real numbers to a complex number.
@@ -616,6 +914,23 @@ class Cos {
   ::tensorflow::Output y;
 };
 
+/// Computes hyperbolic cosine of x element-wise.
+///
+/// Arguments:
+/// * scope: A Scope object
+///
+/// Returns:
+/// * `Output`: The y tensor.
+class Cosh {
+ public:
+  Cosh(const ::tensorflow::Scope& scope, ::tensorflow::Input x);
+  operator ::tensorflow::Output() const { return y; }
+  operator ::tensorflow::Input() const { return y; }
+  ::tensorflow::Node* node() const { return y.node(); }
+
+  ::tensorflow::Output y;
+};
+
 /// Compute the pairwise cross product.
 ///
 /// `a` and `b` must be the same shape; they can either be simple 3-element vectors,
@@ -644,30 +959,44 @@ class Cross {
 ///
 /// By default, this op performs an inclusive cumprod, which means that the first
 /// element of the input is identical to the first element of the output:
-/// ```prettyprint
-/// tf.cumprod([a, b, c]) ==> [a, a * b, a * b * c]
+///
+/// ```python
+/// tf.cumprod([a, b, c])  # => [a, a * b, a * b * c]
 /// ```
 ///
 /// By setting the `exclusive` kwarg to `True`, an exclusive cumprod is
 /// performed instead:
-/// ```prettyprint
-/// tf.cumprod([a, b, c], exclusive=True) ==> [1, a, a * b]
+///
+/// ```python
+/// tf.cumprod([a, b, c], exclusive=True)  # => [1, a, a * b]
 /// ```
 ///
 /// By setting the `reverse` kwarg to `True`, the cumprod is performed in the
 /// opposite direction:
-/// ```prettyprint
-/// tf.cumprod([a, b, c], reverse=True) ==> [a * b * c, b * c, c]
+///
+/// ```python
+/// tf.cumprod([a, b, c], reverse=True)  # => [a * b * c, b * c, c]
 /// ```
+///
 /// This is more efficient than using separate `tf.reverse` ops.
 ///
 /// The `reverse` and `exclusive` kwargs can also be combined:
-/// ```prettyprint
-/// tf.cumprod([a, b, c], exclusive=True, reverse=True) ==> [b * c, c, 1]
+///
+/// ```python
+/// tf.cumprod([a, b, c], exclusive=True, reverse=True)  # => [b * c, c, 1]
 /// ```
 ///
 /// Arguments:
 /// * scope: A Scope object
+/// * x: A `Tensor`. Must be one of the following types: `float32`, `float64`,
+/// `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`,
+/// `complex128`, `qint8`, `quint8`, `qint32`, `half`.
+/// * axis: A `Tensor` of type `int32` (default: 0). Must be in the range
+/// `[-rank(x), rank(x))`.
+///
+/// Optional attributes (see `Attrs`):
+/// * exclusive: If `True`, perform exclusive cumprod.
+/// * reverse: A `bool` (default: False).
 ///
 /// Returns:
 /// * `Output`: The out tensor.
@@ -675,6 +1004,8 @@ class Cumprod {
  public:
   /// Optional attribute setters for Cumprod
   struct Attrs {
+    /// If `True`, perform exclusive cumprod.
+    ///
     /// Defaults to false
     Attrs Exclusive(bool x) {
       Attrs ret = *this;
@@ -682,6 +1013,8 @@ class Cumprod {
       return ret;
     }
 
+    /// A `bool` (default: False).
+    ///
     /// Defaults to false
     Attrs Reverse(bool x) {
       Attrs ret = *this;
@@ -714,30 +1047,44 @@ class Cumprod {
 ///
 /// By default, this op performs an inclusive cumsum, which means that the first
 /// element of the input is identical to the first element of the output:
-/// ```prettyprint
-/// tf.cumsum([a, b, c]) ==> [a, a + b, a + b + c]
+///
+/// ```python
+/// tf.cumsum([a, b, c])  # => [a, a + b, a + b + c]
 /// ```
 ///
 /// By setting the `exclusive` kwarg to `True`, an exclusive cumsum is
 /// performed instead:
-/// ```prettyprint
-/// tf.cumsum([a, b, c], exclusive=True) ==> [0, a, a + b]
+///
+/// ```python
+/// tf.cumsum([a, b, c], exclusive=True)  # => [0, a, a + b]
 /// ```
 ///
 /// By setting the `reverse` kwarg to `True`, the cumsum is performed in the
 /// opposite direction:
-/// ```prettyprint
-/// tf.cumsum([a, b, c], reverse=True) ==> [a + b + c, b + c, c]
+///
+/// ```python
+/// tf.cumsum([a, b, c], reverse=True)  # => [a + b + c, b + c, c]
 /// ```
+///
 /// This is more efficient than using separate `tf.reverse` ops.
 ///
 /// The `reverse` and `exclusive` kwargs can also be combined:
-/// ```prettyprint
-/// tf.cumsum([a, b, c], exclusive=True, reverse=True) ==> [b + c, c, 0]
+///
+/// ```python
+/// tf.cumsum([a, b, c], exclusive=True, reverse=True)  # => [b + c, c, 0]
 /// ```
 ///
 /// Arguments:
 /// * scope: A Scope object
+/// * x: A `Tensor`. Must be one of the following types: `float32`, `float64`,
+/// `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`,
+/// `complex128`, `qint8`, `quint8`, `qint32`, `half`.
+/// * axis: A `Tensor` of type `int32` (default: 0). Must be in the range
+/// `[-rank(x), rank(x))`.
+///
+/// Optional attributes (see `Attrs`):
+/// * exclusive: If `True`, perform exclusive cumsum.
+/// * reverse: A `bool` (default: False).
 ///
 /// Returns:
 /// * `Output`: The out tensor.
@@ -745,6 +1092,8 @@ class Cumsum {
  public:
   /// Optional attribute setters for Cumsum
   struct Attrs {
+    /// If `True`, perform exclusive cumsum.
+    ///
     /// Defaults to false
     Attrs Exclusive(bool x) {
       Attrs ret = *this;
@@ -752,6 +1101,8 @@ class Cumsum {
       return ret;
     }
 
+    /// A `bool` (default: False).
+    ///
     /// Defaults to false
     Attrs Reverse(bool x) {
       Attrs ret = *this;
@@ -1015,17 +1366,76 @@ class GreaterEqual {
   ::tensorflow::Output z;
 };
 
+/// Return histogram of values.
+///
+/// Given the tensor `values`, this operation returns a rank 1 histogram counting
+/// the number of entries in `values` that fall into every bin.  The bins are
+/// equal width and determined by the arguments `value_range` and `nbins`.
+///
+/// ```python
+/// # Bins will be:  (-inf, 1), [1, 2), [2, 3), [3, 4), [4, inf)
+/// nbins = 5
+/// value_range = [0.0, 5.0]
+/// new_values = [-1.0, 0.0, 1.5, 2.0, 5.0, 15]
+///
+/// with tf.get_default_session() as sess:
+///   hist = tf.histogram_fixed_width(new_values, value_range, nbins=5)
+///   variables.global_variables_initializer().run()
+///   sess.run(hist) => [2, 1, 1, 0, 2]
+/// ```
+///
+/// Arguments:
+/// * scope: A Scope object
+/// * values: Numeric `Tensor`.
+/// * value_range: Shape [2] `Tensor` of same `dtype` as `values`.
+/// values <= value_range[0] will be mapped to hist[0],
+/// values >= value_range[1] will be mapped to hist[-1].
+/// * nbins: Scalar `int32 Tensor`.  Number of histogram bins.
+///
+/// Returns:
+/// * `Output`: A 1-D `Tensor` holding histogram of values.
+class HistogramFixedWidth {
+ public:
+  /// Optional attribute setters for HistogramFixedWidth
+  struct Attrs {
+    /// Defaults to DT_INT32
+    Attrs Dtype(DataType x) {
+      Attrs ret = *this;
+      ret.dtype_ = x;
+      return ret;
+    }
+
+    DataType dtype_ = DT_INT32;
+  };
+  HistogramFixedWidth(const ::tensorflow::Scope& scope, ::tensorflow::Input
+                    values, ::tensorflow::Input value_range,
+                    ::tensorflow::Input nbins);
+  HistogramFixedWidth(const ::tensorflow::Scope& scope, ::tensorflow::Input
+                    values, ::tensorflow::Input value_range,
+                    ::tensorflow::Input nbins, const
+                    HistogramFixedWidth::Attrs& attrs);
+  operator ::tensorflow::Output() const { return out; }
+  operator ::tensorflow::Input() const { return out; }
+  ::tensorflow::Node* node() const { return out.node(); }
+
+  static Attrs Dtype(DataType x) {
+    return Attrs().Dtype(x);
+  }
+
+  ::tensorflow::Output out;
+};
+
 /// Compute the lower regularized incomplete Gamma function `Q(a, x)`.
 ///
 /// The lower regularized incomplete Gamma function is defined as:
 ///
-/// ```
-/// P(a, x) = gamma(a, x) / Gamma(a) = 1 - Q(a, x)
-/// ```
+///
+/// \\(P(a, x) = gamma(a, x) / Gamma(a) = 1 - Q(a, x)\\)
+///
 /// where
-/// ```
-/// gamma(a, x) = int_{0}^{x} t^{a-1} exp(-t) dt
-/// ```
+///
+/// \\(gamma(a, x) = int_{0}^{x} t^{a-1} exp(-t) dt\\)
+///
 /// is the lower incomplete Gamma function.
 ///
 /// Note, above `Q(a, x)` (`Igammac`) is the upper regularized complete
@@ -1051,13 +1461,12 @@ class Igamma {
 ///
 /// The upper regularized incomplete Gamma function is defined as:
 ///
-/// ```
-/// Q(a, x) = Gamma(a, x) / Gamma(a) = 1 - P(a, x)
-/// ```
+/// \\(Q(a, x) = Gamma(a, x) / Gamma(a) = 1 - P(a, x)\\)
+///
 /// where
-/// ```
-/// Gamma(a, x) = int_{x}^{\infty} t^{a-1} exp(-t) dt
-/// ```
+///
+/// \\(Gamma(a, x) = int_{x}^{\infty} t^{a-1} exp(-t) dt\\)
+///
 /// is the upper incomplete Gama function.
 ///
 /// Note, above `P(a, x)` (`Igamma`) is the lower regularized complete
@@ -1447,7 +1856,8 @@ class MatMul {
 /// Arguments:
 /// * scope: A Scope object
 /// * input: The tensor to reduce.
-/// * axis: The dimensions to reduce.
+/// * axis: The dimensions to reduce. Must be in the range
+/// `[-rank(input), rank(input))`.
 ///
 /// Optional attributes (see `Attrs`):
 /// * keep_dims: If true, retain reduced dimensions with length 1.
@@ -1519,7 +1929,8 @@ class Maximum {
 /// Arguments:
 /// * scope: A Scope object
 /// * input: The tensor to reduce.
-/// * axis: The dimensions to reduce.
+/// * axis: The dimensions to reduce. Must be in the range
+/// `[-rank(input), rank(input))`.
 ///
 /// Optional attributes (see `Attrs`):
 /// * keep_dims: If true, retain reduced dimensions with length 1.
@@ -1570,7 +1981,8 @@ typedef Mean ReduceMean;
 /// Arguments:
 /// * scope: A Scope object
 /// * input: The tensor to reduce.
-/// * axis: The dimensions to reduce.
+/// * axis: The dimensions to reduce. Must be in the range
+/// `[-rank(input), rank(input))`.
 ///
 /// Optional attributes (see `Attrs`):
 /// * keep_dims: If true, retain reduced dimensions with length 1.
@@ -1632,7 +2044,10 @@ class Minimum {
   ::tensorflow::Output z;
 };
 
-/// Returns element-wise remainder of division.
+/// Returns element-wise remainder of division. This emulates C semantics in that
+///
+/// the result here is consistent with a truncating divide. E.g.
+/// `tf.truncatediv(x, y) * y + truncate_mod(x, y) = x`.
 ///
 /// *NOTE*: `Mod` supports broadcasting. More about broadcasting
 /// [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
@@ -1726,9 +2141,9 @@ class NotEqual {
 ///
 /// The polygamma function is defined as:
 ///
-/// ```
-/// \psi^{(n)}(x) = \frac{d^n}{dx^n} \psi(x)
-/// ```
+///
+/// \\(\psi^{(n)}(x) = \frac{d^n}{dx^n} \psi(x)\\)
+///
 /// where \\(\psi(x)\\) is the digamma function.
 ///
 /// Arguments:
@@ -1784,7 +2199,8 @@ class Pow {
 /// Arguments:
 /// * scope: A Scope object
 /// * input: The tensor to reduce.
-/// * axis: The dimensions to reduce.
+/// * axis: The dimensions to reduce. Must be in the range
+/// `[-rank(input), rank(input))`.
 ///
 /// Optional attributes (see `Attrs`):
 /// * keep_dims: If true, retain reduced dimensions with length 1.
@@ -1870,6 +2286,53 @@ class QuantizeDownAndShrinkRange {
   ::tensorflow::Output output;
   ::tensorflow::Output output_min;
   ::tensorflow::Output output_max;
+};
+
+/// Returns x + y element-wise, working on quantized buffers.
+///
+/// Arguments:
+/// * scope: A Scope object
+/// * min_x: The float value that the lowest quantized `x` value represents.
+/// * max_x: The float value that the highest quantized `x` value represents.
+/// * min_y: The float value that the lowest quantized `y` value represents.
+/// * max_y: The float value that the highest quantized `y` value represents.
+///
+/// Returns:
+/// * `Output` z
+/// * `Output` min_z: The float value that the lowest quantized output value represents.
+/// * `Output` max_z: The float value that the highest quantized output value represents.
+///
+/// *NOTE*: `QuantizedAdd` supports limited forms of broadcasting. More about
+/// broadcasting [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
+class QuantizedAdd {
+ public:
+  /// Optional attribute setters for QuantizedAdd
+  struct Attrs {
+    /// Defaults to DT_QINT32
+    Attrs Toutput(DataType x) {
+      Attrs ret = *this;
+      ret.Toutput_ = x;
+      return ret;
+    }
+
+    DataType Toutput_ = DT_QINT32;
+  };
+  QuantizedAdd(const ::tensorflow::Scope& scope, ::tensorflow::Input x,
+             ::tensorflow::Input y, ::tensorflow::Input min_x,
+             ::tensorflow::Input max_x, ::tensorflow::Input min_y,
+             ::tensorflow::Input max_y);
+  QuantizedAdd(const ::tensorflow::Scope& scope, ::tensorflow::Input x,
+             ::tensorflow::Input y, ::tensorflow::Input min_x,
+             ::tensorflow::Input max_x, ::tensorflow::Input min_y,
+             ::tensorflow::Input max_y, const QuantizedAdd::Attrs& attrs);
+
+  static Attrs Toutput(DataType x) {
+    return Attrs().Toutput(x);
+  }
+
+  ::tensorflow::Output z;
+  ::tensorflow::Output min_z;
+  ::tensorflow::Output max_z;
 };
 
 /// Perform a quantized matrix multiplication of  `a` by the matrix `b`.
@@ -2452,15 +2915,14 @@ class SegmentSum {
 ///
 /// For example:
 ///
-/// ```prettyprint
+/// ```python
 /// # 'condition' tensor is [[True,  False]
 /// #                        [False, True]]
 /// # 't' is [[1, 2],
 /// #         [3, 4]]
 /// # 'e' is [[5, 6],
 /// #         [7, 8]]
-/// select(condition, t, e) ==> [[1, 6],
-///                              [7, 4]]
+/// select(condition, t, e)  # => [[1, 6], [7, 4]]
 ///
 ///
 /// # 'condition' tensor is [True, False]
@@ -2550,12 +3012,32 @@ class Sin {
   ::tensorflow::Output y;
 };
 
+/// Computes hyperbolic sine of x element-wise.
+///
+/// Arguments:
+/// * scope: A Scope object
+///
+/// Returns:
+/// * `Output`: The y tensor.
+class Sinh {
+ public:
+  Sinh(const ::tensorflow::Scope& scope, ::tensorflow::Input x);
+  operator ::tensorflow::Output() const { return y; }
+  operator ::tensorflow::Input() const { return y; }
+  ::tensorflow::Node* node() const { return y.node(); }
+
+  ::tensorflow::Output y;
+};
+
 /// Multiply matrix "a" by matrix "b".
 ///
 /// The inputs must be two-dimensional matrices and the inner dimension of "a" must
 /// match the outer dimension of "b". This op is optimized for the case where at
 /// least one of "a" or "b" is sparse. The breakeven for using this versus a dense
 /// matrix multiply on one platform was 30% zero values in the sparse matrix.
+///
+/// The gradient computation of this operation will only take advantage of sparsity
+/// in the input gradient when that gradient comes from a Relu.
 ///
 /// Arguments:
 /// * scope: A Scope object
@@ -2739,22 +3221,22 @@ class SparseSegmentSqrtNGrad {
 ///
 /// For example:
 ///
-/// ```prettyprint
+/// ```python
 /// c = tf.constant([[1,2,3,4], [-1,-2,-3,-4], [5,6,7,8]])
 ///
 /// # Select two rows, one segment.
 /// tf.sparse_segment_sum(c, tf.constant([0, 1]), tf.constant([0, 0]))
-///   ==> [[0 0 0 0]]
+/// # => [[0 0 0 0]]
 ///
 /// # Select two rows, two segment.
 /// tf.sparse_segment_sum(c, tf.constant([0, 1]), tf.constant([0, 1]))
-///   ==> [[ 1  2  3  4]
-///        [-1 -2 -3 -4]]
+/// # => [[ 1  2  3  4]
+/// #     [-1 -2 -3 -4]]
 ///
 /// # Select all rows, two segments.
 /// tf.sparse_segment_sum(c, tf.constant([0, 1, 2]), tf.constant([0, 0, 1]))
-///   ==> [[0 0 0 0]
-///        [5 6 7 8]]
+/// # => [[0 0 0 0]
+/// #     [5 6 7 8]]
 ///
 /// # Which is equivalent to:
 /// tf.segment_sum(c, tf.constant([0, 0, 1]))
@@ -2873,7 +3355,8 @@ typedef Subtract Sub;
 /// Arguments:
 /// * scope: A Scope object
 /// * input: The tensor to reduce.
-/// * axis: The dimensions to reduce.
+/// * axis: The dimensions to reduce. Must be in the range
+/// `[-rank(input), rank(input))`.
 ///
 /// Optional attributes (see `Attrs`):
 /// * keep_dims: If true, retain reduced dimensions with length 1.
@@ -2951,7 +3434,7 @@ class Tanh {
 /// Returns x / y element-wise for integer types.
 ///
 /// Truncation designates that negative numbers will round fractional quantities
-/// toward zero. I.e. -7 / 5 = 1. This matches C semantics but it is different
+/// toward zero. I.e. -7 / 5 = -1. This matches C semantics but it is different
 /// than Python semantics. See `FloorDiv` for a division function that matches
 /// Python Semantics.
 ///
@@ -2974,12 +3457,12 @@ class TruncateDiv {
   ::tensorflow::Output z;
 };
 
-/// Returns element-wise remainder of division. This emulates C semantics where
+/// Returns element-wise remainder of division. This emulates C semantics in that
 ///
-/// true, this follows C semantics in that the result here is consistent
-/// with a flooring divide. E.g. `floor(x / y) * y + mod(x, y) = x`.
+/// the result here is consistent with a truncating divide. E.g. `truncate(x / y) *
+/// y + truncate_mod(x, y) = x`.
 ///
-/// *NOTE*: `Mod` supports broadcasting. More about broadcasting
+/// *NOTE*: `TruncateMod` supports broadcasting. More about broadcasting
 /// [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 ///
 /// Arguments:
@@ -3014,7 +3497,7 @@ class TruncateMod {
 ///  `output[i] = numeric_limits<T>::min()`.
 ///
 /// <div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-/// <img style="width:100%" src="https://www.tensorflow.org/images/UnsortedSegmentSum.png" alt>
+/// <img style="width:100%" src="https://www.tensorflow.org/images/UnsortedSegmentMax.png" alt>
 /// </div>
 ///
 /// Arguments:
@@ -3049,6 +3532,8 @@ class UnsortedSegmentMax {
 /// range of valid values.
 ///
 /// If the sum is empty for a given segment ID `i`, `output[i] = 0`.
+/// If the given segment ID `i` is negative, the value is dropped and will not be
+/// added to the sum of the segment.
 ///
 /// `num_segments` should equal the number of distinct segment IDs.
 ///
@@ -3080,9 +3565,8 @@ class UnsortedSegmentSum {
 ///
 /// The Hurwitz zeta function is defined as:
 ///
-/// ```
-/// \zeta(x, q) = \sum_{n=0}^{\infty} (q + n)^{-x}
-/// ```
+///
+/// \\(\zeta(x, q) = \sum_{n=0}^{\infty} (q + n)^{-x}\\)
 ///
 /// Arguments:
 /// * scope: A Scope object

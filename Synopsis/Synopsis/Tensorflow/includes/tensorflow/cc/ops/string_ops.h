@@ -202,7 +202,7 @@ class EncodeBase64 {
 ///
 /// For example:
 ///
-/// ```
+/// ```python
 /// # tensor `a` is [["a", "b"], ["c", "d"]]
 /// tf.reduce_join(a, 0) ==> ["ac", "bd"]
 /// tf.reduce_join(a, 1) ==> ["ab", "cd"]
@@ -346,6 +346,9 @@ class StringJoin {
 /// * input: 1-D. Strings to split.
 /// * delimiter: 0-D. Delimiter characters (bytes), or empty string.
 ///
+/// Optional attributes (see `Attrs`):
+/// * skip_empty: A `bool`. If `True`, skip the empty strings from the result.
+///
 /// Returns:
 /// * `Output` indices: A dense matrix of int64 representing the indices of the sparse tensor.
 /// * `Output` values: A vector of strings corresponding to the splited values.
@@ -354,8 +357,27 @@ class StringJoin {
 /// of tokens in a single input entry.
 class StringSplit {
  public:
+  /// Optional attribute setters for StringSplit
+  struct Attrs {
+    /// A `bool`. If `True`, skip the empty strings from the result.
+    ///
+    /// Defaults to true
+    Attrs SkipEmpty(bool x) {
+      Attrs ret = *this;
+      ret.skip_empty_ = x;
+      return ret;
+    }
+
+    bool skip_empty_ = true;
+  };
   StringSplit(const ::tensorflow::Scope& scope, ::tensorflow::Input input,
             ::tensorflow::Input delimiter);
+  StringSplit(const ::tensorflow::Scope& scope, ::tensorflow::Input input,
+            ::tensorflow::Input delimiter, const StringSplit::Attrs& attrs);
+
+  static Attrs SkipEmpty(bool x) {
+    return Attrs().SkipEmpty(x);
+  }
 
   ::tensorflow::Output indices;
   ::tensorflow::Output values;
@@ -473,7 +495,7 @@ class StringToHashBucketStrong {
 ///
 /// Using scalar `pos` and `len`:
 ///
-/// ```
+/// ```python
 /// input = [b'Hello', b'World']
 /// position = 1
 /// length = 3
@@ -483,7 +505,7 @@ class StringToHashBucketStrong {
 ///
 /// Using `pos` and `len` with same shape as `input`:
 ///
-/// ```
+/// ```python
 /// input = [[b'ten', b'eleven', b'twelve'],
 ///          [b'thirteen', b'fourteen', b'fifteen'],
 ///          [b'sixteen', b'seventeen', b'eighteen']]
@@ -522,7 +544,7 @@ class StringToHashBucketStrong {
 /// position = [1, 5, 7]
 /// length =   [3, 2, 1]
 ///
-/// output = [b'hir', b'ee', b'n"]
+/// output = [b'hir', b'ee', b'n']
 /// ```
 ///
 /// Arguments:

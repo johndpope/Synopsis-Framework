@@ -252,6 +252,28 @@ class IsVariableInitialized {
   ::tensorflow::Output is_initialized;
 };
 
+/// Increments variable pointed to by 'resource' until it reaches 'limit'.
+///
+/// Arguments:
+/// * scope: A Scope object
+/// * resource: Should be from a scalar `Variable` node.
+/// * limit: If incrementing ref would bring it above limit, instead generates an
+/// 'OutOfRange' error.
+///
+/// Returns:
+/// * `Output`: A copy of the input before increment. If nothing else modifies the
+/// input, the values produced will all be distinct.
+class ResourceCountUpTo {
+ public:
+  ResourceCountUpTo(const ::tensorflow::Scope& scope, ::tensorflow::Input
+                  resource, int64 limit, DataType T);
+  operator ::tensorflow::Output() const { return output; }
+  operator ::tensorflow::Input() const { return output; }
+  ::tensorflow::Node* node() const { return output.node(); }
+
+  ::tensorflow::Output output;
+};
+
 /// Adds sparse updates to a variable reference.
 ///
 /// This operation computes
@@ -274,7 +296,7 @@ class IsVariableInitialized {
 /// Requires `updates.shape = indices.shape + ref.shape[1:]`.
 ///
 /// <div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-/// <img style="width:100%" src="../../images/ScatterAdd.png" alt>
+/// <img style="width:100%" src="https://www.tensorflow.org/images/ScatterAdd.png" alt>
 /// </div>
 ///
 /// Arguments:
@@ -326,6 +348,7 @@ class ScatterAdd {
 ///
 /// This operation computes
 ///
+/// ```python
 ///     # Scalar indices
 ///     ref[indices, ...] /= updates[...]
 ///
@@ -334,6 +357,7 @@ class ScatterAdd {
 ///
 ///     # High rank indices (for each i, ..., j)
 ///     ref[indices[i, ..., j], ...] /= updates[i, ..., j, ...]
+/// ```
 ///
 /// This operation outputs `ref` after the update is done.
 /// This makes it easier to chain operations that need to use the reset value.
@@ -392,6 +416,7 @@ class ScatterDiv {
 ///
 /// This operation computes
 ///
+/// ```python
 ///     # Scalar indices
 ///     ref[indices, ...] *= updates[...]
 ///
@@ -400,6 +425,7 @@ class ScatterDiv {
 ///
 ///     # High rank indices (for each i, ..., j)
 ///     ref[indices[i, ..., j], ...] *= updates[i, ..., j, ...]
+/// ```
 ///
 /// This operation outputs `ref` after the update is done.
 /// This makes it easier to chain operations that need to use the reset value.
@@ -487,7 +513,7 @@ class ScatterMul {
 ///
 ///     [1, 13, 3, 14, 14, 6, 7, 20]
 ///
-/// See [tf.scatter_nd](#scatter_nd) for more details about how to make updates to
+/// See @{tf.scatter_nd} for more details about how to make updates to
 /// slices.
 ///
 /// Arguments:
@@ -572,7 +598,7 @@ class ScatterNdAdd {
 ///
 ///     [1, -9, 3, -6, -4, 6, 7, -4]
 ///
-/// See [tf.scatter_nd](#scatter_nd) for more details about how to make updates to
+/// See @{tf.scatter_nd} for more details about how to make updates to
 /// slices.
 ///
 /// Arguments:
@@ -646,18 +672,20 @@ class ScatterNdSub {
 /// For example, say we want to update 4 scattered elements to a rank-1 tensor to
 /// 8 elements. In Python, that update would look like this:
 ///
+/// ```python
 ///     ref = tf.Variable([1, 2, 3, 4, 5, 6, 7, 8])
 ///     indices = tf.constant([[4], [3], [1] ,[7]])
 ///     updates = tf.constant([9, 10, 11, 12])
 ///     update = tf.scatter_nd_update(ref, indices, updates)
 ///     with tf.Session() as sess:
 ///       print sess.run(update)
+/// ```
 ///
 /// The resulting update to ref would look like this:
 ///
 ///     [1, 11, 3, 10, 9, 6, 7, 12]
 ///
-/// See [tf.scatter_nd](#scatter_nd) for more details about how to make updates to
+/// See @{tf.scatter_nd} for more details about how to make updates to
 /// slices.
 ///
 /// Arguments:
@@ -711,6 +739,7 @@ class ScatterNdUpdate {
 
 /// Subtracts sparse updates to a variable reference.
 ///
+/// ```python
 ///     # Scalar indices
 ///     ref[indices, ...] -= updates[...]
 ///
@@ -719,6 +748,7 @@ class ScatterNdUpdate {
 ///
 ///     # High rank indices (for each i, ..., j)
 ///     ref[indices[i, ..., j], ...] -= updates[i, ..., j, ...]
+/// ```
 ///
 /// This operation outputs `ref` after the update is done.
 /// This makes it easier to chain operations that need to use the reset value.
@@ -729,7 +759,7 @@ class ScatterNdUpdate {
 /// Requires `updates.shape = indices.shape + ref.shape[1:]`.
 ///
 /// <div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-/// <img style="width:100%" src="../../images/ScatterSub.png" alt>
+/// <img style="width:100%" src="https://www.tensorflow.org/images/ScatterSub.png" alt>
 /// </div>
 ///
 /// Arguments:
@@ -781,6 +811,7 @@ class ScatterSub {
 ///
 /// This operation computes
 ///
+/// ```python
 ///     # Scalar indices
 ///     ref[indices, ...] = updates[...]
 ///
@@ -789,6 +820,7 @@ class ScatterSub {
 ///
 ///     # High rank indices (for each i, ..., j)
 ///     ref[indices[i, ..., j], ...] = updates[i, ..., j, ...]
+/// ```
 ///
 /// This operation outputs `ref` after the update is done.
 /// This makes it easier to chain operations that need to use the reset value.
@@ -800,7 +832,7 @@ class ScatterSub {
 /// Requires `updates.shape = indices.shape + ref.shape[1:]`.
 ///
 /// <div style="width:70%; margin:auto; margin-bottom:10px; margin-top:20px;">
-/// <img style="width:100%" src="../../images/ScatterUpdate.png" alt>
+/// <img style="width:100%" src="https://www.tensorflow.org/images/ScatterUpdate.png" alt>
 /// </div>
 ///
 /// Arguments:
@@ -892,10 +924,10 @@ class TemporaryVariable {
 
     StringPiece var_name_ = "";
   };
-  TemporaryVariable(const ::tensorflow::Scope& scope, TensorShape shape, DataType
-                  dtype);
-  TemporaryVariable(const ::tensorflow::Scope& scope, TensorShape shape, DataType
-                  dtype, const TemporaryVariable::Attrs& attrs);
+  TemporaryVariable(const ::tensorflow::Scope& scope, PartialTensorShape shape,
+                  DataType dtype);
+  TemporaryVariable(const ::tensorflow::Scope& scope, PartialTensorShape shape,
+                  DataType dtype, const TemporaryVariable::Attrs& attrs);
   operator ::tensorflow::Output() const { return ref; }
   operator ::tensorflow::Input() const { return ref; }
   ::tensorflow::Node* node() const { return ref.node(); }
@@ -953,9 +985,10 @@ class Variable {
     StringPiece container_ = "";
     StringPiece shared_name_ = "";
   };
-  Variable(const ::tensorflow::Scope& scope, TensorShape shape, DataType dtype);
-  Variable(const ::tensorflow::Scope& scope, TensorShape shape, DataType dtype,
-         const Variable::Attrs& attrs);
+  Variable(const ::tensorflow::Scope& scope, PartialTensorShape shape, DataType
+         dtype);
+  Variable(const ::tensorflow::Scope& scope, PartialTensorShape shape, DataType
+         dtype, const Variable::Attrs& attrs);
   operator ::tensorflow::Output() const { return ref; }
   operator ::tensorflow::Input() const { return ref; }
   ::tensorflow::Node* node() const { return ref.node(); }
