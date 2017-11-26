@@ -6100,8 +6100,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PROJECT_DIR)/Synopsis/Tensorflow/lib\"",
-					"\"$(PROJECT_DIR)/Synopsis/Tensorflow/lib\"",
-					"$(PROJECT_DIR)/Synopsis/Tensorflow/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = "";
@@ -6144,8 +6142,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PROJECT_DIR)/Synopsis/Tensorflow/lib\"",
-					"\"$(PROJECT_DIR)/Synopsis/Tensorflow/lib\"",
-					"$(PROJECT_DIR)/Synopsis/Tensorflow/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = "";
