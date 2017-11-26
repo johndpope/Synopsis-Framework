@@ -186,7 +186,8 @@
 //            tensorflow::graph::SetDefaultDevice("/gpu:0", &inceptionGraphDef);
         }
 
-        resized_tensor = tensorflow::Tensor( tensorflow::DT_FLOAT, tensorflow::TensorShape({1, wanted_input_height, wanted_input_width, wanted_input_channels}));
+        tensorflow::TensorShape shape = tensorflow::TensorShape({1, wanted_input_height, wanted_input_width, wanted_input_channels});
+        resized_tensor = tensorflow::Tensor( tensorflow::DT_FLOAT, shape );
         
 
 #if TF_DEBUG_TRACE
