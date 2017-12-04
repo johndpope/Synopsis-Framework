@@ -95,7 +95,7 @@ static ZSTD_CDict* compressionDict = nil;
 
     size_t expectedCompressionSize = ZSTD_compressBound(metadata.length);
     
-    void* const compressionBuffer = malloc(expectedCompressionSize);
+    const void* compressionBuffer = malloc(expectedCompressionSize);
     
     size_t const compressedSize = ZSTD_compress_usingCDict(compressionContext, compressionBuffer, expectedCompressionSize, metadata.bytes, metadata.length, compressionDict);
     
