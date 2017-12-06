@@ -109,7 +109,7 @@ void mycallback(
         self.pollingTimerInterval = 5.0;
         self.notificationDelay = 5.0;
         
-        self.fileSystemNotificationQueue = dispatch_queue_create("info.synopsis.filewatchqueue", DISPATCH_QUEUE_SERIAL);
+        self.fileSystemNotificationQueue = dispatch_queue_create("info.synopsis.filewatchqueue", DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL);
         
         if([url isFileURL])
         {

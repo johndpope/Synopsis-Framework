@@ -101,8 +101,8 @@
         
         cv::setUseOptimized(true);
         
-        self.concurrentModuleQueue = dispatch_queue_create("module_queue", DISPATCH_QUEUE_CONCURRENT);
-        self.serialDictionaryQueue = dispatch_queue_create("dictionary_queue", DISPATCH_QUEUE_SERIAL);
+        self.concurrentModuleQueue = dispatch_queue_create("module_queue", DISPATCH_QUEUE_CONCURRENT_WITH_AUTORELEASE_POOL);
+        self.serialDictionaryQueue = dispatch_queue_create("dictionary_queue", DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL);
     }
     
     return self;
@@ -172,11 +172,13 @@
         
         NSBlockOperation* moduleOperation = [NSBlockOperation blockOperationWithBlock:^{
         
-            NSDictionary* result = [module analyzedMetadataForCurrentFrame:currentFrame previousFrame:previousFrame];
-            
-            dispatch_barrier_sync(self.serialDictionaryQueue, ^{
-                [dictionary addEntriesFromDictionary:result];
-            });
+            @autoreleasepool {
+                NSDictionary* result = [module analyzedMetadataForCurrentFrame:currentFrame previousFrame:previousFrame];
+                
+                dispatch_barrier_sync(self.serialDictionaryQueue, ^{
+                    [dictionary addEntriesFromDictionary:result];
+                });
+            }
         }];
 
         NSString* key = NSStringFromClass([module class]);
