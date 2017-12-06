@@ -159,8 +159,6 @@
         }
         else
         {
-            NSLog(@"Loaded graph");
-
 //            if(self.successLog)
 //                self.successLog(@"Tensorflow: Loaded Graph");
         }
