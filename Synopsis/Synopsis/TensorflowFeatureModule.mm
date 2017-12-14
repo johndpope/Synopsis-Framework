@@ -44,14 +44,13 @@
 
 #define TF_DEBUG_TRACE 0
 
+
+
 @interface TensorflowFeatureModule ()
 {
     // TensorFlow
     std::unique_ptr<tensorflow::Session> inceptionSession;
     tensorflow::GraphDef inceptionGraphDef;
-    
-    // Todo: Adopt code from iOS example and not use this
-    std::unique_ptr<tensorflow::Session> topLabelsSession;
     
 #if TF_DEBUG_TRACE
     std::unique_ptr<tensorflow::StatSummarizer> stat_summarizer;
@@ -137,7 +136,6 @@
 
 #endif
         inceptionSession = NULL;
-        topLabelsSession = NULL;
         self.averageFeatureVec = nil;
         
         // From 'Begin'
@@ -163,8 +161,6 @@
         }
         else
         {
-            NSLog(@"Loaded graph");
-
 //            if(self.successLog)
 //                self.successLog(@"Tensorflow: Loaded Graph");
         }
@@ -202,14 +198,6 @@
 
 - (void) dealloc
 {
-    if(inceptionSession != NULL)
-    {
-        tensorflow::Status close_graph_status = inceptionSession->Close();
-        if (!close_graph_status.ok())
-        {
-            NSLog(@"Error Closing Session");
-        }
-    }
 }
 
 - (NSString*) moduleName
@@ -287,12 +275,27 @@
     
     NSString* topLabel = [[self.averageLabelScores allKeysForObject:topScore] firstObject];
     
+    [self shutdownTF];
+    
     return @{
              kSynopsisStandardMetadataFeatureVectorDictKey : self.averageFeatureVec,
              kSynopsisStandardMetadataDescriptionDictKey : @[ topLabel ],
              kSynopsisStandardMetadataLabelsDictKey : [self.averageLabelScores allKeys],
              kSynopsisStandardMetadataScoreDictKey : [self.averageLabelScores allValues],
             };
+}
+
+- (void) shutdownTF
+{
+    if(inceptionSession != NULL)
+    {
+        tensorflow::Status close_graph_status = inceptionSession->Close();
+        if (!close_graph_status.ok())
+        {
+            NSLog(@"Error Closing Session");
+        }
+    }
+    
 }
 
 #pragma mark - From Old TF Plugin
@@ -439,11 +442,13 @@
             float  a = [featureElements[i] floatValue];
             float  b = [self.averageFeatureVec[i] floatValue];
             
-            self.averageFeatureVec[i] = @( MAX(a,b) );
+            self.averageFeatureVec[i] = @( (a + b) * 0.5 );
+//            self.averageFeatureVec[i] = @( MAX(a,b) );
         }
     }
     
 //    NSLog(@"%@", featureElements);
+
     
     return @{
              kSynopsisStandardMetadataFeatureVectorDictKey : featureElements ,

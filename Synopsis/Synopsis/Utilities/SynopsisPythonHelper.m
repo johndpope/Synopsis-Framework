@@ -39,7 +39,7 @@
             Py_InitializeEx(0);
         }
         
-        self.pythonQueue = dispatch_queue_create("pythonQueue", DISPATCH_QUEUE_SERIAL);
+        self.pythonQueue = dispatch_queue_create("pythonQueue", DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL);
     }
     
     return self;
