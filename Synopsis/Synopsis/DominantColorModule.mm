@@ -353,7 +353,7 @@
     for(NSColor* color in dominantNSColors)
     {
         NSString* namedColor = [self closestNamedColorForColor:color];
-        NSLog(@"Found Color %@", namedColor);
+//        NSLog(@"Found Color %@", namedColor);
         if(namedColor)
             [matchedNamedColors addObject:namedColor];
     }
