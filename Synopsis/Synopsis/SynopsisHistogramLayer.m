@@ -119,6 +119,9 @@
     
     NSUInteger histogramFeatureCount = [self.histogram featureCount];
     
+    if(!histogramFeatureCount)
+        return;
+    
     assert(histogramFeatureCount == 768);
     
     histogramFeatureCount /= 3;
