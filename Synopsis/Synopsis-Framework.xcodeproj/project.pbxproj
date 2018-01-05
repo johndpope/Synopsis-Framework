@@ -149,6 +149,10 @@
 		1BBA893B1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892E1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb */; };
 		1BBA893C1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892F1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt */; };
 		1BBA893D1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892F1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt */; };
+		1BBA89402000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA893E2000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb */; };
+		1BBA89412000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA893E2000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb */; };
+		1BBA89422000423B006CBD51 /* CinemaNetShotAnglesLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA893F2000423B006CBD51 /* CinemaNetShotAnglesLabels.txt */; };
+		1BBA89432000423B006CBD51 /* CinemaNetShotAnglesLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA893F2000423B006CBD51 /* CinemaNetShotAnglesLabels.txt */; };
 		1BBB10E11D5542A200C22439 /* Synopsis.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BBB10E01D5542A200C22439 /* Synopsis.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BBB10F51D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BBB10F31D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BBB10F61D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB10F41D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.mm */; };
@@ -1980,6 +1984,8 @@
 		1BBA892D1FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotFramingLabels.txt; sourceTree = "<group>"; };
 		1BBA892E1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotTypeClassifier.pb; sourceTree = "<group>"; };
 		1BBA892F1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotSubjectLabels.txt; sourceTree = "<group>"; };
+		1BBA893E2000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb */ = {isa = PBXFileReference; lastKnownFileType = file; path = CinemaNetShotAnglesClassifier.pb; sourceTree = "<group>"; };
+		1BBA893F2000423B006CBD51 /* CinemaNetShotAnglesLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotAnglesLabels.txt; sourceTree = "<group>"; };
 		1BBB10DD1D5542A200C22439 /* Synopsis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Synopsis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BBB10E01D5542A200C22439 /* Synopsis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Synopsis.h; sourceTree = "<group>"; };
 		1BBB10E21D5542A200C22439 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -5451,6 +5457,8 @@
 			isa = PBXGroup;
 			children = (
 				1BBA892C1FFFF477006CBD51 /* CinemaNetCore.pb */,
+				1BBA893E2000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb */,
+				1BBA893F2000423B006CBD51 /* CinemaNetShotAnglesLabels.txt */,
 				1BBA89291FFFF477006CBD51 /* CinemaNetShotFramingClassifier.pb */,
 				1BBA892D1FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt */,
 				1BBA892B1FFFF477006CBD51 /* CinemaNetShotSubjectClassifier.pb */,
@@ -5732,7 +5740,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BBA89331FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */,
+				1BBA89432000423B006CBD51 /* CinemaNetShotAnglesLabels.txt in Resources */,
 				1BBA893B1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb in Resources */,
+				1BBA89412000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb in Resources */,
 				1BBA89371FFFF478006CBD51 /* CinemaNetCore.pb in Resources */,
 				1BBA893D1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */,
 				1BBA89351FFFF478006CBD51 /* CinemaNetShotSubjectClassifier.pb in Resources */,
@@ -5748,6 +5758,8 @@
 				1BBA89341FFFF478006CBD51 /* CinemaNetShotSubjectClassifier.pb in Resources */,
 				1BBA893C1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */,
 				1BBA89301FFFF478006CBD51 /* CinemaNetShotFramingClassifier.pb in Resources */,
+				1BBA89402000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb in Resources */,
+				1BBA89422000423B006CBD51 /* CinemaNetShotAnglesLabels.txt in Resources */,
 				1BBA89321FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */,
 				1BBA89361FFFF478006CBD51 /* CinemaNetCore.pb in Resources */,
 				1B2781021F22BFEB00658C0B /* dictionary.zstddict in Resources */,

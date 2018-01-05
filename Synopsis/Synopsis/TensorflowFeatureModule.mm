@@ -45,11 +45,13 @@
     // which creates feature vectors - this does the heavy work
     // and multiple classifiers we run independently.
     tensorflow::GraphDef cinemaNetCoreGraph;
+    tensorflow::GraphDef cinemaNetShotAnglesGraph;
     tensorflow::GraphDef cinemaNetShotFramingGraph;
     tensorflow::GraphDef cinemaNetShotSubjectGraph;
     tensorflow::GraphDef cinemaNetShotTypeGraph;
 
     std::unique_ptr<tensorflow::Session> cinemaNetCoreSession;
+    std::unique_ptr<tensorflow::Session> cinemaNetShotAnglesSession;
     std::unique_ptr<tensorflow::Session> cinemaNetShotFramingSession;
     std::unique_ptr<tensorflow::Session> cinemaNetShotSubjectSession;
     std::unique_ptr<tensorflow::Session> cinemaNetShotTypeSession;
@@ -70,12 +72,14 @@
     std::string cinemaNetClassifierOutputLayer;
 }
 
+@property (atomic, readwrite, strong) NSArray<NSString*>* cinemaNetShotAnglesLabels;
 @property (atomic, readwrite, strong) NSArray<NSString*>* cinemaNetShotFramingLabels;
 @property (atomic, readwrite, strong) NSArray<NSString*>* cinemaNetShotSubjectLabels;
 @property (atomic, readwrite, strong) NSArray<NSString*>* cinemaNetShotTypeLabels;
 
 @property (atomic, readwrite, strong) NSMutableArray* cinemaNetCoreAverageFeatureVector;
 
+@property (atomic, readwrite, strong) NSMutableDictionary* cinemaNetShotAnglesAverageScore;
 @property (atomic, readwrite, strong) NSMutableDictionary* cinemaNetShotFramingAverageScore;
 @property (atomic, readwrite, strong) NSMutableDictionary* cinemaNetShotSubjectAverageScore;
 @property (atomic, readwrite, strong) NSMutableDictionary* cinemaNetShotTypeAverageScore;
@@ -87,12 +91,6 @@
 #define wanted_input_width 224
 #define wanted_input_height 224
 #define wanted_input_channels 3
-// WHY DOES THIS DIFFER FROM TRAINING!?
-//#define input_mean 117.0f
-//#define input_std 1.0f
-
-#define input_mean 128.0f
-#define input_std 128.0f
 
 @implementation TensorflowFeatureModule
 
@@ -101,11 +99,13 @@
     self = [super initWithQualityHint:qualityHint];
     if(self)
     {
+        self.cinemaNetShotAnglesAverageScore = [NSMutableDictionary dictionary];
         self.cinemaNetShotFramingAverageScore = [NSMutableDictionary dictionary];
         self.cinemaNetShotSubjectAverageScore = [NSMutableDictionary dictionary];
         self.cinemaNetShotTypeAverageScore = [NSMutableDictionary dictionary];
 
         NSString* cinemaNetCoreName = @"CinemaNetCore";
+        NSString* cinemaNetShotAnglesName = @"CinemaNetShotAnglesClassifier";
         NSString* cinemaNetShotFramingName = @"CinemaNetShotFramingClassifier";
         NSString* cinemaNetShotSubjectName = @"CinemaNetShotSubjectClassifier";
         NSString* cinemaNetShotTypeName = @"CinemaNetShotTypeClassifier";
@@ -115,11 +115,17 @@
         cinemaNetClassifierInputLayer = "input_1/BottleneckInputPlaceholder";
         cinemaNetClassifierOutputLayer = "final_result";
         
-        self.cinemaNetShotFramingLabels = @[@"Close Up", @"Extreme Close Up", @"Extreme Long", @"Long", @"Medium"];
+        self.cinemaNetShotAnglesLabels = @[@"High", @"Tilted", @"Aerial", @"Low"];
+        self.cinemaNetShotFramingLabels = @[@"Medium", @"Close Up", @"Extreme Close Up", @"Long", @"Extreme Long"];
         self.cinemaNetShotSubjectLabels = @[@"People", @"Text", @"Face", @"Person", @"Animal", @"Faces"];
         self.cinemaNetShotTypeLabels = @[@"Over The Shoulder", @"Portrait", @"Two Up", @"Master"];
 
         self.cinemaNetCoreAverageFeatureVector = nil;
+
+        for(NSString* label in self.cinemaNetShotAnglesLabels)
+        {
+            self.cinemaNetShotAnglesAverageScore[label] = @(0.0);
+        }
 
         for(NSString* label in self.cinemaNetShotFramingLabels)
         {
@@ -135,10 +141,10 @@
         {
             self.cinemaNetShotTypeAverageScore[label] = @(0.0);
         }
-
         
         // Init Tensorflow Ob
         cinemaNetCoreSession = NULL;
+        cinemaNetShotAnglesSession = NULL;
         cinemaNetShotFramingSession = NULL;
         cinemaNetShotSubjectSession = NULL;
         cinemaNetShotTypeSession = NULL;
@@ -156,6 +162,15 @@
         if (!load_graph_status.ok())
         {
             NSLog(@"Unable to load CinemaNetCore graph");
+        }
+
+        NSString* cinemaNetShotAnglePath = [[NSBundle bundleForClass:[self class]] pathForResource:cinemaNetShotAnglesName ofType:@"pb"];
+        load_graph_status = ReadBinaryProto(tensorflow::Env::Default(), [cinemaNetShotAnglePath cStringUsingEncoding:NSUTF8StringEncoding], &cinemaNetShotAnglesGraph);
+        
+        // TODO: Modules need better error handling.
+        if (!load_graph_status.ok())
+        {
+            NSLog(@"Unable to load CinemaNetShotAngle graph");
         }
 
         NSString* cinemaNetShotFramingPath = [[NSBundle bundleForClass:[self class]] pathForResource:cinemaNetShotFramingName ofType:@"pb"];
@@ -189,6 +204,7 @@
         
         tensorflow::SessionOptions options;
         tensorflow::Status session_create_status;
+       
         
         cinemaNetCoreSession = std::unique_ptr<tensorflow::Session>(tensorflow::NewSession(options));
         session_create_status = cinemaNetCoreSession->Create(cinemaNetCoreGraph);
@@ -196,7 +212,14 @@
         {
             NSLog(@"Unable to create CinemaNetCore session");
         }
-
+        
+        cinemaNetShotAnglesSession = std::unique_ptr<tensorflow::Session>(tensorflow::NewSession(options));
+        session_create_status = cinemaNetShotAnglesSession->Create(cinemaNetShotAnglesGraph);
+        if (!session_create_status.ok())
+        {
+            NSLog(@"Unable to create CinemaNetShotAngles session");
+        }
+        
         cinemaNetShotFramingSession = std::unique_ptr<tensorflow::Session>(tensorflow::NewSession(options));
         session_create_status = cinemaNetShotFramingSession->Create(cinemaNetShotFramingGraph);
         if (!session_create_status.ok())
@@ -255,6 +278,7 @@
     
     // Actually run the image through the model.
     std::vector<tensorflow::Tensor> cinemaNetCoreOutputTensors;
+    std::vector<tensorflow::Tensor> cinemaNetShotAnglesOutputTensors;
     std::vector<tensorflow::Tensor> cinemaNetShotFramingOutputTensors;
     std::vector<tensorflow::Tensor> cinemaNetShotSubjectOutputTensors;
     std::vector<tensorflow::Tensor> cinemaNetShotTypeOutputTensors;
@@ -275,6 +299,14 @@
 
     if(!cinemaNetCoreOutputTensors.empty())
     {
+        run_status = cinemaNetShotAnglesSession->Run({ {cinemaNetClassifierInputLayer, cinemaNetCoreOutputTensors[0]} }, {cinemaNetClassifierOutputLayer}, {}, &cinemaNetShotAnglesOutputTensors);
+        
+        if (!run_status.ok())
+        {
+            NSLog(@"Error running CinemaNetShotAngles Session");
+            return nil;
+        }
+        
         run_status = cinemaNetShotFramingSession->Run({ {cinemaNetClassifierInputLayer, cinemaNetCoreOutputTensors[0]} }, {cinemaNetClassifierOutputLayer}, {}, &cinemaNetShotFramingOutputTensors);
         
         if (!run_status.ok())
@@ -302,6 +334,7 @@
     }
     
     NSDictionary* labelsAndScores = [self dictionaryFromCoreOutput:cinemaNetCoreOutputTensors
+                                                   andAnglesOutput:cinemaNetShotAnglesOutputTensors
                                                     andFrameOutput:cinemaNetShotFramingOutputTensors
                                                   andSubjectOutput:cinemaNetShotSubjectOutputTensors
                                                      andTypeOutput:cinemaNetShotTypeOutputTensors];
@@ -353,14 +386,18 @@
     
 #pragma mark Shot Frame
 
+    NSString* topAngleLabel = [self topLabelForScores:self.cinemaNetShotAnglesAverageScore withThreshhold:topScoreThreshhold];
     NSString* topFrameLabel = [self topLabelForScores:self.cinemaNetShotFramingAverageScore withThreshhold:topScoreThreshhold];
     NSString* topSubjectLabel = [self topLabelForScores:self.cinemaNetShotSubjectAverageScore withThreshhold:topScoreThreshhold];
     NSString* topTypeLabel = [self topLabelForScores:self.cinemaNetShotTypeAverageScore withThreshhold:topScoreThreshhold];
     
     NSMutableArray* labels = [NSMutableArray array];
     
+    if(topAngleLabel)
+        [labels addObject:topAngleLabel];
+    
     if(topFrameLabel)
-      [labels addObject:topFrameLabel];
+        [labels addObject:topFrameLabel];
 
     if(topSubjectLabel)
         [labels addObject:topSubjectLabel];
@@ -429,23 +466,10 @@
     cv::Mat dst;
     cv::resize(frame, dst, cv::Size(wanted_input_width, wanted_input_height), 0, 0, cv::INTER_LINEAR);
 
-//#if V3
-    frame = dst * 255.0;
-    frame = frame - input_mean;
-    frame = frame / input_std;
-//#else
-//    frame = dst - 0.5;
-//    frame = frame * 2.0;
+    // Normalize our float input to -1 to 1
+    frame = frame - 0.5f;
+    frame = frame * 2.0;
     frame = dst;
-//
-//    cv::Scalar mean;
-//    cv::Scalar stddev;
-//    cv::meanStdDev(dst, mean, stddev);
-//    
-//    frame = dst - mean;
-//    cv::divide(frame, stddev, frame);
-
-//#endif
     
     void* baseAddress = (void*)frame.datastart;
     size_t height = (size_t) frame.rows;
@@ -455,57 +479,10 @@
     memcpy(image_tensor_mapped.data(), baseAddress, bytesPerRow * height);
     
     dst.release();
-    
-#pragma mark - Float conversion from BGR8
-    
-//    int width = frame.cols;
-//    int height = frame.rows;
-//    void* baseAddress = (void*)frame.datastart;
-//    int image_height;
-//    unsigned char *sourceStartAddr;
-//    
-//    if (height <= width)
-//    {
-//        image_height = (int)height;
-//        sourceStartAddr = (unsigned char*)baseAddress;
-//    }
-//    else
-//    {
-//        image_height = (int)width;
-//        const int marginY = (int)((height - width) / 2);
-//        sourceStartAddr = ( (unsigned char*)baseAddress + (marginY * bytesPerRow));
-//    }
-//    
-//    // Now back to 3, since we are pulling from OpenCV BGR8
-//    // Do we care about BGR ordering
-//    const int image_channels = 3;
-//    
-//    assert(image_channels >= wanted_input_channels);
-//    
-//    auto image_tensor_mapped = resized_tensor.tensor<float, 4>();
-//    tensorflow::uint8 *in = sourceStartAddr;
-//    float *out = image_tensor_mapped.data();
-//    for (int y = 0; y < wanted_input_height; ++y)
-//    {
-//        float *out_row = out + (y * wanted_input_width * wanted_input_channels);
-//        for (int x = 0; x < wanted_input_width; ++x)
-//        {
-//            const int in_x = (y * (int)width) / wanted_input_width;
-//            const int in_y = (x * image_height) / wanted_input_height;
-//            
-//            tensorflow::uint8 *in_pixel = in + (in_y * width * (image_channels)) + (in_x * (image_channels));
-//            float *out_pixel = out_row + (x * wanted_input_channels);
-//            
-//            // Interestingly the iOS example uses BGRA and DOES NOT re-order tensor channels to RGB
-//            // Matching that.
-//            out_pixel[0] = ((float)in_pixel[0] - (float)input_mean) / (float)input_std;
-//            out_pixel[1] = ((float)in_pixel[1] - (float)input_mean) / (float)input_std;
-//            out_pixel[2] = ((float)in_pixel[2] - (float)input_mean) / (float)input_std;
-//        }
-//    }
 }
 
 - (NSDictionary*) dictionaryFromCoreOutput:(const std::vector<tensorflow::Tensor>&)cinemaNetCoreOutputTensors
+                           andAnglesOutput:(const std::vector<tensorflow::Tensor>&)cinemaNetShotAnglesOutputTensors
                             andFrameOutput:(const std::vector<tensorflow::Tensor>&)cinemaNetShotFramingOutputTensors
                           andSubjectOutput:(const std::vector<tensorflow::Tensor>&)cinemaNetShotSubjectOutputTensors
                              andTypeOutput:(const std::vector<tensorflow::Tensor>&)cinemaNetShotTypeOutputTensors
@@ -552,6 +529,30 @@
     
     //    NSLog(@"%@", featureElements);
     
+#pragma mark - Shot Angles
+    
+    NSMutableArray* outputAnglesLabels = [NSMutableArray arrayWithCapacity:self.cinemaNetShotAnglesLabels.count];
+    NSMutableArray* outputAnglesScores = [NSMutableArray arrayWithCapacity:self.cinemaNetShotAnglesLabels.count];
+    
+    // 1 = labels and scores
+    auto anglepredictions = cinemaNetShotAnglesOutputTensors[0].flat<float>();
+    
+    for (int index = 0; index < anglepredictions.size(); index += 1)
+    {
+        const float predictionValue = anglepredictions(index);
+        
+        NSString* labelKey  = self.cinemaNetShotAnglesLabels[index % anglepredictions.size()];
+        
+        NSNumber* currentLabelScore = self.cinemaNetShotAnglesAverageScore[labelKey];
+        
+        NSNumber* incrementedScore = @([currentLabelScore floatValue] + predictionValue );
+        self.cinemaNetShotAnglesAverageScore[labelKey] = incrementedScore;
+        
+        [outputAnglesLabels addObject:labelKey];
+        [outputAnglesScores addObject:@(predictionValue)];
+    }
+    
+
 #pragma mark - Shot Framing
     
     NSMutableArray* outputFramingLabels = [NSMutableArray arrayWithCapacity:self.cinemaNetShotFramingLabels.count];
