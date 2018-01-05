@@ -204,7 +204,6 @@
 
     if(self.gpuModules.count)
     {
-<<<<<<< HEAD
         @autoreleasepool
         {
             dispatch_group_enter(cpuAndGPUCompleted);
@@ -230,26 +229,6 @@
                 if(currentFrame)
                 {
                     NSLog(@"Analyzer got Frame: %@", currentFrame.label);
-=======
-        SynopsisFrameCacheFormat currentFormat = [module currentFrameFormat];
-        
-        matType currentFrame = [converter frameForFormat:currentFormat];
-        matType previousFrame;
-        
-        if(self.lastFrameVideoFormatConverter)
-            previousFrame = [self.lastFrameVideoFormatConverter frameForFormat:currentFormat];
-        
-        NSBlockOperation* moduleOperation = [NSBlockOperation blockOperationWithBlock:^{
-        
-            @autoreleasepool {
-                NSDictionary* result = [module analyzedMetadataForCurrentFrame:currentFrame previousFrame:previousFrame];
-                
-                dispatch_barrier_sync(self.serialDictionaryQueue, ^{
-                    [dictionary addEntriesFromDictionary:result];
-                });
-            }
-        }];
->>>>>>> master
 
                     [module analyzedMetadataForCurrentFrame:currentFrame previousFrame:previousFrame commandBuffer:frameCommandBuffer completionBlock:^(NSDictionary *result, NSError *err) {
                         dispatch_barrier_sync(self.serialDictionaryQueue, ^{
