@@ -127,7 +127,6 @@
 		1B8358A41F42285000F86F0F /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8358A31F42285000F86F0F /* opencv2.framework */; };
 		1B8358A51F42285000F86F0F /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8358A31F42285000F86F0F /* opencv2.framework */; };
 		1B8358AD1F424BD600F86F0F /* opencv2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B8358A31F42285000F86F0F /* opencv2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		1BA2EDED1F0AC4C900C353E6 /* CinemaNetFraming.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BA2EDEC1F0AC4C900C353E6 /* CinemaNetFraming.pb */; };
 		1BAA80561D70C9EB00464810 /* NSPredicate+SynopsisMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BAA80541D70C9EB00464810 /* NSPredicate+SynopsisMetadata.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BAA80571D70C9EB00464810 /* NSPredicate+SynopsisMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1BAA80551D70C9EB00464810 /* NSPredicate+SynopsisMetadata.mm */; };
 		1BAA805A1D70DBE400464810 /* SynopsisMetadataItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BAA80581D70DBE400464810 /* SynopsisMetadataItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -136,6 +135,20 @@
 		1BAA80691D70DCE800464810 /* GZIP.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAA80671D70DCE800464810 /* GZIP.m */; };
 		1BB87A821EF0A29300C3A89F /* SynopsisVideoFormatConverter+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BB87A801EF0A29300C3A89F /* SynopsisVideoFormatConverter+Private.h */; };
 		1BB87A841EF0A40400C3A89F /* SynopsisVideoFormatConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B7358731DEF5FE40053BC06 /* SynopsisVideoFormatConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1BBA89301FFFF478006CBD51 /* CinemaNetShotFramingClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA89291FFFF477006CBD51 /* CinemaNetShotFramingClassifier.pb */; };
+		1BBA89311FFFF478006CBD51 /* CinemaNetShotFramingClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA89291FFFF477006CBD51 /* CinemaNetShotFramingClassifier.pb */; };
+		1BBA89321FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892A1FFFF477006CBD51 /* CinemaNetShotTypeLabels.txt */; };
+		1BBA89331FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892A1FFFF477006CBD51 /* CinemaNetShotTypeLabels.txt */; };
+		1BBA89341FFFF478006CBD51 /* CinemaNetShotSubjectClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892B1FFFF477006CBD51 /* CinemaNetShotSubjectClassifier.pb */; };
+		1BBA89351FFFF478006CBD51 /* CinemaNetShotSubjectClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892B1FFFF477006CBD51 /* CinemaNetShotSubjectClassifier.pb */; };
+		1BBA89361FFFF478006CBD51 /* CinemaNetCore.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892C1FFFF477006CBD51 /* CinemaNetCore.pb */; };
+		1BBA89371FFFF478006CBD51 /* CinemaNetCore.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892C1FFFF477006CBD51 /* CinemaNetCore.pb */; };
+		1BBA89381FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892D1FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt */; };
+		1BBA89391FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892D1FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt */; };
+		1BBA893A1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892E1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb */; };
+		1BBA893B1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892E1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb */; };
+		1BBA893C1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892F1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt */; };
+		1BBA893D1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892F1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt */; };
 		1BBB10E11D5542A200C22439 /* Synopsis.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BBB10E01D5542A200C22439 /* Synopsis.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BBB10F51D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BBB10F31D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BBB10F61D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB10F41D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.mm */; };
@@ -1953,7 +1966,6 @@
 		1B7358A61DEF65770053BC06 /* CIEDE2000.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CIEDE2000.h; path = CIEDE2000/CIEDE2000.h; sourceTree = "<group>"; };
 		1B8358971F42110600F86F0F /* libblas.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libblas.tbd; path = usr/lib/libblas.tbd; sourceTree = SDKROOT; };
 		1B8358A31F42285000F86F0F /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
-		1BA2EDEC1F0AC4C900C353E6 /* CinemaNetFraming.pb */ = {isa = PBXFileReference; lastKnownFileType = file; path = CinemaNetFraming.pb; sourceTree = "<group>"; };
 		1BAA80541D70C9EB00464810 /* NSPredicate+SynopsisMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPredicate+SynopsisMetadata.h"; sourceTree = "<group>"; };
 		1BAA80551D70C9EB00464810 /* NSPredicate+SynopsisMetadata.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSPredicate+SynopsisMetadata.mm"; sourceTree = "<group>"; };
 		1BAA80581D70DBE400464810 /* SynopsisMetadataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynopsisMetadataItem.h; sourceTree = "<group>"; };
@@ -1961,6 +1973,13 @@
 		1BAA80661D70DCE800464810 /* GZIP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZIP.h; sourceTree = "<group>"; };
 		1BAA80671D70DCE800464810 /* GZIP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GZIP.m; sourceTree = "<group>"; };
 		1BB87A801EF0A29300C3A89F /* SynopsisVideoFormatConverter+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SynopsisVideoFormatConverter+Private.h"; sourceTree = "<group>"; };
+		1BBA89291FFFF477006CBD51 /* CinemaNetShotFramingClassifier.pb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotFramingClassifier.pb; sourceTree = "<group>"; };
+		1BBA892A1FFFF477006CBD51 /* CinemaNetShotTypeLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotTypeLabels.txt; sourceTree = "<group>"; };
+		1BBA892B1FFFF477006CBD51 /* CinemaNetShotSubjectClassifier.pb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotSubjectClassifier.pb; sourceTree = "<group>"; };
+		1BBA892C1FFFF477006CBD51 /* CinemaNetCore.pb */ = {isa = PBXFileReference; lastKnownFileType = file; path = CinemaNetCore.pb; sourceTree = "<group>"; };
+		1BBA892D1FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotFramingLabels.txt; sourceTree = "<group>"; };
+		1BBA892E1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotTypeClassifier.pb; sourceTree = "<group>"; };
+		1BBA892F1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotSubjectLabels.txt; sourceTree = "<group>"; };
 		1BBB10DD1D5542A200C22439 /* Synopsis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Synopsis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BBB10E01D5542A200C22439 /* Synopsis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Synopsis.h; sourceTree = "<group>"; };
 		1BBB10E21D5542A200C22439 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -5431,7 +5450,13 @@
 		1BA2EDE71F06D71D00C353E6 /* MobileNet */ = {
 			isa = PBXGroup;
 			children = (
-				1BA2EDEC1F0AC4C900C353E6 /* CinemaNetFraming.pb */,
+				1BBA892C1FFFF477006CBD51 /* CinemaNetCore.pb */,
+				1BBA89291FFFF477006CBD51 /* CinemaNetShotFramingClassifier.pb */,
+				1BBA892D1FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt */,
+				1BBA892B1FFFF477006CBD51 /* CinemaNetShotSubjectClassifier.pb */,
+				1BBA892F1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt */,
+				1BBA892E1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb */,
+				1BBA892A1FFFF477006CBD51 /* CinemaNetShotTypeLabels.txt */,
 			);
 			path = MobileNet;
 			sourceTree = "<group>";
@@ -5706,6 +5731,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BBA89331FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */,
+				1BBA893B1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb in Resources */,
+				1BBA89371FFFF478006CBD51 /* CinemaNetCore.pb in Resources */,
+				1BBA893D1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */,
+				1BBA89351FFFF478006CBD51 /* CinemaNetShotSubjectClassifier.pb in Resources */,
+				1BBA89391FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt in Resources */,
+				1BBA89311FFFF478006CBD51 /* CinemaNetShotFramingClassifier.pb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5713,8 +5745,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BBA89341FFFF478006CBD51 /* CinemaNetShotSubjectClassifier.pb in Resources */,
+				1BBA893C1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */,
+				1BBA89301FFFF478006CBD51 /* CinemaNetShotFramingClassifier.pb in Resources */,
+				1BBA89321FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */,
+				1BBA89361FFFF478006CBD51 /* CinemaNetCore.pb in Resources */,
 				1B2781021F22BFEB00658C0B /* dictionary.zstddict in Resources */,
-				1BA2EDED1F0AC4C900C353E6 /* CinemaNetFraming.pb in Resources */,
+				1BBA89381FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt in Resources */,
+				1BBA893A1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
