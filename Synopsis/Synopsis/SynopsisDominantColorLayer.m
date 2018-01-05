@@ -69,6 +69,11 @@
 
 - (void) drawInContext:(CGContextRef)ctx
 {
+    
+    if(!self.dominantColorCALayers.count)
+        return;
+
+    
     assert((self.dominantColorCALayers.count == self.dominantColorsArray.count) && (self.dominantColorsArray.count == kSynopsisDominantColorCount));
     
     for(NSUInteger i = 0; i < kSynopsisDominantColorCount; i++)
