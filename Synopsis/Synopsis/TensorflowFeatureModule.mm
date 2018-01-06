@@ -327,10 +327,9 @@
         
         if (!run_status.ok())
         {
-            NSLog(@"Error running CinemaNetShotSubject Session");
+            NSLog(@"Error running CinemaNetShotType Session");
             return nil;
         }
-
     }
     
     NSDictionary* labelsAndScores = [self dictionaryFromCoreOutput:cinemaNetCoreOutputTensors
