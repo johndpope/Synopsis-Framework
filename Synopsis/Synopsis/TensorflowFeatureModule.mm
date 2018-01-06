@@ -384,8 +384,6 @@
     // We only report / include a top score if its over a specific amount
     float topScoreThreshhold = 0.0;
     
-#pragma mark Shot Frame
-
     NSString* topAngleLabel = [self topLabelForScores:self.cinemaNetShotAnglesAverageScore withThreshhold:topScoreThreshhold];
     NSString* topFrameLabel = [self topLabelForScores:self.cinemaNetShotFramingAverageScore withThreshhold:topScoreThreshhold];
     NSString* topSubjectLabel = [self topLabelForScores:self.cinemaNetShotSubjectAverageScore withThreshhold:topScoreThreshhold];
@@ -426,6 +424,15 @@
         }
     }
 
+    if(cinemaNetShotAnglesSession != NULL)
+    {
+        tensorflow::Status close_graph_status = cinemaNetShotAnglesSession->Close();
+        if (!close_graph_status.ok())
+        {
+            NSLog(@"Error Closing Session");
+        }
+    }
+    
     if(cinemaNetShotFramingSession != NULL)
     {
         tensorflow::Status close_graph_status = cinemaNetShotFramingSession->Close();
