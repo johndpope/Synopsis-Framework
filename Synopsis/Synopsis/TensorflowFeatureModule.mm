@@ -529,11 +529,8 @@
             float  b = [self.cinemaNetCoreAverageFeatureVector[i] floatValue];
             
             self.cinemaNetCoreAverageFeatureVector[i] = @( (a + b) * 0.5 );
-//            self.cinemaNetCoreAverageFeatureVector[i] = @( MAX(a,b) );
         }
     }
-    
-    //    NSLog(@"%@", featureElements);
     
 #pragma mark - Shot Angles
     
@@ -558,7 +555,6 @@
         [outputAnglesScores addObject:@(predictionValue)];
     }
     
-
 #pragma mark - Shot Framing
     
     NSMutableArray* outputFramingLabels = [NSMutableArray arrayWithCapacity:self.cinemaNetShotFramingLabels.count];
@@ -629,9 +625,7 @@
     }
 
 //    NSLog(@"%@, %@", outputFramingLabels, outputFramingScores);
-//
 //    NSLog(@"%@, %@", outputSubjectLabels, outputSubjectScores);
-//
 //    NSLog(@"%@, %@", outputTypeLabels, outputTypeScores);
     
 #pragma mark - Fin
