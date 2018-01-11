@@ -473,16 +473,29 @@
     cv::resize(frame, dst, cv::Size(wanted_input_width, wanted_input_height), 0, 0, cv::INTER_LINEAR);
 
     // Normalize our float input to -1 to 1
-    frame = frame - 0.5f;
-    frame = frame * 2.0;
-    frame = dst;
+    dst = dst - 0.5f;
+    dst = dst * 2.0;
     
-    void* baseAddress = (void*)frame.datastart;
-    size_t height = (size_t) frame.rows;
-    size_t bytesPerRow =  (size_t) frame.cols * (sizeof(float) * 3); // (BGR)
+    const float* baseAddress = (const float*)dst.datastart;
+    size_t height = (size_t) dst.rows;
+    size_t width =  (size_t) dst.cols;
+    size_t depth = 3;
+    size_t bytesPerRow =  (size_t) width * (sizeof(float) * depth); // (BGR)
 
     auto image_tensor_mapped = resized_tensor.tensor<float, 4>();
-    memcpy(image_tensor_mapped.data(), baseAddress, bytesPerRow * height);
+//    memcpy(image_tensor_mapped.data(), baseAddress, bytesPerRow * height);
+
+    for (int y = 0; y < height; ++y) {
+        const float* source_row = baseAddress + (y * width * depth);
+        for (int x = 0; x < width; ++x) {
+            const float* source_pixel = source_row + (x * depth);
+            for (int c = 0; c < depth; ++c) {
+                const float* source_value = source_pixel + c;
+                image_tensor_mapped(0, y, x, c) = *source_value;
+            }
+        }
+    }
+
     
     dst.release();
 }
