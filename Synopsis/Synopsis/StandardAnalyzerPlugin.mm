@@ -210,16 +210,18 @@
     
     for(Module* module in self.modules)
     {
+        NSDictionary* moduleFinalMetadata = [module finaledAnalysisMetadata];
+        
         // If a module has a description key, we append, and not add to it
-        if([module finaledAnalysisMetadata][kSynopsisStandardMetadataDescriptionDictKey])
+        if(moduleFinalMetadata[kSynopsisStandardMetadataDescriptionDictKey])
         {
-            NSArray* currentDescriptionArray = finalized[kSynopsisStandardMetadataDescriptionDictKey];
+            NSArray* cachedDescriptions = finalized[kSynopsisStandardMetadataDescriptionDictKey];
+            
+            // this replaces our current description array with the new one
+            [finalized addEntriesFromDictionary:moduleFinalMetadata];
 
-            // Add new entries which will overwrite old description
-            [finalized addEntriesFromDictionary:[module finaledAnalysisMetadata]];
-
-            // Re-write Description key with appended array
-            finalized[kSynopsisStandardMetadataDescriptionDictKey] = [finalized[kSynopsisStandardMetadataDescriptionDictKey] arrayByAddingObjectsFromArray:currentDescriptionArray];
+            // Re-write Description key with cached array appended to the new
+            finalized[kSynopsisStandardMetadataDescriptionDictKey] = [finalized[kSynopsisStandardMetadataDescriptionDictKey] arrayByAddingObjectsFromArray:cachedDescriptions];
         }
         else
         {
