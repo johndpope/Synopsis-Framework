@@ -358,8 +358,6 @@
         {
             [indicesToRemove addIndex:idx];
         }
-        
-//        obj = [obj capitalizedString];
     }];
     
     [mutableLabels removeObjectsAtIndexes:indicesToRemove];
@@ -462,7 +460,7 @@
     return labelsAndScores;
 }
 
-- (NSArray<NSString*>*) topLabelForScores:(NSMutableDictionary*)scores withThreshhold:(float)thresh
+- (NSArray<NSString*>*) topLabelForScores:(NSMutableDictionary*)scores withThreshhold:(float)thresh maxLabelCount:(NSUInteger)maxLabels
 {
     // Average score by number of frames
     for(NSString* key in [scores allKeys])
@@ -486,7 +484,7 @@
     NSMutableArray* top3 = [NSMutableArray array];
     // Modulate percentage based off of number of possible categories?
     [sortedScores enumerateObjectsUsingBlock:^(NSNumber*  _Nonnull score, NSUInteger idx, BOOL * _Nonnull stop) {
-        if(idx > 1)
+        if(idx >= (maxLabels - 1) )
             *stop = YES;
         
         if(score.floatValue >= (thresh / scores.allKeys.count))
@@ -494,7 +492,6 @@
             NSString* scoreLabel = [[scores allKeysForObject:score] firstObject];
             [top3 addObject:scoreLabel];
         }
-
     }];
     
     
@@ -511,15 +508,17 @@
 #endif
     
     // We only report / include a top score if its over a specific amount
+    // Note this threshold is modulated by the number of labels
+    // See topLabelForScores:withThreshhold:maxLabelCount:
     float topScoreThreshhold = 0.85;
     
-    NSArray<NSString*>* topAngleLabel = [self topLabelForScores:self.cinemaNetShotAnglesAverageScore withThreshhold:topScoreThreshhold];
-    NSArray<NSString*>* topFrameLabel = [self topLabelForScores:self.cinemaNetShotFramingAverageScore withThreshhold:topScoreThreshhold];
-    NSArray<NSString*>* topSubjectLabel = [self topLabelForScores:self.cinemaNetShotSubjectAverageScore withThreshhold:topScoreThreshhold];
-    NSArray<NSString*>* topTypeLabel = [self topLabelForScores:self.cinemaNetShotTypeAverageScore withThreshhold:topScoreThreshhold];
+    NSArray<NSString*>* topAngleLabel = [self topLabelForScores:self.cinemaNetShotAnglesAverageScore withThreshhold:topScoreThreshhold maxLabelCount:1];
+    NSArray<NSString*>* topFrameLabel = [self topLabelForScores:self.cinemaNetShotFramingAverageScore withThreshhold:topScoreThreshhold maxLabelCount:1];
+    NSArray<NSString*>* topSubjectLabel = [self topLabelForScores:self.cinemaNetShotSubjectAverageScore withThreshhold:topScoreThreshhold maxLabelCount:1];
+    NSArray<NSString*>* topTypeLabel = [self topLabelForScores:self.cinemaNetShotTypeAverageScore withThreshhold:topScoreThreshhold maxLabelCount:1];
 
-//    NSString* imageNetLabel = [self topLabelForScores:self.imageNetAverageScore withThreshhold:topScoreThreshhold];
-    NSArray<NSString*>* placesNetLabel = [self topLabelForScores:self.placesNetAverageScore withThreshhold:topScoreThreshhold];
+//    NSString* imageNetLabel = [self topLabelForScores:self.imageNetAverageScore withThreshhold:topScoreThreshhold maxLabelCount:2];
+    NSArray<NSString*>* placesNetLabel = [self topLabelForScores:self.placesNetAverageScore withThreshhold:topScoreThreshhold maxLabelCount:3];
 
     NSMutableArray* labels = [NSMutableArray array];
     
