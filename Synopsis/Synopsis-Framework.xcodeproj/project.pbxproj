@@ -78,6 +78,11 @@
 		1B4446DB1EE1FFB30075575D /* Color+linearRGBColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B4446B01EE1FD5D0075575D /* Color+linearRGBColor.mm */; };
 		1B4DC18D1FC8CF1000BF10C8 /* libtensorflow_framework.so in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B4DC18C1FC8CF1000BF10C8 /* libtensorflow_framework.so */; };
 		1B4DC1911FC8E53A00BF10C8 /* libtensorflow_framework.so in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B4DC18C1FC8CF1000BF10C8 /* libtensorflow_framework.so */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		1B4F9A3F20057639004D242D /* ImageNetLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A3E20057639004D242D /* ImageNetLabels.txt */; };
+		1B4F9A4820069E06004D242D /* PlacesNetLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A4620069E06004D242D /* PlacesNetLabels.txt */; };
+		1B4F9A4920069E06004D242D /* PlacesNetLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A4620069E06004D242D /* PlacesNetLabels.txt */; };
+		1B4F9A4A20069E06004D242D /* PlacesNetClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A4720069E06004D242D /* PlacesNetClassifier.pb */; };
+		1B4F9A4B20069E06004D242D /* PlacesNetClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A4720069E06004D242D /* PlacesNetClassifier.pb */; };
 		1B551E591EF9D887004C077B /* SynopsisMetadataEncoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B551E571EF9D887004C077B /* SynopsisMetadataEncoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B551E5A1EF9D887004C077B /* SynopsisMetadataEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B551E581EF9D887004C077B /* SynopsisMetadataEncoder.m */; };
 		1B551E5B1EF9D891004C077B /* SynopsisMetadataEncoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B551E571EF9D887004C077B /* SynopsisMetadataEncoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1927,6 +1932,10 @@
 		1B4446DC1EE1FFFC0075575D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B4DC18C1FC8CF1000BF10C8 /* libtensorflow_framework.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libtensorflow_framework.so; sourceTree = "<group>"; };
 		1B4DC18E1FC8D93F00BF10C8 /* libpython.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libpython.tbd; path = usr/lib/libpython.tbd; sourceTree = SDKROOT; };
+		1B4F9A3D2005762B004D242D /* ImageNetClassifier.pb */ = {isa = PBXFileReference; lastKnownFileType = file; path = ImageNetClassifier.pb; sourceTree = "<group>"; };
+		1B4F9A3E20057639004D242D /* ImageNetLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ImageNetLabels.txt; sourceTree = "<group>"; };
+		1B4F9A4620069E06004D242D /* PlacesNetLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PlacesNetLabels.txt; sourceTree = "<group>"; };
+		1B4F9A4720069E06004D242D /* PlacesNetClassifier.pb */ = {isa = PBXFileReference; lastKnownFileType = file; path = PlacesNetClassifier.pb; sourceTree = "<group>"; };
 		1B551E571EF9D887004C077B /* SynopsisMetadataEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynopsisMetadataEncoder.h; sourceTree = "<group>"; };
 		1B551E581EF9D887004C077B /* SynopsisMetadataEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynopsisMetadataEncoder.m; sourceTree = "<group>"; };
 		1B551E5C1EF9E305004C077B /* SynopsisMetadataDecoderVersion0.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynopsisMetadataDecoderVersion0.h; sourceTree = "<group>"; };
@@ -5465,6 +5474,10 @@
 				1BBA892F1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt */,
 				1BBA892E1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb */,
 				1BBA892A1FFFF477006CBD51 /* CinemaNetShotTypeLabels.txt */,
+				1B4F9A3D2005762B004D242D /* ImageNetClassifier.pb */,
+				1B4F9A3E20057639004D242D /* ImageNetLabels.txt */,
+				1B4F9A4720069E06004D242D /* PlacesNetClassifier.pb */,
+				1B4F9A4620069E06004D242D /* PlacesNetLabels.txt */,
 			);
 			path = MobileNet;
 			sourceTree = "<group>";
@@ -5740,6 +5753,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BBA89331FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */,
+				1B4F9A4920069E06004D242D /* PlacesNetLabels.txt in Resources */,
+				1B4F9A4B20069E06004D242D /* PlacesNetClassifier.pb in Resources */,
 				1BBA89432000423B006CBD51 /* CinemaNetShotAnglesLabels.txt in Resources */,
 				1BBA893B1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb in Resources */,
 				1BBA89412000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb in Resources */,
@@ -5758,8 +5773,11 @@
 				1BBA89341FFFF478006CBD51 /* CinemaNetShotSubjectClassifier.pb in Resources */,
 				1BBA893C1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */,
 				1BBA89301FFFF478006CBD51 /* CinemaNetShotFramingClassifier.pb in Resources */,
+				1B4F9A4820069E06004D242D /* PlacesNetLabels.txt in Resources */,
 				1BBA89402000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb in Resources */,
+				1B4F9A3F20057639004D242D /* ImageNetLabels.txt in Resources */,
 				1BBA89422000423B006CBD51 /* CinemaNetShotAnglesLabels.txt in Resources */,
+				1B4F9A4A20069E06004D242D /* PlacesNetClassifier.pb in Resources */,
 				1BBA89321FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */,
 				1BBA89361FFFF478006CBD51 /* CinemaNetCore.pb in Resources */,
 				1B2781021F22BFEB00658C0B /* dictionary.zstddict in Resources */,

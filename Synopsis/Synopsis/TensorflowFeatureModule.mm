@@ -50,12 +50,18 @@
     tensorflow::GraphDef cinemaNetShotSubjectGraph;
     tensorflow::GraphDef cinemaNetShotTypeGraph;
 
+    tensorflow::GraphDef imageNetGraph;
+    tensorflow::GraphDef placesNetGraph;
+
     std::unique_ptr<tensorflow::Session> cinemaNetCoreSession;
     std::unique_ptr<tensorflow::Session> cinemaNetShotAnglesSession;
     std::unique_ptr<tensorflow::Session> cinemaNetShotFramingSession;
     std::unique_ptr<tensorflow::Session> cinemaNetShotSubjectSession;
     std::unique_ptr<tensorflow::Session> cinemaNetShotTypeSession;
-    
+
+    std::unique_ptr<tensorflow::Session> imageNetSession;
+    std::unique_ptr<tensorflow::Session> placesNetSession;
+
 #if TF_DEBUG_TRACE
     std::unique_ptr<tensorflow::StatSummarizer> stat_summarizer;
     tensorflow::RunMetadata run_metadata;
@@ -70,6 +76,12 @@
 
     std::string cinemaNetClassifierInputLayer;
     std::string cinemaNetClassifierOutputLayer;
+
+    // Cant quite figure out how to normaize the ImageNet model input
+    // So it matches transfer learning models (Places, CinemaNet* etc)
+    // (pretrained vs fine tuned networks have diff labels for input / output!?)
+    std::string imageNetClassifierInputLayer;
+    std::string imageNetClassifierOutputLayer;
 }
 
 @property (atomic, readwrite, strong) NSArray<NSString*>* cinemaNetShotAnglesLabels;
@@ -77,12 +89,18 @@
 @property (atomic, readwrite, strong) NSArray<NSString*>* cinemaNetShotSubjectLabels;
 @property (atomic, readwrite, strong) NSArray<NSString*>* cinemaNetShotTypeLabels;
 
+@property (atomic, readwrite, strong) NSArray<NSString*>* imageNetLabels;
+@property (atomic, readwrite, strong) NSArray<NSString*>* placesNetLabels;
+
 @property (atomic, readwrite, strong) NSMutableArray* cinemaNetCoreAverageFeatureVector;
 
 @property (atomic, readwrite, strong) NSMutableDictionary* cinemaNetShotAnglesAverageScore;
 @property (atomic, readwrite, strong) NSMutableDictionary* cinemaNetShotFramingAverageScore;
 @property (atomic, readwrite, strong) NSMutableDictionary* cinemaNetShotSubjectAverageScore;
 @property (atomic, readwrite, strong) NSMutableDictionary* cinemaNetShotTypeAverageScore;
+
+@property (atomic, readwrite, strong) NSMutableDictionary* imageNetAverageScore;
+@property (atomic, readwrite, strong) NSMutableDictionary* placesNetAverageScore;
 
 @property (atomic, readwrite, assign) NSUInteger frameCount;
 
@@ -103,22 +121,32 @@
         self.cinemaNetShotFramingAverageScore = [NSMutableDictionary dictionary];
         self.cinemaNetShotSubjectAverageScore = [NSMutableDictionary dictionary];
         self.cinemaNetShotTypeAverageScore = [NSMutableDictionary dictionary];
-
-        NSString* cinemaNetCoreName = @"CinemaNetCore";
-        NSString* cinemaNetShotAnglesName = @"CinemaNetShotAnglesClassifier";
-        NSString* cinemaNetShotFramingName = @"CinemaNetShotFramingClassifier";
-        NSString* cinemaNetShotSubjectName = @"CinemaNetShotSubjectClassifier";
-        NSString* cinemaNetShotTypeName = @"CinemaNetShotTypeClassifier";
-
+        self.imageNetAverageScore = [NSMutableDictionary dictionary];
+        self.placesNetAverageScore = [NSMutableDictionary dictionary];
+        
         cinemaNetCoreInputLayer = "input";
         cinemaNetCoreOutputLayer = "input_1/BottleneckInputPlaceholder";
         cinemaNetClassifierInputLayer = "input_1/BottleneckInputPlaceholder";
         cinemaNetClassifierOutputLayer = "final_result";
         
-        self.cinemaNetShotAnglesLabels = @[@"High", @"Tilted", @"Aerial", @"Low"];
-        self.cinemaNetShotFramingLabels = @[@"Medium", @"Close Up", @"Extreme Close Up", @"Long", @"Extreme Long"];
-        self.cinemaNetShotSubjectLabels = @[@"People", @"Text", @"Face", @"Person", @"Animal", @"Faces"];
-        self.cinemaNetShotTypeLabels = @[@"Over The Shoulder", @"Portrait", @"Two Up", @"Master"];
+        // Cant quite figure out how to normaize the ImageNet model input
+        // So it matches transfer learning models (Places, CinemaNet* etc)
+        // (pretrained vs fine tuned networks have diff labels for input / output!?)
+        imageNetClassifierInputLayer = "MobilenetV1/Predictions/Reshape";
+        imageNetClassifierOutputLayer = "MobilenetV1/Predictions/Reshape_1";
+        
+        self.cinemaNetShotAnglesLabels = [self labelArrayFromLabelFileName:@"CinemaNetShotAnglesLabels"];
+        self.cinemaNetShotFramingLabels = [self labelArrayFromLabelFileName:@"CinemaNetShotFramingLabels"];
+        self.cinemaNetShotSubjectLabels = [self labelArrayFromLabelFileName:@"CinemaNetShotSubjectLabels"];
+        self.cinemaNetShotTypeLabels = [self labelArrayFromLabelFileName:@"CinemaNetShotTypeLabels"];
+
+        self.imageNetLabels = [self labelArrayFromLabelFileName:@"ImageNetLabels"];
+        self.placesNetLabels = [self labelArrayFromLabelFileName:@"PlacesNetLabels"];
+
+//        self.cinemaNetShotAnglesLabels = @[@"High", @"Tilted", @"Aerial", @"Low"];
+//        self.cinemaNetShotFramingLabels = @[@"Medium", @"Close Up", @"Extreme Close Up", @"Long", @"Extreme Long"];
+//        self.cinemaNetShotSubjectLabels = @[@"People", @"Text", @"Face", @"Person", @"Animal", @"Faces"];
+//        self.cinemaNetShotTypeLabels = @[@"Over The Shoulder", @"Portrait", @"Two Up", @"Master"];
 
         self.cinemaNetCoreAverageFeatureVector = nil;
 
@@ -155,6 +183,7 @@
         
         tensorflow::Status load_graph_status;
         
+        NSString* cinemaNetCoreName = @"CinemaNetCore";
         NSString* cinemaNetCorePath = [[NSBundle bundleForClass:[self class]] pathForResource:cinemaNetCoreName ofType:@"pb"];
         load_graph_status = ReadBinaryProto(tensorflow::Env::Default(), [cinemaNetCorePath cStringUsingEncoding:NSUTF8StringEncoding], &cinemaNetCoreGraph);
 
@@ -164,6 +193,7 @@
             NSLog(@"Unable to load CinemaNetCore graph");
         }
 
+        NSString* cinemaNetShotAnglesName = @"CinemaNetShotAnglesClassifier";
         NSString* cinemaNetShotAnglePath = [[NSBundle bundleForClass:[self class]] pathForResource:cinemaNetShotAnglesName ofType:@"pb"];
         load_graph_status = ReadBinaryProto(tensorflow::Env::Default(), [cinemaNetShotAnglePath cStringUsingEncoding:NSUTF8StringEncoding], &cinemaNetShotAnglesGraph);
         
@@ -173,6 +203,7 @@
             NSLog(@"Unable to load CinemaNetShotAngle graph");
         }
 
+        NSString* cinemaNetShotFramingName = @"CinemaNetShotFramingClassifier";
         NSString* cinemaNetShotFramingPath = [[NSBundle bundleForClass:[self class]] pathForResource:cinemaNetShotFramingName ofType:@"pb"];
         load_graph_status = ReadBinaryProto(tensorflow::Env::Default(), [cinemaNetShotFramingPath cStringUsingEncoding:NSUTF8StringEncoding], &cinemaNetShotFramingGraph);
         
@@ -182,6 +213,7 @@
             NSLog(@"Unable to load CinemaNetShotFraming graph");
         }
 
+        NSString* cinemaNetShotSubjectName = @"CinemaNetShotSubjectClassifier";
         NSString* cinemaNetShotSubjectPath = [[NSBundle bundleForClass:[self class]] pathForResource:cinemaNetShotSubjectName ofType:@"pb"];
         load_graph_status = ReadBinaryProto(tensorflow::Env::Default(), [cinemaNetShotSubjectPath cStringUsingEncoding:NSUTF8StringEncoding], &cinemaNetShotSubjectGraph);
         
@@ -191,6 +223,7 @@
             NSLog(@"Unable to load CinemaNetShotSubject graph");
         }
 
+        NSString* cinemaNetShotTypeName = @"CinemaNetShotTypeClassifier";
         NSString* cinemaNetShotTypePath = [[NSBundle bundleForClass:[self class]] pathForResource:cinemaNetShotTypeName ofType:@"pb"];
         load_graph_status = ReadBinaryProto(tensorflow::Env::Default(), [cinemaNetShotTypePath cStringUsingEncoding:NSUTF8StringEncoding], &cinemaNetShotTypeGraph);
         
@@ -200,11 +233,30 @@
             NSLog(@"Unable to load CinemaNetShotType graph");
         }
 
+//        NSString* imageNetName = @"ImageNetClassifier";
+//        NSString* imageNetPath = [[NSBundle bundleForClass:[self class]] pathForResource:imageNetName ofType:@"pb"];
+//        load_graph_status = ReadBinaryProto(tensorflow::Env::Default(), [imageNetPath cStringUsingEncoding:NSUTF8StringEncoding], &imageNetGraph);
+        
+        // TODO: Modules need better error handling.
+//        if (!load_graph_status.ok())
+//        {
+//            NSLog(@"Unable to load ImageNet graph");
+//        }
+
+        NSString* placesNetName = @"PlacesNetClassifier";
+        NSString* placesNetPath = [[NSBundle bundleForClass:[self class]] pathForResource:placesNetName ofType:@"pb"];
+        load_graph_status = ReadBinaryProto(tensorflow::Env::Default(), [placesNetPath cStringUsingEncoding:NSUTF8StringEncoding], &placesNetGraph);
+        
+        // TODO: Modules need better error handling.
+        if (!load_graph_status.ok())
+        {
+            NSLog(@"Unable to load ImageNet graph");
+        }
+
 #pragma mark - Create TF Sessions
         
         tensorflow::SessionOptions options;
         tensorflow::Status session_create_status;
-       
         
         cinemaNetCoreSession = std::unique_ptr<tensorflow::Session>(tensorflow::NewSession(options));
         session_create_status = cinemaNetCoreSession->Create(cinemaNetCoreGraph);
@@ -241,6 +293,21 @@
             NSLog(@"Unable to create CinemaNetShotType session");
         }
 
+//        imageNetSession = std::unique_ptr<tensorflow::Session>(tensorflow::NewSession(options));
+//        session_create_status = imageNetSession->Create(imageNetGraph);
+//        if (!session_create_status.ok())
+//        {
+//            NSLog(@"Unable to create ImageNet session");
+//        }
+
+        placesNetSession = std::unique_ptr<tensorflow::Session>(tensorflow::NewSession(options));
+        session_create_status = placesNetSession->Create(placesNetGraph);
+        if (!session_create_status.ok())
+        {
+            NSLog(@"Unable to create PlacesNet session");
+        }
+
+        
 #pragma mark Create TF Requirements
         
         tensorflow::TensorShape shape = tensorflow::TensorShape({1, wanted_input_height, wanted_input_width, wanted_input_channels});
@@ -269,6 +336,37 @@
     return SynopsisFrameCacheFormatOpenCVBGRF32;
 }
 
+- (NSArray<NSString*>*)labelArrayFromLabelFileName:(NSString*)labelName
+{
+    NSString* labelPath = [[NSBundle bundleForClass:[self class]] pathForResource:labelName ofType:@"txt"];
+
+    NSString* rawLabels = [NSString stringWithContentsOfURL:[NSURL fileURLWithPath:labelPath] usedEncoding:NULL error:nil];
+    
+    rawLabels = [rawLabels capitalizedString];
+    
+    NSArray<NSString *> * labels = [rawLabels componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    
+    NSMutableArray<NSString *> * mutableLabels = [labels mutableCopy];
+    
+    NSMutableIndexSet* indicesToRemove = [[NSMutableIndexSet alloc] init];
+    [mutableLabels enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if(obj.length == 0)
+        {
+            [indicesToRemove addIndex:idx];
+        }
+        if([obj isEqualToString:@" "])
+        {
+            [indicesToRemove addIndex:idx];
+        }
+        
+//        obj = [obj capitalizedString];
+    }];
+    
+    [mutableLabels removeObjectsAtIndexes:indicesToRemove];
+    
+    return [mutableLabels copy];
+}
+
 - (NSDictionary*) analyzedMetadataForCurrentFrame:(matType)frame previousFrame:(matType)lastFrame
 {
     self.frameCount++;
@@ -282,6 +380,9 @@
     std::vector<tensorflow::Tensor> cinemaNetShotFramingOutputTensors;
     std::vector<tensorflow::Tensor> cinemaNetShotSubjectOutputTensors;
     std::vector<tensorflow::Tensor> cinemaNetShotTypeOutputTensors;
+
+    std::vector<tensorflow::Tensor> imageNetOutputTensors;
+    std::vector<tensorflow::Tensor> placesNetOutputTensors;
 
 #if TF_DEBUG_TRACE
     tensorflow::RunOptions run_options;
@@ -330,28 +431,48 @@
             NSLog(@"Error running CinemaNetShotType Session");
             return nil;
         }
+
+//        run_status = imageNetSession->Run({ {imageNetClassifierInputLayer, cinemaNetCoreOutputTensors[0]} }, {imageNetClassifierOutputLayer}, {}, &placesNetOutputTensors);
+//
+//        if (!run_status.ok())
+//        {
+//            NSLog(@"Error running ImageNet Session");
+//            return nil;
+//        }
+    
+        run_status = placesNetSession->Run({ {cinemaNetClassifierInputLayer, cinemaNetCoreOutputTensors[0]} }, {cinemaNetClassifierOutputLayer}, {}, &placesNetOutputTensors);
+        
+        if (!run_status.ok())
+        {
+            NSLog(@"Error running PlacesNet Session");
+            return nil;
+        }
+
     }
     
     NSDictionary* labelsAndScores = [self dictionaryFromCoreOutput:cinemaNetCoreOutputTensors
                                                    andAnglesOutput:cinemaNetShotAnglesOutputTensors
                                                     andFrameOutput:cinemaNetShotFramingOutputTensors
                                                   andSubjectOutput:cinemaNetShotSubjectOutputTensors
-                                                     andTypeOutput:cinemaNetShotTypeOutputTensors];
+                                                     andTypeOutput:cinemaNetShotTypeOutputTensors
+                                                 andImageNetOutput:imageNetOutputTensors
+                                                andPlacesNetOutput:placesNetOutputTensors
+                                     ];
     
     return labelsAndScores;
 }
 
-- (NSString*) topLabelForScores:(NSMutableDictionary*)scores withThreshhold:(float)thresh
+- (NSArray<NSString*>*) topLabelForScores:(NSMutableDictionary*)scores withThreshhold:(float)thresh
 {
     // Average score by number of frames
     for(NSString* key in [scores allKeys])
     {
         NSNumber* score = scores[key];
-        NSNumber* newScore = @(score.floatValue / self.frameCount);
+        NSNumber* newScore = @(score.floatValue / (float) self.frameCount);
         scores[key] = newScore;
     }
     
-    NSNumber* topFrameScore = [[[scores allValues] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+    NSArray* sortedScores = [[scores allValues] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         
         if([obj1 floatValue] > [obj2 floatValue])
             return NSOrderedAscending;
@@ -359,16 +480,25 @@
             return NSOrderedDescending;
         
         return NSOrderedSame;
-    }] firstObject];
+    }] ;
     
-    NSString* topFrameLabel = nil;
+//    NSString* topFrameLabel = nil;
+    NSMutableArray* top3 = [NSMutableArray array];
+    // Modulate percentage based off of number of possible categories?
+    [sortedScores enumerateObjectsUsingBlock:^(NSNumber*  _Nonnull score, NSUInteger idx, BOOL * _Nonnull stop) {
+        if(idx > 1)
+            *stop = YES;
+        
+        if(score.floatValue >= (thresh / scores.allKeys.count))
+        {
+            NSString* scoreLabel = [[scores allKeysForObject:score] firstObject];
+            [top3 addObject:scoreLabel];
+        }
+
+    }];
     
-    if(topFrameLabel.floatValue >= thresh)
-    {
-        topFrameLabel = [[scores allKeysForObject:topFrameScore] firstObject];
-    }
     
-    return topFrameLabel;
+    return top3;
 }
 
 - (NSDictionary*) finaledAnalysisMetadata
@@ -381,32 +511,38 @@
 #endif
     
     // We only report / include a top score if its over a specific amount
-    float topScoreThreshhold = 0.0;
+    float topScoreThreshhold = 0.85;
     
-    NSString* topAngleLabel = [self topLabelForScores:self.cinemaNetShotAnglesAverageScore withThreshhold:topScoreThreshhold];
-    NSString* topFrameLabel = [self topLabelForScores:self.cinemaNetShotFramingAverageScore withThreshhold:topScoreThreshhold];
-    NSString* topSubjectLabel = [self topLabelForScores:self.cinemaNetShotSubjectAverageScore withThreshhold:topScoreThreshhold];
-    NSString* topTypeLabel = [self topLabelForScores:self.cinemaNetShotTypeAverageScore withThreshhold:topScoreThreshhold];
-    
+    NSArray<NSString*>* topAngleLabel = [self topLabelForScores:self.cinemaNetShotAnglesAverageScore withThreshhold:topScoreThreshhold];
+    NSArray<NSString*>* topFrameLabel = [self topLabelForScores:self.cinemaNetShotFramingAverageScore withThreshhold:topScoreThreshhold];
+    NSArray<NSString*>* topSubjectLabel = [self topLabelForScores:self.cinemaNetShotSubjectAverageScore withThreshhold:topScoreThreshhold];
+    NSArray<NSString*>* topTypeLabel = [self topLabelForScores:self.cinemaNetShotTypeAverageScore withThreshhold:topScoreThreshhold];
+
+//    NSString* imageNetLabel = [self topLabelForScores:self.imageNetAverageScore withThreshhold:topScoreThreshhold];
+    NSArray<NSString*>* placesNetLabel = [self topLabelForScores:self.placesNetAverageScore withThreshhold:topScoreThreshhold];
+
     NSMutableArray* labels = [NSMutableArray array];
     
     if(topAngleLabel)
-        [labels addObject:topAngleLabel];
+        [labels addObjectsFromArray:topAngleLabel];
     
     if(topFrameLabel)
-        [labels addObject:topFrameLabel];
+        [labels addObjectsFromArray:topFrameLabel];
 
     if(topSubjectLabel)
-        [labels addObject:topSubjectLabel];
+        [labels addObjectsFromArray:topSubjectLabel];
 
     if(topTypeLabel)
-        [labels addObject:topTypeLabel];
+        [labels addObjectsFromArray:topTypeLabel];
 
+    if(placesNetLabel)
+        [labels addObjectsFromArray:placesNetLabel];
+    
     [self shutdownTF];
 
     return @{
              kSynopsisStandardMetadataFeatureVectorDictKey : self.cinemaNetCoreAverageFeatureVector,
-             kSynopsisStandardMetadataDescriptionDictKey : [labels copy],
+                 kSynopsisStandardMetadataDescriptionDictKey : [labels copy],
 //             kSynopsisStandardMetadataLabelsDictKey : [self.averageLabelScores allKeys],
 //             kSynopsisStandardMetadataScoreDictKey : [self.averageLabelScores allValues],
             };
@@ -458,6 +594,25 @@
             NSLog(@"Error Closing Session");
         }
     }
+
+    if(imageNetSession != NULL)
+    {
+        tensorflow::Status close_graph_status = imageNetSession->Close();
+        if (!close_graph_status.ok())
+        {
+            NSLog(@"Error Closing Session");
+        }
+    }
+
+    if(placesNetSession != NULL)
+    {
+        tensorflow::Status close_graph_status = placesNetSession->Close();
+        if (!close_graph_status.ok())
+        {
+            NSLog(@"Error Closing Session");
+        }
+    }
+
 }
 
 #pragma mark - From Old TF Plugin
@@ -505,6 +660,8 @@
                             andFrameOutput:(const std::vector<tensorflow::Tensor>&)cinemaNetShotFramingOutputTensors
                           andSubjectOutput:(const std::vector<tensorflow::Tensor>&)cinemaNetShotSubjectOutputTensors
                              andTypeOutput:(const std::vector<tensorflow::Tensor>&)cinemaNetShotTypeOutputTensors
+                         andImageNetOutput:(const std::vector<tensorflow::Tensor>&)imageNetOutputTensors
+                        andPlacesNetOutput:(const std::vector<tensorflow::Tensor>&)placesNetOutputTensors
 {
     
     
@@ -636,7 +793,53 @@
         [outputTypeLabels addObject:labelKey];
         [outputTypeScores addObject:@(predictionValue)];
     }
+    
+#pragma mark - ImageNet
+    
+//    NSMutableArray* outputImageNetLabels = [NSMutableArray arrayWithCapacity:self.imageNetLabels.count];
+//    NSMutableArray* outputImageNetScores = [NSMutableArray arrayWithCapacity:self.imageNetLabels.count];
+//    
+//    // 1 = labels and scores
+//    auto imagenetpredictions = imageNetOutputTensors[0].flat<float>();
+//    
+//    for (int index = 0; index < imagenetpredictions.size(); index += 1)
+//    {
+//        const float predictionValue = imagenetpredictions(index);
+//        
+//        NSString* labelKey  = self.imageNetLabels[index % imagenetpredictions.size()];
+//        
+//        NSNumber* currentLabelScore = self.imageNetAverageScore[labelKey];
+//        
+//        NSNumber* incrementedScore = @([currentLabelScore floatValue] + predictionValue );
+//        self.imageNetAverageScore[labelKey] = incrementedScore;
+//        
+//        [outputImageNetLabels addObject:labelKey];
+//        [outputImageNetScores addObject:@(predictionValue)];
+//    }
 
+#pragma mark - PlacesNet
+    
+    NSMutableArray* outputPlacesNetLabels = [NSMutableArray arrayWithCapacity:self.placesNetLabels.count];
+    NSMutableArray* outputPlacesNetScores = [NSMutableArray arrayWithCapacity:self.placesNetLabels.count];
+    
+    // 1 = labels and scores
+    auto placesnetpredictions = placesNetOutputTensors[0].flat<float>();
+    
+    for (int index = 0; index < placesnetpredictions.size(); index += 1)
+    {
+        const float predictionValue = placesnetpredictions(index);
+        
+        NSString* labelKey  = self.placesNetLabels[index % placesnetpredictions.size()];
+        
+        NSNumber* currentLabelScore = self.placesNetAverageScore[labelKey];
+        
+        NSNumber* incrementedScore = @([currentLabelScore floatValue] + predictionValue );
+        self.placesNetAverageScore[labelKey] = incrementedScore;
+        
+        [outputPlacesNetLabels addObject:labelKey];
+        [outputPlacesNetScores addObject:@(predictionValue)];
+    }
+    
 //    NSLog(@"%@, %@", outputFramingLabels, outputFramingScores);
 //    NSLog(@"%@, %@", outputSubjectLabels, outputSubjectScores);
 //    NSLog(@"%@, %@", outputTypeLabels, outputTypeScores);
