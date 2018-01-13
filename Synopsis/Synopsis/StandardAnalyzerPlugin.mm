@@ -155,6 +155,7 @@
     NSMutableDictionary* dictionary = [NSMutableDictionary new];
     
     NSBlockOperation* completionOp = [NSBlockOperation blockOperationWithBlock:^{
+
         
         if(completionHandler)
             completionHandler(dictionary, nil);
@@ -176,8 +177,23 @@
                 NSDictionary* result = [module analyzedMetadataForCurrentFrame:currentFrame previousFrame:previousFrame];
                 
                 dispatch_barrier_sync(self.serialDictionaryQueue, ^{
-                    [dictionary addEntriesFromDictionary:result];
-                });
+                    
+                        // If a module has a description key, we append, and not add to it
+                        if(result[kSynopsisStandardMetadataDescriptionDictKey])
+                        {
+                            NSArray* cachedDescriptions = dictionary[kSynopsisStandardMetadataDescriptionDictKey];
+                            
+                            // this replaces our current description array with the new one
+                            [dictionary addEntriesFromDictionary:result];
+                            
+                            // Re-write Description key with cached array appended to the new
+                            dictionary[kSynopsisStandardMetadataDescriptionDictKey] = [dictionary[kSynopsisStandardMetadataDescriptionDictKey] arrayByAddingObjectsFromArray:cachedDescriptions];
+                        }
+                        else
+                        {
+                            [dictionary addEntriesFromDictionary:[module finaledAnalysisMetadata]];
+                        }
+                    });
             }
         }];
 
