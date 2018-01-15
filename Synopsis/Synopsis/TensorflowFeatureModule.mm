@@ -516,23 +516,36 @@
     NSMutableArray* labels = [NSMutableArray array];
     
     if(topAngleLabel)
+    {
+        [labels addObject:@"Shot Angle:"];
         [labels addObjectsFromArray:topAngleLabel];
-    
+    }
     if(topFrameLabel)
+    {
+        [labels addObject:@"Shot Framing:"];
         [labels addObjectsFromArray:topFrameLabel];
-
+    }
     if(topSubjectLabel)
+    {
+        [labels addObject:@"Shot Subject:"];
         [labels addObjectsFromArray:topSubjectLabel];
-
+    }
     if(topTypeLabel)
+    {
+        [labels addObject:@"Shot Type:"];
         [labels addObjectsFromArray:topTypeLabel];
-
+    }
     if(imageNetLabel)
+    {
+        [labels addObject:@"Objects:"];
         [labels addObjectsFromArray:imageNetLabel];
-
+    }
     if(placesNetLabel)
+    {
+        [labels addObject:@"Location:"];
         [labels addObjectsFromArray:placesNetLabel];
-    
+    }
+
     [self shutdownTF];
 
     return @{
@@ -651,7 +664,7 @@
             {
                 const float* source_value = source_pixel + c;
 
-                image_tensor_mapped(0, y, x, 2-c) = *source_value;
+                image_tensor_mapped(0, y, x, c) = *source_value;
             }
         }
     }
@@ -789,23 +802,35 @@
     NSMutableArray* labels = [NSMutableArray array];
     
     if(topAngleLabel)
+    {
+        [labels addObject:@"Shot Angle:"];
         [labels addObjectsFromArray:topAngleLabel];
-    
+    }
     if(topFrameLabel)
+    {
+        [labels addObject:@"Shot Framing:"];
         [labels addObjectsFromArray:topFrameLabel];
-    
+    }
     if(topSubjectLabel)
+    {
+        [labels addObject:@"Shot Subject:"];
         [labels addObjectsFromArray:topSubjectLabel];
-    
+    }
     if(topTypeLabel)
+    {
+        [labels addObject:@"Shot Type:"];
         [labels addObjectsFromArray:topTypeLabel];
-    
+    }
     if(imageNetLabel)
+    {
+        [labels addObject:@"Objects:"];
         [labels addObjectsFromArray:imageNetLabel];
-
+    }
     if(placesNetLabel)
+    {
+        [labels addObject:@"Location:"];
         [labels addObjectsFromArray:placesNetLabel];
-    
+    }
 #pragma mark - Fin
     
     return @{
