@@ -114,6 +114,12 @@
 		1B6EDC561F7ADBDE003D3936 /* SynopsisDirectoryWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B6EDC511F7ADBC8003D3936 /* SynopsisDirectoryWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B6EDC571F7ADBDF003D3936 /* SynopsisDirectoryWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B6EDC511F7ADBC8003D3936 /* SynopsisDirectoryWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B6EDC581F7ADBE0003D3936 /* SynopsisDirectoryWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B6EDC511F7ADBC8003D3936 /* SynopsisDirectoryWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1B70D082200D4EE000A414AF /* SynopsisCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B70D080200D4EE000A414AF /* SynopsisCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1B70D083200D4EE000A414AF /* SynopsisCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B70D080200D4EE000A414AF /* SynopsisCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1B70D084200D4EE000A414AF /* SynopsisCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B70D080200D4EE000A414AF /* SynopsisCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1B70D085200D4EE000A414AF /* SynopsisCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B70D081200D4EE000A414AF /* SynopsisCache.m */; };
+		1B70D086200D4EE000A414AF /* SynopsisCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B70D081200D4EE000A414AF /* SynopsisCache.m */; };
+		1B70D087200D4EE000A414AF /* SynopsisCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B70D081200D4EE000A414AF /* SynopsisCache.m */; };
 		1B73586B1DEF5AE30053BC06 /* libtensorflow_cc.so in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B7358651DEF5AD20053BC06 /* libtensorflow_cc.so */; };
 		1B7358891DEF5FE40053BC06 /* AverageColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358701DEF5FE40053BC06 /* AverageColor.mm */; };
 		1B73588B1DEF5FE40053BC06 /* DominantColorModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358721DEF5FE40053BC06 /* DominantColorModule.mm */; };
@@ -1950,6 +1956,8 @@
 		1B551E7A1EFAE956004C077B /* SynopsisMetadataPushDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynopsisMetadataPushDelegate.m; sourceTree = "<group>"; };
 		1B6EDC511F7ADBC8003D3936 /* SynopsisDirectoryWatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SynopsisDirectoryWatcher.h; sourceTree = "<group>"; };
 		1B6EDC521F7ADBC8003D3936 /* SynopsisDirectoryWatcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SynopsisDirectoryWatcher.m; sourceTree = "<group>"; };
+		1B70D080200D4EE000A414AF /* SynopsisCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SynopsisCache.h; sourceTree = "<group>"; };
+		1B70D081200D4EE000A414AF /* SynopsisCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SynopsisCache.m; sourceTree = "<group>"; };
 		1B7358651DEF5AD20053BC06 /* libtensorflow_cc.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libtensorflow_cc.so; sourceTree = "<group>"; };
 		1B73586F1DEF5FE40053BC06 /* AverageColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AverageColor.h; sourceTree = "<group>"; };
 		1B7358701DEF5FE40053BC06 /* AverageColor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AverageColor.mm; sourceTree = "<group>"; };
@@ -5367,6 +5375,8 @@
 				1BBED62B1F91259E003CE9C4 /* SynopsisRemoteFileHelper.m */,
 				1BCAACB11F966D040022B1A5 /* SynopsisPythonHelper.h */,
 				1BCAACB21F966D040022B1A5 /* SynopsisPythonHelper.m */,
+				1B70D080200D4EE000A414AF /* SynopsisCache.h */,
+				1B70D081200D4EE000A414AF /* SynopsisCache.m */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -5574,6 +5584,7 @@
 				1B6EDC581F7ADBE0003D3936 /* SynopsisDirectoryWatcher.h in Headers */,
 				1B4446CD1EE1FF990075575D /* NSSortDescriptor+SynopsisMetadata.h in Headers */,
 				1B551E7F1EFAEDFC004C077B /* GZIP.h in Headers */,
+				1B70D084200D4EE000A414AF /* SynopsisCache.h in Headers */,
 				1B4446C71EE1FF8C0075575D /* SynopsisDenseFeature.h in Headers */,
 				1B4446CA1EE1FF990075575D /* SynopsisHistogramLayer.h in Headers */,
 			);
@@ -5588,6 +5599,7 @@
 				1BAA80561D70C9EB00464810 /* NSPredicate+SynopsisMetadata.h in Headers */,
 				1B4446971EE1FD090075575D /* SynopsisMetadataDecoder.h in Headers */,
 				1B4446B11EE1FD5D0075575D /* Color+linearRGBColor.h in Headers */,
+				1B70D082200D4EE000A414AF /* SynopsisCache.h in Headers */,
 				1BB87A841EF0A40400C3A89F /* SynopsisVideoFormatConverter.h in Headers */,
 				1B73589B1DEF5FE40053BC06 /* StandardAnalyzerPlugin.h in Headers */,
 				1BBB10F51D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.h in Headers */,
@@ -5628,6 +5640,7 @@
 				1BFB131D1F2135BF002C4651 /* SynopsisVideoFormatConverter.h in Headers */,
 				1BCAACB41F966D040022B1A5 /* SynopsisPythonHelper.h in Headers */,
 				1BFB131F1F2135BF002C4651 /* NSSortDescriptor+SynopsisMetadata.h in Headers */,
+				1B70D083200D4EE000A414AF /* SynopsisCache.h in Headers */,
 				1BFB13221F2135BF002C4651 /* SynopsisLayer.h in Headers */,
 				1BFB13231F2135BF002C4651 /* SynopsisDenseFeatureLayer.h in Headers */,
 				1BFB13241F2135BF002C4651 /* GZIP.h in Headers */,
@@ -5863,6 +5876,7 @@
 			files = (
 				1B4446DB1EE1FFB30075575D /* Color+linearRGBColor.mm in Sources */,
 				1B551E801EFAEE00004C077B /* GZIP.m in Sources */,
+				1B70D087200D4EE000A414AF /* SynopsisCache.m in Sources */,
 				1B551E6E1EF9E99D004C077B /* NSDictionary+JSONString.m in Sources */,
 				1B4446D91EE1FFB30075575D /* NSSortDescriptor+SynopsisMetadata.mm in Sources */,
 				1B4446DA1EE1FFB30075575D /* NSPredicate+SynopsisMetadata.mm in Sources */,
@@ -5918,6 +5932,7 @@
 				1B73588B1DEF5FE40053BC06 /* DominantColorModule.mm in Sources */,
 				1B7358971DEF5FE40053BC06 /* PerceptualHashModule.mm in Sources */,
 				1B73588D1DEF5FE40053BC06 /* SynopsisVideoFormatConverter.mm in Sources */,
+				1B70D085200D4EE000A414AF /* SynopsisCache.m in Sources */,
 				1B4446AC1EE1FD3B0075575D /* SynopsisHistogramLayer.m in Sources */,
 				1B4446981EE1FD090075575D /* SynopsisMetadataDecoder.m in Sources */,
 				1BBB10FB1D555F5600C22439 /* Synopsis.m in Sources */,
@@ -5948,6 +5963,7 @@
 				1B2780F61F2299EC00658C0B /* xxhash.c in Sources */,
 				1BFB12C81F2135BF002C4651 /* SynopsisMetadataPushDelegate.m in Sources */,
 				1B2780AF1F228FC800658C0B /* SynopsisMetadataDecoderVersion2.m in Sources */,
+				1B70D086200D4EE000A414AF /* SynopsisCache.m in Sources */,
 				1BFB12C91F2135BF002C4651 /* Color+linearRGBColor.mm in Sources */,
 				1BFB12CB1F2135BF002C4651 /* NSDictionary+JSONString.m in Sources */,
 				1BFB12CD1F2135BF002C4651 /* SynopsisDenseFeatureLayer.mm in Sources */,
