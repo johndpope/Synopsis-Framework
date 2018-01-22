@@ -635,9 +635,11 @@
     cv::Mat dst;
     cv::resize(frame, dst, cv::Size(wanted_input_width, wanted_input_height), 0, 0, cv::INTER_CUBIC);
 
+    // I weirdly get more accurate (?) results if I dont normalize?
+    // Is OpenCV doing something behind my back?
     // Normalize our float input to -1 to 1
-    dst = dst - 0.5f;
-    dst = dst * 2.0;
+//    dst = dst - 0.5f;
+//    dst = dst * 2.0;
     
     const float* baseAddress = (const float*)dst.datastart;
     size_t height = (size_t) dst.rows;
