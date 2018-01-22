@@ -23,7 +23,6 @@
     {
         NSDictionary* actions = @{@"contents" : [NSNull null] , @"frame" : [NSNull null], @"position" : [NSNull null], @"frameSize" : [NSNull null], @"frameOrigin" : [NSNull null], @"bounds" : [NSNull null]};
         self.actions = actions;
-        
         self.containerLayer = [CALayer layer];
         self.containerLayer.actions = actions;
         self.containerLayer.frame = self.bounds;

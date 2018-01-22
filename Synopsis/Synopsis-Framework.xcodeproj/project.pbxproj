@@ -137,6 +137,13 @@
 		1B4446DB1EE1FFB30075575D /* Color+linearRGBColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B4446B01EE1FD5D0075575D /* Color+linearRGBColor.mm */; };
 		1B4DC18D1FC8CF1000BF10C8 /* libtensorflow_framework.so in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B4DC18C1FC8CF1000BF10C8 /* libtensorflow_framework.so */; };
 		1B4DC1911FC8E53A00BF10C8 /* libtensorflow_framework.so in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B4DC18C1FC8CF1000BF10C8 /* libtensorflow_framework.so */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		1B4F9A3F20057639004D242D /* ImageNetLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A3E20057639004D242D /* ImageNetLabels.txt */; };
+		1B4F9A4820069E06004D242D /* PlacesNetLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A4620069E06004D242D /* PlacesNetLabels.txt */; };
+		1B4F9A4920069E06004D242D /* PlacesNetLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A4620069E06004D242D /* PlacesNetLabels.txt */; };
+		1B4F9A4A20069E06004D242D /* PlacesNetClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A4720069E06004D242D /* PlacesNetClassifier.pb */; };
+		1B4F9A4B20069E06004D242D /* PlacesNetClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A4720069E06004D242D /* PlacesNetClassifier.pb */; };
+		1B4F9A502009DEDE004D242D /* ImageNetClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A3D2005762B004D242D /* ImageNetClassifier.pb */; };
+		1B4F9A512009DEE7004D242D /* ImageNetClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A3D2005762B004D242D /* ImageNetClassifier.pb */; };
 		1B551E591EF9D887004C077B /* SynopsisMetadataEncoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B551E571EF9D887004C077B /* SynopsisMetadataEncoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B551E5A1EF9D887004C077B /* SynopsisMetadataEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B551E581EF9D887004C077B /* SynopsisMetadataEncoder.m */; };
 		1B551E5B1EF9D891004C077B /* SynopsisMetadataEncoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B551E571EF9D887004C077B /* SynopsisMetadataEncoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -164,6 +171,12 @@
 		1B6EDC561F7ADBDE003D3936 /* SynopsisDirectoryWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B6EDC511F7ADBC8003D3936 /* SynopsisDirectoryWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B6EDC571F7ADBDF003D3936 /* SynopsisDirectoryWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B6EDC511F7ADBC8003D3936 /* SynopsisDirectoryWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B6EDC581F7ADBE0003D3936 /* SynopsisDirectoryWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B6EDC511F7ADBC8003D3936 /* SynopsisDirectoryWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1B70D082200D4EE000A414AF /* SynopsisCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B70D080200D4EE000A414AF /* SynopsisCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1B70D083200D4EE000A414AF /* SynopsisCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B70D080200D4EE000A414AF /* SynopsisCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1B70D084200D4EE000A414AF /* SynopsisCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B70D080200D4EE000A414AF /* SynopsisCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1B70D085200D4EE000A414AF /* SynopsisCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B70D081200D4EE000A414AF /* SynopsisCache.m */; };
+		1B70D086200D4EE000A414AF /* SynopsisCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B70D081200D4EE000A414AF /* SynopsisCache.m */; };
+		1B70D087200D4EE000A414AF /* SynopsisCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B70D081200D4EE000A414AF /* SynopsisCache.m */; };
 		1B73586B1DEF5AE30053BC06 /* libtensorflow_cc.so in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B7358651DEF5AD20053BC06 /* libtensorflow_cc.so */; };
 		1B7358891DEF5FE40053BC06 /* AverageColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358701DEF5FE40053BC06 /* AverageColor.mm */; };
 		1B73588B1DEF5FE40053BC06 /* DominantColorModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358721DEF5FE40053BC06 /* DominantColorModule.mm */; };
@@ -184,7 +197,6 @@
 		1B8358A41F42285000F86F0F /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8358A31F42285000F86F0F /* opencv2.framework */; };
 		1B8358A51F42285000F86F0F /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8358A31F42285000F86F0F /* opencv2.framework */; };
 		1B8358AD1F424BD600F86F0F /* opencv2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B8358A31F42285000F86F0F /* opencv2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		1BA2EDED1F0AC4C900C353E6 /* CinemaNetFraming.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BA2EDEC1F0AC4C900C353E6 /* CinemaNetFraming.pb */; };
 		1BAA80561D70C9EB00464810 /* NSPredicate+SynopsisMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BAA80541D70C9EB00464810 /* NSPredicate+SynopsisMetadata.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BAA80571D70C9EB00464810 /* NSPredicate+SynopsisMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1BAA80551D70C9EB00464810 /* NSPredicate+SynopsisMetadata.mm */; };
 		1BAA805A1D70DBE400464810 /* SynopsisMetadataItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BAA80581D70DBE400464810 /* SynopsisMetadataItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -209,6 +221,24 @@
 		1BB7F64B1FA123AC004ED69F /* GPUModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BB7F6481FA123AC004ED69F /* GPUModule.h */; };
 		1BB7F64C1FA123AC004ED69F /* GPUModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB7F6491FA123AC004ED69F /* GPUModule.m */; };
 		1BB7F64D1FA123AC004ED69F /* GPUModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB7F6491FA123AC004ED69F /* GPUModule.m */; };
+		1BBA89301FFFF478006CBD51 /* CinemaNetShotFramingClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA89291FFFF477006CBD51 /* CinemaNetShotFramingClassifier.pb */; };
+		1BBA89311FFFF478006CBD51 /* CinemaNetShotFramingClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA89291FFFF477006CBD51 /* CinemaNetShotFramingClassifier.pb */; };
+		1BBA89321FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892A1FFFF477006CBD51 /* CinemaNetShotTypeLabels.txt */; };
+		1BBA89331FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892A1FFFF477006CBD51 /* CinemaNetShotTypeLabels.txt */; };
+		1BBA89341FFFF478006CBD51 /* CinemaNetShotSubjectClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892B1FFFF477006CBD51 /* CinemaNetShotSubjectClassifier.pb */; };
+		1BBA89351FFFF478006CBD51 /* CinemaNetShotSubjectClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892B1FFFF477006CBD51 /* CinemaNetShotSubjectClassifier.pb */; };
+		1BBA89361FFFF478006CBD51 /* CinemaNetCore.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892C1FFFF477006CBD51 /* CinemaNetCore.pb */; };
+		1BBA89371FFFF478006CBD51 /* CinemaNetCore.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892C1FFFF477006CBD51 /* CinemaNetCore.pb */; };
+		1BBA89381FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892D1FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt */; };
+		1BBA89391FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892D1FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt */; };
+		1BBA893A1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892E1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb */; };
+		1BBA893B1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892E1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb */; };
+		1BBA893C1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892F1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt */; };
+		1BBA893D1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892F1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt */; };
+		1BBA89402000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA893E2000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb */; };
+		1BBA89412000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA893E2000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb */; };
+		1BBA89422000423B006CBD51 /* CinemaNetShotAnglesLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA893F2000423B006CBD51 /* CinemaNetShotAnglesLabels.txt */; };
+		1BBA89432000423B006CBD51 /* CinemaNetShotAnglesLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA893F2000423B006CBD51 /* CinemaNetShotAnglesLabels.txt */; };
 		1BBB10E11D5542A200C22439 /* Synopsis.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BBB10E01D5542A200C22439 /* Synopsis.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BBB10F51D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BBB10F31D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BBB10F61D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB10F41D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.mm */; };
@@ -2089,6 +2119,10 @@
 		1B4446DC1EE1FFFC0075575D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B4DC18C1FC8CF1000BF10C8 /* libtensorflow_framework.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libtensorflow_framework.so; sourceTree = "<group>"; };
 		1B4DC18E1FC8D93F00BF10C8 /* libpython.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libpython.tbd; path = usr/lib/libpython.tbd; sourceTree = SDKROOT; };
+		1B4F9A3D2005762B004D242D /* ImageNetClassifier.pb */ = {isa = PBXFileReference; lastKnownFileType = file; path = ImageNetClassifier.pb; sourceTree = "<group>"; };
+		1B4F9A3E20057639004D242D /* ImageNetLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ImageNetLabels.txt; sourceTree = "<group>"; };
+		1B4F9A4620069E06004D242D /* PlacesNetLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PlacesNetLabels.txt; sourceTree = "<group>"; };
+		1B4F9A4720069E06004D242D /* PlacesNetClassifier.pb */ = {isa = PBXFileReference; lastKnownFileType = file; path = PlacesNetClassifier.pb; sourceTree = "<group>"; };
 		1B551E571EF9D887004C077B /* SynopsisMetadataEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynopsisMetadataEncoder.h; sourceTree = "<group>"; };
 		1B551E581EF9D887004C077B /* SynopsisMetadataEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynopsisMetadataEncoder.m; sourceTree = "<group>"; };
 		1B551E5C1EF9E305004C077B /* SynopsisMetadataDecoderVersion0.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynopsisMetadataDecoderVersion0.h; sourceTree = "<group>"; };
@@ -2101,6 +2135,8 @@
 		1B551E7A1EFAE956004C077B /* SynopsisMetadataPushDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynopsisMetadataPushDelegate.m; sourceTree = "<group>"; };
 		1B6EDC511F7ADBC8003D3936 /* SynopsisDirectoryWatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SynopsisDirectoryWatcher.h; sourceTree = "<group>"; };
 		1B6EDC521F7ADBC8003D3936 /* SynopsisDirectoryWatcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SynopsisDirectoryWatcher.m; sourceTree = "<group>"; };
+		1B70D080200D4EE000A414AF /* SynopsisCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SynopsisCache.h; sourceTree = "<group>"; };
+		1B70D081200D4EE000A414AF /* SynopsisCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SynopsisCache.m; sourceTree = "<group>"; };
 		1B7358651DEF5AD20053BC06 /* libtensorflow_cc.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libtensorflow_cc.so; sourceTree = "<group>"; };
 		1B73586F1DEF5FE40053BC06 /* AverageColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AverageColor.h; sourceTree = "<group>"; };
 		1B7358701DEF5FE40053BC06 /* AverageColor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AverageColor.mm; sourceTree = "<group>"; };
@@ -2132,7 +2168,6 @@
 		1B756ADA1FA516590050A96F /* MobileNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MobileNet.mlmodel; sourceTree = "<group>"; };
 		1B8358971F42110600F86F0F /* libblas.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libblas.tbd; path = usr/lib/libblas.tbd; sourceTree = SDKROOT; };
 		1B8358A31F42285000F86F0F /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
-		1BA2EDEC1F0AC4C900C353E6 /* CinemaNetFraming.pb */ = {isa = PBXFileReference; lastKnownFileType = file; path = CinemaNetFraming.pb; sourceTree = "<group>"; };
 		1BAA80541D70C9EB00464810 /* NSPredicate+SynopsisMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPredicate+SynopsisMetadata.h"; sourceTree = "<group>"; };
 		1BAA80551D70C9EB00464810 /* NSPredicate+SynopsisMetadata.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSPredicate+SynopsisMetadata.mm"; sourceTree = "<group>"; };
 		1BAA80581D70DBE400464810 /* SynopsisMetadataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynopsisMetadataItem.h; sourceTree = "<group>"; };
@@ -2149,6 +2184,15 @@
 		1BB7F6431FA108F7004ED69F /* GPUHistogramModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPUHistogramModule.m; sourceTree = "<group>"; };
 		1BB7F6481FA123AC004ED69F /* GPUModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPUModule.h; sourceTree = "<group>"; };
 		1BB7F6491FA123AC004ED69F /* GPUModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPUModule.m; sourceTree = "<group>"; };
+		1BBA89291FFFF477006CBD51 /* CinemaNetShotFramingClassifier.pb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotFramingClassifier.pb; sourceTree = "<group>"; };
+		1BBA892A1FFFF477006CBD51 /* CinemaNetShotTypeLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotTypeLabels.txt; sourceTree = "<group>"; };
+		1BBA892B1FFFF477006CBD51 /* CinemaNetShotSubjectClassifier.pb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotSubjectClassifier.pb; sourceTree = "<group>"; };
+		1BBA892C1FFFF477006CBD51 /* CinemaNetCore.pb */ = {isa = PBXFileReference; lastKnownFileType = file; path = CinemaNetCore.pb; sourceTree = "<group>"; };
+		1BBA892D1FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotFramingLabels.txt; sourceTree = "<group>"; };
+		1BBA892E1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotTypeClassifier.pb; sourceTree = "<group>"; };
+		1BBA892F1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotSubjectLabels.txt; sourceTree = "<group>"; };
+		1BBA893E2000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb */ = {isa = PBXFileReference; lastKnownFileType = file; path = CinemaNetShotAnglesClassifier.pb; sourceTree = "<group>"; };
+		1BBA893F2000423B006CBD51 /* CinemaNetShotAnglesLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CinemaNetShotAnglesLabels.txt; sourceTree = "<group>"; };
 		1BBB10DD1D5542A200C22439 /* Synopsis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Synopsis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BBB10E01D5542A200C22439 /* Synopsis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Synopsis.h; sourceTree = "<group>"; };
 		1BBB10E21D5542A200C22439 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -5610,6 +5654,8 @@
 				1BBED62B1F91259E003CE9C4 /* SynopsisRemoteFileHelper.m */,
 				1BCAACB11F966D040022B1A5 /* SynopsisPythonHelper.h */,
 				1BCAACB21F966D040022B1A5 /* SynopsisPythonHelper.m */,
+				1B70D080200D4EE000A414AF /* SynopsisCache.h */,
+				1B70D081200D4EE000A414AF /* SynopsisCache.m */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -5689,7 +5735,19 @@
 		1BA2EDE71F06D71D00C353E6 /* MobileNet */ = {
 			isa = PBXGroup;
 			children = (
-				1BA2EDEC1F0AC4C900C353E6 /* CinemaNetFraming.pb */,
+				1BBA892C1FFFF477006CBD51 /* CinemaNetCore.pb */,
+				1BBA893E2000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb */,
+				1BBA893F2000423B006CBD51 /* CinemaNetShotAnglesLabels.txt */,
+				1BBA89291FFFF477006CBD51 /* CinemaNetShotFramingClassifier.pb */,
+				1BBA892D1FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt */,
+				1BBA892B1FFFF477006CBD51 /* CinemaNetShotSubjectClassifier.pb */,
+				1BBA892F1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt */,
+				1BBA892E1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb */,
+				1BBA892A1FFFF477006CBD51 /* CinemaNetShotTypeLabels.txt */,
+				1B4F9A3D2005762B004D242D /* ImageNetClassifier.pb */,
+				1B4F9A3E20057639004D242D /* ImageNetLabels.txt */,
+				1B4F9A4720069E06004D242D /* PlacesNetClassifier.pb */,
+				1B4F9A4620069E06004D242D /* PlacesNetLabels.txt */,
 			);
 			path = MobileNet;
 			sourceTree = "<group>";
@@ -5902,6 +5960,7 @@
 				1B6EDC581F7ADBE0003D3936 /* SynopsisDirectoryWatcher.h in Headers */,
 				1B4446CD1EE1FF990075575D /* NSSortDescriptor+SynopsisMetadata.h in Headers */,
 				1B551E7F1EFAEDFC004C077B /* GZIP.h in Headers */,
+				1B70D084200D4EE000A414AF /* SynopsisCache.h in Headers */,
 				1B4446C71EE1FF8C0075575D /* SynopsisDenseFeature.h in Headers */,
 				1B4446CA1EE1FF990075575D /* SynopsisHistogramLayer.h in Headers */,
 			);
@@ -5918,6 +5977,7 @@
 				1BAA80561D70C9EB00464810 /* NSPredicate+SynopsisMetadata.h in Headers */,
 				1B4446971EE1FD090075575D /* SynopsisMetadataDecoder.h in Headers */,
 				1B4446B11EE1FD5D0075575D /* Color+linearRGBColor.h in Headers */,
+				1B70D082200D4EE000A414AF /* SynopsisCache.h in Headers */,
 				1B73589B1DEF5FE40053BC06 /* StandardAnalyzerPlugin.h in Headers */,
 				1BC98DDE1F9FC35100E0F52A /* SynopsisVideoFrameConformHelperCPU.h in Headers */,
 				1BBB10F51D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.h in Headers */,
@@ -5973,6 +6033,7 @@
 				1BB7F6321F9FEF2D004ED69F /* SynopsisVideoFrameMPImage.h in Headers */,
 				1BCAACB41F966D040022B1A5 /* SynopsisPythonHelper.h in Headers */,
 				1BFB131F1F2135BF002C4651 /* NSSortDescriptor+SynopsisMetadata.h in Headers */,
+				1B70D083200D4EE000A414AF /* SynopsisCache.h in Headers */,
 				1BFB13221F2135BF002C4651 /* SynopsisLayer.h in Headers */,
 				1BFB13231F2135BF002C4651 /* SynopsisDenseFeatureLayer.h in Headers */,
 				1BFB13241F2135BF002C4651 /* GZIP.h in Headers */,
@@ -6070,6 +6131,7 @@
 					};
 					1BBB10DC1D5542A200C22439 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = SHG3AW6YV7;
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
@@ -6118,6 +6180,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BBA89331FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */,
+				1B4F9A4920069E06004D242D /* PlacesNetLabels.txt in Resources */,
+				1B4F9A4B20069E06004D242D /* PlacesNetClassifier.pb in Resources */,
+				1BBA89432000423B006CBD51 /* CinemaNetShotAnglesLabels.txt in Resources */,
+				1BBA893B1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb in Resources */,
+				1BBA89412000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb in Resources */,
+				1BBA89371FFFF478006CBD51 /* CinemaNetCore.pb in Resources */,
+				1BBA893D1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */,
+				1B4F9A512009DEE7004D242D /* ImageNetClassifier.pb in Resources */,
+				1BBA89351FFFF478006CBD51 /* CinemaNetShotSubjectClassifier.pb in Resources */,
+				1BBA89391FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt in Resources */,
+				1BBA89311FFFF478006CBD51 /* CinemaNetShotFramingClassifier.pb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6184,6 +6258,20 @@
 				1B22F9E91FB29330009E3F4F /* conv5_6_sep_w.bin in Resources */,
 				1B22F9F61FB29330009E3F4F /* conv6_dw_w.bin in Resources */,
 				1B22FA151FB29330009E3F4F /* conv1_w.bin in Resources */,
+				1BBA89341FFFF478006CBD51 /* CinemaNetShotSubjectClassifier.pb in Resources */,
+				1BBA893C1FFFF478006CBD51 /* CinemaNetShotSubjectLabels.txt in Resources */,
+				1BBA89301FFFF478006CBD51 /* CinemaNetShotFramingClassifier.pb in Resources */,
+				1B4F9A4820069E06004D242D /* PlacesNetLabels.txt in Resources */,
+				1BBA89402000423B006CBD51 /* CinemaNetShotAnglesClassifier.pb in Resources */,
+				1B4F9A3F20057639004D242D /* ImageNetLabels.txt in Resources */,
+				1BBA89422000423B006CBD51 /* CinemaNetShotAnglesLabels.txt in Resources */,
+				1B4F9A4A20069E06004D242D /* PlacesNetClassifier.pb in Resources */,
+				1B4F9A502009DEDE004D242D /* ImageNetClassifier.pb in Resources */,
+				1BBA89321FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */,
+				1BBA89361FFFF478006CBD51 /* CinemaNetCore.pb in Resources */,
+				1B2781021F22BFEB00658C0B /* dictionary.zstddict in Resources */,
+				1BBA89381FFFF478006CBD51 /* CinemaNetShotFramingLabels.txt in Resources */,
+				1BBA893A1FFFF478006CBD51 /* CinemaNetShotTypeClassifier.pb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6259,6 +6347,7 @@
 			files = (
 				1B4446DB1EE1FFB30075575D /* Color+linearRGBColor.mm in Sources */,
 				1B551E801EFAEE00004C077B /* GZIP.m in Sources */,
+				1B70D087200D4EE000A414AF /* SynopsisCache.m in Sources */,
 				1B551E6E1EF9E99D004C077B /* NSDictionary+JSONString.m in Sources */,
 				1B4446D91EE1FFB30075575D /* NSSortDescriptor+SynopsisMetadata.mm in Sources */,
 				1B4446DA1EE1FFB30075575D /* NSPredicate+SynopsisMetadata.mm in Sources */,
@@ -6321,6 +6410,8 @@
 				1B73588B1DEF5FE40053BC06 /* DominantColorModule.mm in Sources */,
 				1BED8C261FB1E7A800CEE001 /* GPUMPSMobileNetDataLoader.m in Sources */,
 				1BED8C1C1FB167CC00CEE001 /* GPUMPSMobileNet.m in Sources */,
+				1B7358971DEF5FE40053BC06 /* PerceptualHashModule.mm in Sources */,
+				1B70D085200D4EE000A414AF /* SynopsisCache.m in Sources */,
 				1B4446AC1EE1FD3B0075575D /* SynopsisHistogramLayer.m in Sources */,
 				1B4446981EE1FD090075575D /* SynopsisMetadataDecoder.m in Sources */,
 				1BBB10FB1D555F5600C22439 /* Synopsis.m in Sources */,
@@ -6357,6 +6448,7 @@
 				1B2780F61F2299EC00658C0B /* xxhash.c in Sources */,
 				1BFB12C81F2135BF002C4651 /* SynopsisMetadataPushDelegate.m in Sources */,
 				1B2780AF1F228FC800658C0B /* SynopsisMetadataDecoderVersion2.m in Sources */,
+				1B70D086200D4EE000A414AF /* SynopsisCache.m in Sources */,
 				1BFB12C91F2135BF002C4651 /* Color+linearRGBColor.mm in Sources */,
 				1BFB12CB1F2135BF002C4651 /* NSDictionary+JSONString.m in Sources */,
 				1BFB12CD1F2135BF002C4651 /* SynopsisDenseFeatureLayer.mm in Sources */,
@@ -6589,10 +6681,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = SHG3AW6YV7;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -6630,10 +6723,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = SHG3AW6YV7;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";

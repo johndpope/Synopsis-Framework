@@ -116,6 +116,7 @@ typedef enum : NSUInteger {
 // Utilities
 #import <Synopsis/SynopsisDirectoryWatcher.h>
 #import <Synopsis/SynopsisRemoteFileHelper.h>
+#import <Synopsis/SynopsisCache.h>
 #import <Synopsis/SynopsisPythonHelper.h>
 #import <Synopsis/Color+linearRGBColor.h>
 

@@ -341,7 +341,10 @@
     
     CGColorSpaceRelease(linear);
     
-    return matchedNamedColors.allObjects;
+    // Add our hack tag system:
+    NSArray* colors = @[@"Colors:"];
+    colors = [colors arrayByAddingObjectsFromArray: matchedNamedColors.allObjects];
+    return colors;
 }
 
 - (NSString*) closestNamedColorForColor:(NSColor*)color
