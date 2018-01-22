@@ -128,7 +128,7 @@
     convDesc.strideInPixelsY = strideY;
     convDesc.groups = 1;
     
-    self = [self initWithDevice:device convolutionDescriptor:convDesc kernelWeights:weights biasTerms:bias flags:MPSCNNConvolutionFlagsNone];
+    self = [super initWithDevice:device convolutionDescriptor:convDesc kernelWeights:weights biasTerms:bias flags:MPSCNNConvolutionFlagsNone];
     if(self)
     {
         self.destinationFeatureChannelOffset = 0;
