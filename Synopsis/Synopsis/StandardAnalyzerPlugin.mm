@@ -222,7 +222,7 @@
                 
                 if(currentFrame)
                 {
-                    NSLog(@"Analyzer got Frame: %@", currentFrame.label);
+//                    NSLog(@"Analyzer got Frame: %@", currentFrame.label);
 
                     [module analyzedMetadataForCurrentFrame:currentFrame previousFrame:previousFrame commandBuffer:frameCommandBuffer completionBlock:^(NSDictionary *result, NSError *err) {
                         dispatch_barrier_sync(self.serialDictionaryQueue, ^{
