@@ -18,6 +18,9 @@
 @property (readwrite, strong) NSSet<SynopsisVideoFormatSpecifier*>* gpuOnlyFormatSpecifiers;
 
 @property (readwrite, strong) id<MTLDevice>device;
+@property (readwrite, strong) id<MTLCommandQueue> commandQueue;
+@property (readwrite, strong) dispatch_semaphore_t inFlightBuffers;
+
 @property (readwrite, strong) dispatch_queue_t serialCompletionQueue;
 
 @end
@@ -30,6 +33,9 @@
     if(self)
     {
         self.device = device;
+        self.commandQueue = [self.device newCommandQueue];
+        self.inFlightBuffers = dispatch_semaphore_create(bufferCount);
+
         self.conformCPUHelper = [[SynopsisVideoFrameConformHelperCPU alloc] initWithFlightBuffers:bufferCount];
         self.conformGPUHelper = [[SynopsisVideoFrameConformHelperGPU alloc] initWithDevice:self.device inFlightBuffers:bufferCount];
 
@@ -62,10 +68,14 @@
 
 - (void) conformPixelBuffer:(CVPixelBufferRef)pixelBuffer withTransform:(CGAffineTransform)transform rect:(CGRect)rect               
  completionBlock:(SynopsisVideoFrameConformSessionCompletionBlock)completionBlock
-{
+{    
+    dispatch_semaphore_wait(self.inFlightBuffers, DISPATCH_TIME_FOREVER);
+
     // Because we have 2 different completion blocks we must coalesce into one, we use
     // dispatch notify to tell us when we are actually done.
     
+    id<MTLCommandBuffer> commandBuffer = self.commandQueue.commandBuffer;
+
     NSArray<SynopsisVideoFormatSpecifier*>* localCPUFormats = [self.cpuOnlyFormatSpecifiers allObjects];
     NSArray<SynopsisVideoFormatSpecifier*>* localGPUFormats = [self.gpuOnlyFormatSpecifiers allObjects];
 
@@ -103,7 +113,12 @@
                 }
             }
             
-            completionBlock(allFormatCache, nil);
+            completionBlock(commandBuffer, allFormatCache, nil);
+            
+            // Once we are done enqueing all of our commands, we commit our command buffer
+            [commandBuffer commit];
+            
+            dispatch_semaphore_signal(self.inFlightBuffers);
         }
     });
 
@@ -114,7 +129,8 @@
                                         toFormats:localGPUFormats
                                     withTransform:transform
                                              rect:rect
-                                  completionBlock:^(SynopsisVideoFrameCache * cache, NSError *err) {
+                                    commandBuffer:commandBuffer
+                                  completionBlock:^(id<MTLCommandBuffer> commandBuffer, SynopsisVideoFrameCache * cache, NSError *err) {
                                       gpuCache = cache;
                                       gpuError = err;
                                       dispatch_group_leave(formatConversionGroup);
@@ -128,7 +144,7 @@
                                         toFormats:localCPUFormats
                                     withTransform:transform
                                              rect:rect
-                                  completionBlock:^(SynopsisVideoFrameCache * cache, NSError *err) {
+                                  completionBlock:^(id<MTLCommandBuffer> commandBuffer, SynopsisVideoFrameCache * cache, NSError *err) {
                                       cpuCache = cache;
                                       cpuError = err;
                                       dispatch_group_leave(formatConversionGroup);
@@ -142,13 +158,11 @@
 - (void) blockForPendingConforms
 {
     [self.conformCPUHelper.conformQueue waitUntilAllOperationsAreFinished];
-    [self.conformGPUHelper.conformQueue waitUntilAllOperationsAreFinished];
 }
 
 - (void) cancelPendingConforms
 {
     [self.conformCPUHelper.conformQueue cancelAllOperations];
-    [self.conformGPUHelper.conformQueue cancelAllOperations];
 }
 
 

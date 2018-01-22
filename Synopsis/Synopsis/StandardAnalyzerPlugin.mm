@@ -63,7 +63,6 @@
 @property (readwrite, strong) NSArray<SynopsisVideoFormatSpecifier*>*pluginFormatSpecfiers;
 
 @property (readwrite, strong) id<MTLDevice> device;
-@property (readwrite, strong) id<MTLCommandQueue> commandQueue;
 
 @end
 
@@ -92,8 +91,8 @@
                                    [DominantColorModule className],
                                    [HistogramModule className],
                                    [MotionModule className],
-                                   [TensorflowFeatureModule className],
-//                                   [TrackerModule className],
+//                                   [TensorflowFeatureModule className],
+                                   [TrackerModule className],
 //                                   [SaliencyModule className],
                                    ];
 
@@ -102,7 +101,7 @@
         
         self.gpuModuleClasses  = @[
 //                                  [GPUHistogramModule className],
-//                                  [GPUVisionMobileNet className],
+                                  [GPUVisionMobileNet className],
 //                                  [GPUMPSMobileNet className],
                                    ];
         
@@ -139,7 +138,6 @@
 //    });
     
     self.device = device;
-    self.commandQueue = [self.device newCommandQueue];
 
     for(NSString* classString in self.cpuModuleClasses)
     {
@@ -172,7 +170,7 @@
     }
 }
 
-- (void) analyzeFrameCache:(SynopsisVideoFrameCache*)frameCache completionHandler:(SynopsisAnalyzerPluginFrameAnalyzedCompleteCallback)completionHandler;
+- (void) analyzeFrameCache:(SynopsisVideoFrameCache*)frameCache commandBuffer:(id<MTLCommandBuffer>)frameCommandBuffer completionHandler:(SynopsisAnalyzerPluginFrameAnalyzedCompleteCallback)completionHandler;
 {
     static NSUInteger frameSubmit = 0;
     static NSUInteger frameComplete = 0;
@@ -200,15 +198,11 @@
     // Submit our GPU modules first, as they can upload and process while we then do work on the CPU.
     // Once we commit GPU work we can do CPU work, and then wait on both to complete
 
-    id<MTLCommandBuffer> frameCommandBuffer = nil;
-
     if(self.gpuModules.count)
     {
         @autoreleasepool
         {
             dispatch_group_enter(cpuAndGPUCompleted);
-
-            frameCommandBuffer = [self.commandQueue commandBuffer];
 
             [frameCommandBuffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull) {
                 dispatch_group_leave(cpuAndGPUCompleted);
@@ -253,7 +247,6 @@
                 }
             }
             
-//            [frameCommandBuffer commit];
         }
     }
     
@@ -306,12 +299,14 @@
         }
         
         [self.moduleOperationQueue addOperation:cpuCompletionOp];
-        [self.moduleOperationQueue waitUntilAllOperationsAreFinished];
+//        [self.moduleOperationQueue waitUntilAllOperationsAreFinished];
     }
     
-    if(self.gpuModules.count)
-        [frameCommandBuffer waitUntilCompleted];
-
+//    if(self.gpuModules.count)
+//    {
+//        [frameCommandBuffer commit];
+//        [frameCommandBuffer waitUntilCompleted];
+//    }
     // Balance our first enter
     dispatch_group_leave(cpuAndGPUCompleted);
 
@@ -342,28 +337,28 @@
         }
         else
         {
-            [finalized addEntriesFromDictionary:[module finaledAnalysisMetadata]];
+            [finalized addEntriesFromDictionary:moduleFinalMetadata];
         }
     }
     
     for(GPUModule* module in self.gpuModules)
     {
+        NSDictionary* moduleFinalMetadata = [module finalizedAnalysisMetadata];
+        
         // If a module has a description key, we append, and not add to it
-        if([module finalizedAnalysisMetadata][kSynopsisStandardMetadataDescriptionDictKey])
+        if(moduleFinalMetadata[kSynopsisStandardMetadataDescriptionDictKey])
         {
-            NSArray* currentDescriptionArray = finalized[kSynopsisStandardMetadataDescriptionDictKey];
+            NSArray* cachedDescriptions = finalized[kSynopsisStandardMetadataDescriptionDictKey];
             
-            // Add new entries which will overwrite old description
-            NSDictionary* moduleFinal = [module finalizedAnalysisMetadata];
-            if(moduleFinal)
-                [finalized addEntriesFromDictionary:moduleFinal];
+            // this replaces our current description array with the new one
+            [finalized addEntriesFromDictionary:moduleFinalMetadata];
             
-            // Re-write Description key with appended array
-            finalized[kSynopsisStandardMetadataDescriptionDictKey] = [finalized[kSynopsisStandardMetadataDescriptionDictKey] arrayByAddingObjectsFromArray:currentDescriptionArray];
+            // Re-write Description key with cached array appended to the new
+            finalized[kSynopsisStandardMetadataDescriptionDictKey] = [finalized[kSynopsisStandardMetadataDescriptionDictKey] arrayByAddingObjectsFromArray:cachedDescriptions];
         }
         else
         {
-            [finalized addEntriesFromDictionary:[module finalizedAnalysisMetadata]];
+            [finalized addEntriesFromDictionary:moduleFinalMetadata];
         }
     }
 

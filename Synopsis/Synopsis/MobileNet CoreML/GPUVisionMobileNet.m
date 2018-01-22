@@ -7,7 +7,18 @@
 //
 
 #import <Vision/Vision.h>
+
+// Apple Model:
 #import "MobileNet.h"
+
+// Our Models + Classifiers
+#import "CinemaNetFeatureExtractor.h"
+#import "CinemaNetShotAnglesClassifier.h"
+#import "CinemaNetShotFramingClassifier.h"
+#import "CinemaNetShotSubjectClassifier.h"
+#import "CinemaNetShotTypeClassifier.h"
+#import "PlacesNetClassifier.h"
+
 #import "GPUVisionMobileNet.h"
 
 @interface GPUVisionMobileNet ()
@@ -16,31 +27,18 @@
 }
 @property (readwrite, strong) CIContext* context;
 @property (readwrite, strong) VNSequenceRequestHandler* sequenceRequestHandler;
+
+@property (readwrite, strong) VNCoreMLModel* cinemaNetCoreVNModel;
+@property (readwrite, strong) CinemaNetFeatureExtractor* cinemaNetCoreMLModel;
+@property (readwrite, strong) CinemaNetShotAnglesClassifier* cinemaNetShotAnglesClassifierMLModel;
+@property (readwrite, strong) CinemaNetShotFramingClassifier* cinemaNetShotFramingClassifierMLModel;
+@property (readwrite, strong) CinemaNetShotSubjectClassifier* cinemaNetShotSubjectClassifierMLModel;
+@property (readwrite, strong) CinemaNetShotTypeClassifier* cinemaNetShotTypeClassifierMLModel;
+@property (readwrite, strong) PlacesNetClassifier* placesNetClassifierMLModel;
+
 @end
 
 @implementation GPUVisionMobileNet
-
-// save on memory use / loading
-+ (VNCoreMLModel*) sharedModel
-{
-    static VNCoreMLModel* sharedModel = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        
-        MobileNet* mobileNet = [[MobileNet alloc] init];
-        MLModel* mobileNetMLModel = [mobileNet model];
-        
-        NSError* error = nil;
-        sharedModel = [VNCoreMLModel modelForMLModel:mobileNetMLModel error:&error];
-        
-        if(!sharedModel)
-        {
-            NSLog(@"Error loading ML Model: %@", error);
-        }
-    });
-    
-    return sharedModel;
-}
 
 // GPU backed modules init with an options dict for Metal Device bullshit
 - (instancetype) initWithQualityHint:(SynopsisAnalysisQualityHint)qualityHint device:(id<MTLDevice>)device
@@ -56,6 +54,21 @@
         self.context = [CIContext contextWithMTLDevice:device options:opt];
         self.sequenceRequestHandler = [[VNSequenceRequestHandler alloc] init];
 
+        NSError* error = nil;
+        self.cinemaNetCoreMLModel = [[CinemaNetFeatureExtractor alloc] init];
+        self.cinemaNetShotAnglesClassifierMLModel = [[CinemaNetShotAnglesClassifier alloc] init];
+        self.cinemaNetShotFramingClassifierMLModel = [[CinemaNetShotFramingClassifier alloc] init];
+        self.cinemaNetShotSubjectClassifierMLModel = [[CinemaNetShotSubjectClassifier alloc] init];
+        self.cinemaNetShotTypeClassifierMLModel = [[CinemaNetShotTypeClassifier alloc] init];
+        self.placesNetClassifierMLModel = [[PlacesNetClassifier alloc] init];
+        
+        self.cinemaNetCoreVNModel = [VNCoreMLModel modelForMLModel:self.cinemaNetCoreMLModel.model error:&error];
+        
+        if(error)
+        {
+            NSLog(@"Error: %@", error);
+        }
+        
     }
     return self;
 }
@@ -91,53 +104,133 @@
 
     CIImage* imageForRequest = [CIImage imageWithMTLTexture:frameMPImage.mpsImage.texture options:opt];
     
-    CGAffineTransform transform = [imageForRequest imageTransformForCGOrientation:kCGImagePropertyOrientationDownMirrored];
-    imageForRequest = [imageForRequest imageByApplyingTransform:transform];
-    
-    VNCoreMLRequest* mobileNetRequest = [[VNCoreMLRequest alloc] initWithModel:[GPUVisionMobileNet sharedModel] completionHandler:^(VNRequest * _Nonnull request, NSError * _Nullable error) {
-        //specifically dispatch work away from encode thread - so we dont block enqueueing new work
-        dispatch_async(self.completionQueue, ^{
+    VNCoreMLRequest* mobileRequest = [[VNCoreMLRequest alloc] initWithModel:self.cinemaNetCoreVNModel completionHandler:^(VNRequest * _Nonnull request, NSError * _Nullable error) {
+        
+        NSMutableDictionary* metadata = nil;
+        
+        if([request results].count)
+        {
+            VNCoreMLFeatureValueObservation* featureOutput = [[request results] firstObject];
             
-            NSMutableDictionary* metadata = nil;
+            MLMultiArray* featureVector = featureOutput.featureValue.multiArrayValue;
             
-            if(request.results.count)
-            {
-                metadata = [NSMutableDictionary dictionary];;
-                NSArray<VNClassificationObservation*>* observations = [request results];
-                
-                observations = [observations subarrayWithRange:NSMakeRange(0, 5)];
-                NSLog(@"Metadata: -----");
-                for(VNClassificationObservation* observation in observations)
-                {
-                    NSLog(@"Metadata: %f,  %@,", observation.confidence, observation.identifier);
+            // Note: For what-ever-fucking-reason CoreML graphs even when running in parallel
+            // cause huge GPU stalls.
+            
+            metadata = [NSMutableDictionary dictionary];
+            
+            __block CinemaNetShotAnglesClassifierOutput* anglesOutput = nil;
+            __block CinemaNetShotFramingClassifierOutput* framingOutput = nil;
+            __block CinemaNetShotSubjectClassifierOutput* subjectOutput = nil;
+            __block CinemaNetShotTypeClassifierOutput* typeOutput = nil;
+            __block PlacesNetClassifierOutput* placesOutput = nil;
+            
+            dispatch_group_t classifierGroup = dispatch_group_create();
+            
+            dispatch_group_enter(classifierGroup);
+            
+            dispatch_group_notify(classifierGroup, self.completionQueue, ^{
+                NSString* topAngleLabel = anglesOutput.classLabel;
+                NSString* topFrameLabel = framingOutput.classLabel;
+                NSString* topSubjectLabel = subjectOutput.classLabel;
+                NSString* topTypeLabel = typeOutput.classLabel;
+                NSString* placesNetLabel = placesOutput.classLabel;
 
-                    metadata[observation.identifier] = @(observation.confidence);
+                NSMutableArray<NSString*>* labels = [NSMutableArray new];
+                
+                if(topAngleLabel)
+                {
+                    [labels addObject:@"Shot Angle:"];
+                    [labels addObject:topAngleLabel];
                 }
+                if(topFrameLabel)
+                {
+                    [labels addObject:@"Shot Framing:"];
+                    [labels addObject:topFrameLabel];
+                }
+                if(topSubjectLabel)
+                {
+                    [labels addObject:@"Shot Subject:"];
+                    [labels addObject:topSubjectLabel];
+                }
+                if(topTypeLabel)
+                {
+                    [labels addObject:@"Shot Type:"];
+                    [labels addObject:topTypeLabel];
+                }
+//                if(imageNetLabel)
+//                {
+//                    [labels addObject:@"Objects:"];
+//                    [labels addObjectsFromArray:imageNetLabel];
+//                }
+                if(placesNetLabel)
+                {
+                    [labels addObject:@"Location:"];
+                    [labels addObject:placesNetLabel];
+                }
+                
+                NSMutableArray<NSNumber*>*featureVector = [NSMutableArray new];
+                
+                for(NSUInteger i = 0; i < featureVector.count; i++)
+                {
+                    featureVector[i] = featureVector[i];
+                }
+                
+                metadata[kSynopsisStandardMetadataFeatureVectorDictKey] = featureVector;
+                metadata[kSynopsisStandardMetadataDescriptionDictKey] = labels;
                 
                 if(completionBlock)
                 {
-//                    NSLog(@"Metadata: %@", observations);
-                    completionBlock( @{[self moduleName] : metadata} , error);
+                    completionBlock(metadata, nil);
                 }
-            }
-            else
-            {
-                if(completionBlock)
-                {
-                    completionBlock( nil , error);
-                }
-            }
-        });
+                
+            });
+            
+            // If we have a valid feature vector result, parallel classify.
+            
+            dispatch_group_enter(classifierGroup);
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                anglesOutput = [self.cinemaNetShotAnglesClassifierMLModel predictionFromInput_1__BottleneckInputPlaceholder__0:featureVector  error:nil];
+                dispatch_group_leave(classifierGroup);
+            });
+            
+            dispatch_group_enter(classifierGroup);
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                framingOutput = [self.cinemaNetShotFramingClassifierMLModel predictionFromInput_1__BottleneckInputPlaceholder__0:featureVector  error:nil];
+                dispatch_group_leave(classifierGroup);
+            });
+            
+            dispatch_group_enter(classifierGroup);
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                subjectOutput = [self.cinemaNetShotSubjectClassifierMLModel predictionFromInput_1__BottleneckInputPlaceholder__0:featureVector  error:nil];
+                dispatch_group_leave(classifierGroup);
+            });
+            
+            dispatch_group_enter(classifierGroup);
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                typeOutput = [self.cinemaNetShotTypeClassifierMLModel predictionFromInput_1__BottleneckInputPlaceholder__0:featureVector  error:nil];
+                dispatch_group_leave(classifierGroup);
+            });
+            
+            dispatch_group_enter(classifierGroup);
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                placesOutput = [self.placesNetClassifierMLModel predictionFromInput_1__BottleneckInputPlaceholder__0:featureVector  error:nil];
+                dispatch_group_leave(classifierGroup);
+            });
+            
+            dispatch_group_leave(classifierGroup);
+        }
     }];
     
-    mobileNetRequest.imageCropAndScaleOption = VNImageCropAndScaleOptionScaleFill;
-    mobileNetRequest.preferBackgroundProcessing = NO;
+    mobileRequest.imageCropAndScaleOption = VNImageCropAndScaleOptionScaleFill;
+    mobileRequest.preferBackgroundProcessing = NO;
 
     // Works fine:
-    VNImageRequestHandler* imageRequestHandler = [[VNImageRequestHandler alloc] initWithCIImage:imageForRequest options:@{}];
-    
+    CGImagePropertyOrientation orientation = kCGImagePropertyOrientationDownMirrored;
+    VNImageRequestHandler* imageRequestHandler = [[VNImageRequestHandler alloc] initWithCIImage:imageForRequest orientation:orientation options:@{}];
+
     NSError* submitError = nil;
-    if(![imageRequestHandler performRequests:@[mobileNetRequest] error:&submitError] )
+    if(![imageRequestHandler performRequests:@[mobileRequest] error:&submitError] )
 //    if(![self.sequenceRequestHandler performRequests:@[mobileNetRequest] onCIImage:imageForRequest error:&submitError])
     {
         NSLog(@"Error submitting request: %@", submitError);

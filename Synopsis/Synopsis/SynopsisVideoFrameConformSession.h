@@ -10,7 +10,7 @@
 #import <Synopsis/SynopsisVideoFrameCache.h>
 #import <Metal/Metal.h>
 
-typedef void(^SynopsisVideoFrameConformSessionCompletionBlock)(SynopsisVideoFrameCache*, NSError*);
+typedef void(^SynopsisVideoFrameConformSessionCompletionBlock)(id<MTLCommandBuffer> commandBuffer, SynopsisVideoFrameCache*, NSError*);
 
 @interface SynopsisVideoFrameConformSession : NSObject
 
