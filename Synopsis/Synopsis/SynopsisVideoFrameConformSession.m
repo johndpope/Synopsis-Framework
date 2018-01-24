@@ -69,7 +69,6 @@
 - (void) conformPixelBuffer:(CVPixelBufferRef)pixelBuffer withTransform:(CGAffineTransform)transform rect:(CGRect)rect               
  completionBlock:(SynopsisVideoFrameConformSessionCompletionBlock)completionBlock
 {    
-    dispatch_semaphore_wait(self.inFlightBuffers, DISPATCH_TIME_FOREVER);
 
     // Because we have 2 different completion blocks we must coalesce into one, we use
     // dispatch notify to tell us when we are actually done.
@@ -92,6 +91,8 @@
     
     dispatch_group_notify(formatConversionGroup, self.serialCompletionQueue, ^{
         
+        dispatch_semaphore_signal(self.inFlightBuffers);
+
         if(completionBlock)
         {
             for(SynopsisVideoFormatSpecifier* format in localCPUFormats)
@@ -117,10 +118,10 @@
             
             // Once we are done enqueing all of our commands, we commit our command buffer
             [commandBuffer commit];
-            
-            dispatch_semaphore_signal(self.inFlightBuffers);
         }
     });
+    
+    dispatch_semaphore_wait(self.inFlightBuffers, DISPATCH_TIME_FOREVER);
 
     if(localGPUFormats.count)
     {
