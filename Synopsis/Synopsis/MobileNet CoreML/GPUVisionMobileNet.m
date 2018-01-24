@@ -36,6 +36,9 @@
 @property (readwrite, strong) CinemaNetShotTypeClassifier* cinemaNetShotTypeClassifierMLModel;
 @property (readwrite, strong) PlacesNetClassifier* placesNetClassifierMLModel;
 
+@property (readwrite, strong) NSArray* labels;
+
+
 @end
 
 @implementation GPUVisionMobileNet
@@ -105,7 +108,7 @@
     CIImage* imageForRequest = [CIImage imageWithMTLTexture:frameMPImage.mpsImage.texture options:opt];
     
     VNCoreMLRequest* mobileRequest = [[VNCoreMLRequest alloc] initWithModel:self.cinemaNetCoreVNModel completionHandler:^(VNRequest * _Nonnull request, NSError * _Nullable error) {
-        
+                
         NSMutableDictionary* metadata = nil;
         
         if([request results].count)
@@ -130,6 +133,14 @@
             dispatch_group_enter(classifierGroup);
             
             dispatch_group_notify(classifierGroup, self.completionQueue, ^{
+                
+                NSMutableArray<NSNumber*>*vec = [NSMutableArray new];
+                
+                for(NSUInteger i = 0; i < featureVector.count; i++)
+                {
+                    vec[i] = featureVector[i];
+                }
+                
                 NSString* topAngleLabel = anglesOutput.classLabel;
                 NSString* topFrameLabel = framingOutput.classLabel;
                 NSString* topSubjectLabel = subjectOutput.classLabel;
@@ -168,17 +179,12 @@
                     [labels addObject:@"Location:"];
                     [labels addObject:placesNetLabel];
                 }
-                
-                NSMutableArray<NSNumber*>*featureVector = [NSMutableArray new];
-                
-                for(NSUInteger i = 0; i < featureVector.count; i++)
-                {
-                    featureVector[i] = featureVector[i];
-                }
-                
-                metadata[kSynopsisStandardMetadataFeatureVectorDictKey] = featureVector;
+
+                metadata[kSynopsisStandardMetadataFeatureVectorDictKey] = vec;
                 metadata[kSynopsisStandardMetadataDescriptionDictKey] = labels;
-                
+
+                self.labels = labels;
+
                 if(completionBlock)
                 {
                     completionBlock(metadata, nil);
@@ -239,7 +245,7 @@
 
 - (NSDictionary*) finalizedAnalysisMetadata;
 {
-    return nil;
+    return @{kSynopsisStandardMetadataDescriptionDictKey: self.labels};
 }
 
 @end
