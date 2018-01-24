@@ -46,7 +46,11 @@
 @property (atomic, readwrite, strong) NSString* pluginMediaType;
 @property (atomic, readwrite, strong) dispatch_queue_t serialDictionaryQueue;
 
-@property (atomic, readwrite, strong) NSOperationQueue* moduleOperationQueue;
+// We create a serial operation queue for every module
+// This allows us to run modules in parallel, create dependency chains
+// But also gurantees a single module is never running in parallel.
+
+@property (atomic, readwrite, strong) NSArray<NSOperationQueue*>* moduleOperationQueues;
 @property (atomic, readwrite, strong) NSMutableDictionary* lastModuleOperation;
 
 #pragma mark - Analyzer Modules
@@ -89,10 +93,10 @@
         self.cpuModuleClasses  = @[// AVG Color is useless and just an example module
 //                                [AverageColor className],
                                    [DominantColorModule className],
-                                   [HistogramModule className],
-                                   [MotionModule className],
+//                                   [HistogramModule className],
+//                                   [MotionModule className],
 //                                   [TensorflowFeatureModule className],
-                                   [TrackerModule className],
+//                                   [TrackerModule className],
 //                                   [SaliencyModule className],
                                    ];
 
@@ -100,7 +104,7 @@
 //        self.cpuModuleClasses = @[];
         
         self.gpuModuleClasses  = @[
-//                                  [GPUHistogramModule className],
+                                  [GPUHistogramModule className],
                                   [GPUVisionMobileNet className],
 //                                  [GPUMPSMobileNet className],
                                    ];
@@ -122,8 +126,15 @@
         
         self.pluginFormatSpecfiers = requiredSpecifiers;
         
-        self.moduleOperationQueue = [[NSOperationQueue alloc] init];
-        self.moduleOperationQueue.maxConcurrentOperationCount = self.cpuModuleClasses.count;
+        NSMutableArray<NSOperationQueue*>* moduleQueues = [NSMutableArray new];
+        
+        [self.cpuModules enumerateObjectsUsingBlock:^(CPUModule * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+
+            NSOperationQueue* moduleQueue = [[NSOperationQueue alloc] init];
+            moduleQueue.maxConcurrentOperationCount = 1;
+            
+            [moduleQueues addObject:moduleQueue];
+        }];
         
         self.serialDictionaryQueue = dispatch_queue_create("module_queue", DISPATCH_QUEUE_CONCURRENT_WITH_AUTORELEASE_POOL);
     }
@@ -208,8 +219,10 @@
                 dispatch_group_leave(cpuAndGPUCompleted);
             }];
             
-            for(GPUModule* module in self.gpuModules)
-            {
+//            for(GPUModule* module in self.gpuModules)
+
+           [self.gpuModules enumerateObjectsUsingBlock:^(GPUModule * _Nonnull module, NSUInteger idx, BOOL * _Nonnull stop) {
+               
                 SynopsisVideoFormat requiredFormat = [[module class] requiredVideoFormat];
                 SynopsisVideoBacking requiredBacking = [[module class] requiredVideoBacking];
                 SynopsisVideoFormatSpecifier* formatSpecifier = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:requiredFormat backing:requiredBacking];
@@ -245,7 +258,7 @@
                         });
                     }];
                 }
-            }
+            }];
             
         }
     }
@@ -260,8 +273,8 @@
             dispatch_group_leave(cpuAndGPUCompleted);
         }];
         
-        for(CPUModule* module in self.cpuModules)
-        {
+//        for(CPUModule* module in self.cpuModules)
+        [self.cpuModules enumerateObjectsUsingBlock:^(CPUModule * _Nonnull module, NSUInteger idx, BOOL * _Nonnull stop) {
             SynopsisVideoFormat requiredFormat = [[module class] requiredVideoFormat];
             SynopsisVideoBacking requiredBacking = [[module class] requiredVideoBacking];
             SynopsisVideoFormatSpecifier* formatSpecifier = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:requiredFormat backing:requiredBacking];
@@ -294,12 +307,11 @@
                 
                 [cpuCompletionOp addDependency:moduleOperation];
                 
-                [self.moduleOperationQueue addOperation:moduleOperation];
+                [self.moduleOperationQueues[idx] addOperation:moduleOperation];
             }
-        }
+        }];
         
-        [self.moduleOperationQueue addOperation:cpuCompletionOp];
-//        [self.moduleOperationQueue waitUntilAllOperationsAreFinished];
+        [self.moduleOperationQueues[0] addOperation:cpuCompletionOp];
     }
     
 //    if(self.gpuModules.count)
