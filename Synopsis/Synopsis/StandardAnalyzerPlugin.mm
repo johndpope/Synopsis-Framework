@@ -93,7 +93,7 @@
         self.cpuModuleClasses  = @[// AVG Color is useless and just an example module
 //                                [AverageColor className],
                                    [DominantColorModule className],
-//                                   [HistogramModule className],
+                                   [HistogramModule className],
 //                                   [MotionModule className],
 //                                   [TensorflowFeatureModule className],
 //                                   [TrackerModule className],
@@ -104,7 +104,7 @@
 //        self.cpuModuleClasses = @[];
         
         self.gpuModuleClasses  = @[
-                                  [GPUHistogramModule className],
+//                                  [GPUHistogramModule className],
                                   [GPUVisionMobileNet className],
 //                                  [GPUMPSMobileNet className],
                                    ];

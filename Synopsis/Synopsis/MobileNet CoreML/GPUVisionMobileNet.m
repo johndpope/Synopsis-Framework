@@ -146,6 +146,12 @@
                 NSString* topSubjectLabel = subjectOutput.classLabel;
                 NSString* topTypeLabel = typeOutput.classLabel;
                 NSString* placesNetLabel = placesOutput.classLabel;
+                
+                topAngleLabel = [topAngleLabel capitalizedString];
+                topFrameLabel = [topFrameLabel capitalizedString];
+                topSubjectLabel = [topSubjectLabel capitalizedString];
+                topTypeLabel = [topTypeLabel capitalizedString];
+                placesNetLabel = [placesNetLabel capitalizedString];
 
                 NSMutableArray<NSString*>* labels = [NSMutableArray new];
                 
