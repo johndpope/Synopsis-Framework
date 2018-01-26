@@ -119,12 +119,16 @@ typedef enum : unsigned int {
 
 
 // Utilities
-#import <Synopsis/SynopsisDirectoryWatcher.h>
-#import <Synopsis/SynopsisRemoteFileHelper.h>
+NSArray* SynopsisSupportedFileTypes();
 #import <Synopsis/SynopsisCache.h>
-#import <Synopsis/SynopsisPythonHelper.h>
 #import <Synopsis/Color+linearRGBColor.h>
 
+
+#if TARGET_OS_OSX
 // Method to check support files types for metadata introspection
-NSArray* SynopsisSupportedFileTypes();
+#import <Synopsis/SynopsisDirectoryWatcher.h>
+#import <Synopsis/SynopsisRemoteFileHelper.h>
+#import <Synopsis/SynopsisPythonHelper.h>
+#endif
+
 

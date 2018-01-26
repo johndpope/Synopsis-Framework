@@ -6,9 +6,9 @@
 //  Copyright © 2017 v002. All rights reserved.
 //
 
-#import "TargetConditionals.h"
 #import "SynopsisDenseFeature+Private.h"
 #import "SynopsisDenseFeatureLayer.h"
+#import "TargetConditionals.h"
 
 @interface SynopsisDenseFeatureLayer ()
 @property (readwrite, strong) CALayer* containerLayer;

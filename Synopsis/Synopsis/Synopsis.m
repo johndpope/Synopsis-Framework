@@ -56,14 +56,20 @@ NSString* const kSynopsisStandardMetadataTrackerDictKey = @"Tracker";
 DEPRECATED_ATTRIBUTE NSString* const kSynopsisStandardMetadataPerceptualHashDictKey = @"PerceptualHash";
 //DEPRECATED_ATTRIBUTE NSString* const kSynopsisStandardMetadataPerceptualHashSortKey = @"info_synopsis_perceptual_hash";
 
+
 NSArray* SynopsisSupportedFileTypes()
 {
+#if TARGET_OS_OSX
     NSString * mxfUTI = (NSString *)CFBridgingRelease(UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
                                                                                             (CFStringRef)@"MXF",
                                                                                             NULL));
     
     NSArray* types = [[AVMovie movieTypes] arrayByAddingObject:mxfUTI];
-    
     return types;
+#else
+
+    return [AVURLAsset audiovisualTypes];
+
+#endif
 }
 
