@@ -9,6 +9,7 @@
 #import <Synopsis/Synopsis.h>
 #import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 @interface SynopsisCache ()
 @property (readwrite, strong) NSCache* cache;
