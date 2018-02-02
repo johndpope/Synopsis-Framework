@@ -20,7 +20,6 @@ NSUInteger const kSynopsisMetadataVersionPreAlpha = 0;
 NSUInteger const kSynopsisMetadataVersionAlpha1 = 1;
 NSUInteger const kSynopsisMetadataVersionAlpha2 = SYNOPSIS_VERSION_NUMBER;
 
-
 // HFS+ Extended attribute keys and values
 NSString* const kSynopsisMetadataHFSAttributeVersionKey = @"info_synopsis_version";
 NSUInteger const kSynopsisMetadataHFSAttributeVersionValue = SYNOPSIS_VERSION_NUMBER;
@@ -56,14 +55,22 @@ NSString* const kSynopsisStandardMetadataTrackerDictKey = @"Tracker";
 DEPRECATED_ATTRIBUTE NSString* const kSynopsisStandardMetadataPerceptualHashDictKey = @"PerceptualHash";
 //DEPRECATED_ATTRIBUTE NSString* const kSynopsisStandardMetadataPerceptualHashSortKey = @"info_synopsis_perceptual_hash";
 
-NSArray* SynopsisSupportedFileTypes()
+NSArray* SynopsisSupportedFileTypes(void)
 {
+
+#if TARGET_OS_OSX
+
     NSString * mxfUTI = (NSString *)CFBridgingRelease(UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
                                                                                             (CFStringRef)@"MXF",
                                                                                             NULL));
     
     NSArray* types = [[AVMovie movieTypes] arrayByAddingObject:mxfUTI];
-    
     return types;
+
+#else
+
+    return [AVURLAsset audiovisualTypes];
+
+#endif
 }
 

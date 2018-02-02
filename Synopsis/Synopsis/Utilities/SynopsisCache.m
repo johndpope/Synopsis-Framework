@@ -8,7 +8,7 @@
 #import "SynopsisCache.h"
 #import <Synopsis/Synopsis.h>
 #import <AVFoundation/AVFoundation.h>
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 @interface SynopsisCache ()
 @property (readwrite, strong) NSCache* cache;
@@ -114,52 +114,52 @@
 - (void) cachedImageForItem:(SynopsisMetadataItem* _Nonnull)metadataItem completionHandler:(SynopsisCacheCompletionHandler _Nullable )handler
 {
     NSBlockOperation* operation = [NSBlockOperation blockOperationWithBlock:^{
-        
-        NSString* key = [self imageKeyForItem:metadataItem];
-        
-        NSImage* cachedImage = nil;
-        cachedImage = [self.cache objectForKey:key];
-        
-        if(cachedImage)
-        {
-            if(handler)
-            {
-                handler(cachedImage, nil);
-            }
-        }
-        // Generate and cache if nil
-        else if(!cachedImage && self.acceptNewOperations)
-        {
-            AVAssetImageGenerator* imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:metadataItem.urlAsset];
-            
-            imageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
-            imageGenerator.maximumSize = CGSizeMake(300, 300);
-            imageGenerator.appliesPreferredTrackTransform = YES;
-            
-            [imageGenerator generateCGImagesAsynchronouslyForTimes:@[ [NSValue valueWithCMTime:kCMTimeZero]] completionHandler:^(CMTime requestedTime, CGImageRef  _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error){
-                
-                if(error == nil && image != NULL)
-                {
-                    NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size:NSMakeSize(CGImageGetWidth(image), CGImageGetHeight(image))];
-                    
-                    if(nsImage)
-                    {
-                        [self.cache setObject:nsImage forKey:key];
-                    }
-                    
-                    if(handler)
-                        handler(nsImage, nil);
-                    
-                }
-                else
-                {
-                    NSError* error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1 userInfo:nil];
-                    
-                    if(handler)
-                        handler(nil, error);
-                }
-            }];
-        }
+//
+//        NSString* key = [self imageKeyForItem:metadataItem];
+//
+//        NSImage* cachedImage = nil;
+//        cachedImage = [self.cache objectForKey:key];
+//
+//        if(cachedImage)
+//        {
+//            if(handler)
+//            {
+//                handler(cachedImage, nil);
+//            }
+//        }
+//        // Generate and cache if nil
+//        else if(!cachedImage && self.acceptNewOperations)
+//        {
+//            AVAssetImageGenerator* imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:metadataItem.urlAsset];
+//
+//            imageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
+//            imageGenerator.maximumSize = CGSizeMake(300, 300);
+//            imageGenerator.appliesPreferredTrackTransform = YES;
+//
+//            [imageGenerator generateCGImagesAsynchronouslyForTimes:@[ [NSValue valueWithCMTime:kCMTimeZero]] completionHandler:^(CMTime requestedTime, CGImageRef  _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error){
+//
+//                if(error == nil && image != NULL)
+//                {
+//                    NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size:NSMakeSize(CGImageGetWidth(image), CGImageGetHeight(image))];
+//
+//                    if(nsImage)
+//                    {
+//                        [self.cache setObject:nsImage forKey:key];
+//                    }
+//
+//                    if(handler)
+//                        handler(nsImage, nil);
+//
+//                }
+//                else
+//                {
+//                    NSError* error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1 userInfo:nil];
+//
+//                    if(handler)
+//                        handler(nil, error);
+//                }
+//            }];
+//        }
     }];
 
     [self.cacheMediaOperationQueue addOperation:operation];
@@ -176,41 +176,41 @@
 - (void) cachedPlayerForItem:(SynopsisMetadataItem* _Nonnull)metadataItem completionHandler:(SynopsisCacheCompletionHandler _Nullable )handler
 {
     NSBlockOperation* operation = [NSBlockOperation blockOperationWithBlock:^{
-        
-        NSString* key = [self playerKeyForItem:metadataItem];
-        
-        NSImage* cachedPlayer = nil;
-        cachedPlayer = [self.cache objectForKey:key];
-        
-        if(cachedPlayer)
-        {
-            if(handler)
-            {
-                handler(cachedPlayer, nil);
-            }
-        }
-        // Generate and cache if nil
-        else if(!cachedPlayer && self.acceptNewOperations)
-        {
-            AVPlayerItem* playerItem = [AVPlayerItem playerItemWithURL:metadataItem.urlAsset];
-            AVPlayer* player = [AVPlayer playerWithURL:playerItem];
-            
-            if(player)
-            {
-                [self.cache setObject:player forKey:[self playerKeyForItem:metadataItem]];
-                
-                if(handler)
-                    handler(player, nil);
-            }
-            else
-            {
-                if(handler)
-                {
-                    NSError* error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1 userInfo:nil];
-                    handler(nil, error);
-                }
-            }
-        }
+//
+//        NSString* key = [self playerKeyForItem:metadataItem];
+//
+//        NSImage* cachedPlayer = nil;
+//        cachedPlayer = [self.cache objectForKey:key];
+//
+//        if(cachedPlayer)
+//        {
+//            if(handler)
+//            {
+//                handler(cachedPlayer, nil);
+//            }
+//        }
+//        // Generate and cache if nil
+//        else if(!cachedPlayer && self.acceptNewOperations)
+//        {
+//            AVPlayerItem* playerItem = [AVPlayerItem playerItemWithURL:metadataItem.urlAsset];
+//            AVPlayer* player = [AVPlayer playerWithURL:playerItem];
+//
+//            if(player)
+//            {
+//                [self.cache setObject:player forKey:[self playerKeyForItem:metadataItem]];
+//
+//                if(handler)
+//                    handler(player, nil);
+//            }
+//            else
+//            {
+//                if(handler)
+//                {
+//                    NSError* error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1 userInfo:nil];
+//                    handler(nil, error);
+//                }
+//            }
+//        }
     }];
     
     [self.cacheMediaOperationQueue addOperation:operation];

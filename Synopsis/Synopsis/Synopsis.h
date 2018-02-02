@@ -6,9 +6,8 @@
 //  Copyright © 2016 v002. All rights reserved.
 //
 
-
 #ifndef INCLUDE_ENCODER
-#error "INCLUDE_ENCODER is not defined in your precprocessor macros. Please choose if you want metadata analysis and encoding included or not"
+#warning "INCLUDE_ENCODER is not defined in your precprocessor macros. Please choose if you want metadata analysis and encoding included or not"
 #endif
 
 #include "TargetConditionals.h"
@@ -39,7 +38,6 @@ extern NSUInteger const kSynopsisMetadataVersionAlpha2;
 extern NSString* const kSynopsisMetadataHFSAttributeVersionKey;
 extern NSUInteger const kSynopsisMetadataHFSAttributeVersionValue;
 extern NSString* const kSynopsisMetadataHFSAttributeDescriptorKey;
-
 
 // Supported Synopsis NSSortDescriptor Keys
 extern NSString* const kSynopsisStandardMetadataDictKey;
@@ -77,12 +75,9 @@ typedef enum : NSUInteger {
     SynopsisAnalysisQualityHintOriginal = NSUIntegerMax,
 } SynopsisAnalysisQualityHint;
 
-
-
 #import <Synopsis/SynopsisVideoFrame.h>
 #import <Synopsis/SynopsisVideoFrameCache.h>
 #import <Synopsis/SynopsisVideoFrameConformSession.h>
-
 #import <Synopsis/SynopsisDenseFeature.h>
 #import <Synopsis/MetadataComparisons.h>
 
@@ -105,21 +100,20 @@ typedef enum : NSUInteger {
 #import <Synopsis/NSSortDescriptor+SynopsisMetadata.h>
 #import <Synopsis/NSPredicate+SynopsisMetadata.h>
 
-
 // UI
 #import <Synopsis/SynopsisLayer.h>
 #import <Synopsis/SynopsisDominantColorLayer.h>
 #import <Synopsis/SynopsisHistogramLayer.h>
 #import <Synopsis/SynopsisDenseFeatureLayer.h>
 
-
 // Utilities
-#import <Synopsis/SynopsisDirectoryWatcher.h>
-#import <Synopsis/SynopsisRemoteFileHelper.h>
+NSArray* SynopsisSupportedFileTypes(void);
 #import <Synopsis/SynopsisCache.h>
-#import <Synopsis/SynopsisPythonHelper.h>
 #import <Synopsis/Color+linearRGBColor.h>
 
+#if TARGET_OS_OSX
 // Method to check support files types for metadata introspection
-NSArray* SynopsisSupportedFileTypes(void);
-
+#import <Synopsis/SynopsisDirectoryWatcher.h>
+#import <Synopsis/SynopsisRemoteFileHelper.h>
+#import <Synopsis/SynopsisPythonHelper.h>
+#endif

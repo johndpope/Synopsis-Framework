@@ -6,9 +6,9 @@
 //  Copyright © 2017 v002. All rights reserved.
 //
 
-#import "TargetConditionals.h"
 #import "SynopsisDenseFeature+Private.h"
 #import "SynopsisDenseFeatureLayer.h"
+#import "TargetConditionals.h"
 
 @interface SynopsisDenseFeatureLayer ()
 @property (readwrite, strong) CALayer* containerLayer;
@@ -41,9 +41,8 @@
         if(!mat.empty())
         {
             cv::Mat normalized;
-//            cv::normalize(mat, normalized);
-//            normalized *= normalized;
-            mat.convertTo(normalized, CV_8UC1, 255.0);
+            cv::normalize(mat, normalized, 1.0, 0.0, cv::NORM_MINMAX);
+            normalized.convertTo(normalized, CV_8UC1, 255.0);
             
             int width = normalized.rows;
             int height = normalized.cols;

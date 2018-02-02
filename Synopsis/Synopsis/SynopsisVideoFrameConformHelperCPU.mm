@@ -227,6 +227,8 @@
         // TODO: Introspect to confirm we are 709 / 601 / 2020 / P3 etc etc
         // Fuck Video
         
+#if TARGET_OS_OSX
+        
         ColorSyncProfileRef rec709 = ColorSyncProfileCreateWithName(kColorSyncITUR709Profile);
         ColorSyncProfileRef linearProfile = ColorSyncProfileCreateWithName(kColorSyncACESCGLinearProfile);
 //        ColorSyncProfileRef linearProfile = [self linearRGBProfile];
@@ -265,6 +267,8 @@
         if (transform)
             CFRelease (transform);
         
+#endif
+        
         vImage_CGImageFormat inputFormat;
         inputFormat.bitmapInfo = kCGImageAlphaFirst | kCGBitmapByteOrder32Little;
         inputFormat.renderingIntent = kCGRenderingIntentPerceptual;
@@ -285,6 +289,7 @@
         
         const CGFloat backColorF[4] = {0.0};
         
+#if TARGET_OS_OSX
         toLinearConverter = vImageConverter_CreateWithColorSyncCodeFragment(codeFragment, &inputFormat, &desiredFormat, backColorF, SynopsisvImageTileFlag, &err);
         
         CFRelease(codeFragment);
@@ -293,6 +298,12 @@
         CFRelease(profileSequence);
         CFRelease(rec709);
         CFRelease(linearProfile);
+#elif TARGET_OS_IPHONE
+        toLinearConverter = vImageConverter_CreateWithColorSyncCodeFragment(NULL, &inputFormat, &desiredFormat, backColorF, SynopsisvImageTileFlag, &err);
+#endif
+
+        
+        
     }
     
     // TODO: Create linear pixel buffer pool / reuse memory

@@ -6,11 +6,13 @@
 //  Copyright © 2017 v002. All rights reserved.
 //
 
+
 #import "opencv2/core/mat.hpp"
 #import "opencv2/core/utility.hpp"
 
-#import "SynopsisDenseFeature.h"
 #import "SynopsisDenseFeature+Private.h"
+#import "SynopsisDenseFeature.h"
+
 
 @interface SynopsisDenseFeature ()
 @property (assign) cv::Mat OpenCVMat;
