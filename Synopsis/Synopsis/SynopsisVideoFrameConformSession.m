@@ -91,8 +91,6 @@
     
     dispatch_group_notify(formatConversionGroup, self.serialCompletionQueue, ^{
         
-        dispatch_semaphore_signal(self.inFlightBuffers);
-
         if(completionBlock)
         {
             for(SynopsisVideoFormatSpecifier* format in localCPUFormats)
@@ -113,16 +111,20 @@
                     [allFormatCache cacheFrame:frame];
                 }
             }
-            
+
+
             completionBlock(commandBuffer, allFormatCache, nil);
             
             // Once we are done enqueing all of our commands, we commit our command buffer
-            [commandBuffer commit];
+//            [commandBuffer commit];
+            
+            dispatch_semaphore_signal(self.inFlightBuffers);
+
         }
     });
     
     dispatch_semaphore_wait(self.inFlightBuffers, DISPATCH_TIME_FOREVER);
-
+    
     if(localGPUFormats.count)
     {
         dispatch_group_enter(formatConversionGroup);
