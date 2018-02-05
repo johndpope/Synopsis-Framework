@@ -12,7 +12,7 @@
 #import "DominantColorModule.h"
 #import "MedianCutOpenCV.hpp"
 
-#import <Quartz/Quartz.h>
+//#import <Quartz/Quartz.h>
 
 @interface DominantColorModule ()
 {
