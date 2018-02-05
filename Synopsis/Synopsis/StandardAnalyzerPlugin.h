@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreMedia/CoreMedia.h>
 #import <Synopsis/Synopsis.h>
+#import "AnalyzerPluginProtocol.h"
 
 @interface StandardAnalyzerPlugin : NSObject <AnalyzerPluginProtocol>
 
