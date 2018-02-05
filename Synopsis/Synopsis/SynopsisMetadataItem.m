@@ -31,30 +31,51 @@
     {
         self.url = url;
         self.urlAsset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetPreferPreciseDurationAndTimingKey : @YES}];
-        
-        
-        NSArray* metadataItems = [self.urlAsset metadata];
-        
-        AVMetadataItem* synopsisMetadataItem = nil;
-        
-        for(AVMetadataItem* metadataItem in metadataItems)
-        {
-            if([metadataItem.identifier isEqualToString:kSynopsisMetadataIdentifier])
-            {
-                synopsisMetadataItem = metadataItem;
-                break;
-            }
-        }
-        
-        if(synopsisMetadataItem)
-        {
-            self.decoder = [[SynopsisMetadataDecoder alloc] initWithMetadataItem:synopsisMetadataItem];
-
-            self.globalSynopsisMetadata = [self.decoder decodeSynopsisMetadata:synopsisMetadataItem];
-        }
+        if(! [self commonLoad] )
+            return nil;
+            
     }
     
     return self;
+}
+- (instancetype) initWithAsset:(AVAsset *)asset
+{
+    self = [super init];
+    if(self)
+    {
+        self.urlAsset = asset;
+        if(! [self commonLoad] )
+            return nil;
+    }
+    
+    return self;
+}
+
+- (BOOL) commonLoad
+{
+    NSArray* metadataItems = [self.urlAsset metadata];
+    
+    AVMetadataItem* synopsisMetadataItem = nil;
+    
+    for(AVMetadataItem* metadataItem in metadataItems)
+    {
+        if([metadataItem.identifier isEqualToString:kSynopsisMetadataIdentifier])
+        {
+            synopsisMetadataItem = metadataItem;
+            break;
+        }
+    }
+    
+    if(synopsisMetadataItem)
+    {
+        self.decoder = [[SynopsisMetadataDecoder alloc] initWithMetadataItem:synopsisMetadataItem];
+        
+        self.globalSynopsisMetadata = [self.decoder decodeSynopsisMetadata:synopsisMetadataItem];
+        
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone
