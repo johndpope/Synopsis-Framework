@@ -83,11 +83,9 @@ typedef enum : NSUInteger {
 
 // Spotlight, Metadata, Sorting and Filtering Objects
 
-#if TARGET_OS_OSX
 #if INCLUDE_ENCODER
 #import <Synopsis/AnalyzerPluginProtocol.h>
 #import <Synopsis/StandardAnalyzerPlugin.h>
-#endif
 #endif
 
 #if INCLUDE_ENCODER
