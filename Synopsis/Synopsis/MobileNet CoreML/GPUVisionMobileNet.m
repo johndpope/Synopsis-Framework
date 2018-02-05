@@ -9,7 +9,7 @@
 #import <Vision/Vision.h>
 
 // Apple Model:
-#import "MobileNet.h"
+//#import "MobileNet.h"
 
 // Our Models + Classifiers
 #import "CinemaNetFeatureExtractor.h"
@@ -100,25 +100,22 @@
 {
     SynopsisVideoFrameMPImage* frameMPImage = (SynopsisVideoFrameMPImage*)frame;
     
-    NSDictionary* opt = @{
-//                          kCIImageColorSpace : (__bridge id) CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear),
-//                          kCIImageApplyOrientationProperty : @(YES),
-                          };
-
-    CIImage* imageForRequest = [CIImage imageWithMTLTexture:frameMPImage.mpsImage.texture options:opt];
+    CIImage* imageForRequest = [CIImage imageWithMTLTexture:frameMPImage.mpsImage.texture options:nil];
     
     VNCoreMLRequest* mobileRequest = [[VNCoreMLRequest alloc] initWithModel:self.cinemaNetCoreVNModel completionHandler:^(VNRequest * _Nonnull request, NSError * _Nullable error) {
                 
         NSMutableDictionary* metadata = nil;
-        
         if([request results].count)
         {
             VNCoreMLFeatureValueObservation* featureOutput = [[request results] firstObject];
-            
             MLMultiArray* featureVector = featureOutput.featureValue.multiArrayValue;
             
-            // Note: For what-ever-fucking-reason CoreML graphs even when running in parallel
-            // cause huge GPU stalls.
+            NSMutableArray<NSNumber*>*vec = [NSMutableArray new];
+            
+            for(NSUInteger i = 0; i < featureVector.count; i++)
+            {
+                vec[i] = featureVector[i];
+            }
             
             metadata = [NSMutableDictionary dictionary];
             
@@ -133,13 +130,6 @@
             dispatch_group_enter(classifierGroup);
             
             dispatch_group_notify(classifierGroup, self.completionQueue, ^{
-                
-                NSMutableArray<NSNumber*>*vec = [NSMutableArray new];
-                
-                for(NSUInteger i = 0; i < featureVector.count; i++)
-                {
-                    vec[i] = featureVector[i];
-                }
                 
                 NSString* topAngleLabel = anglesOutput.classLabel;
                 NSString* topFrameLabel = framingOutput.classLabel;
