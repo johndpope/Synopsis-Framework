@@ -185,7 +185,6 @@
                 {
                     completionBlock(metadata, nil);
                 }
-                
             });
             
             // If we have a valid feature vector result, parallel classify.

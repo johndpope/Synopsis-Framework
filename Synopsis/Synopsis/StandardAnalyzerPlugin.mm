@@ -92,8 +92,8 @@
 
         self.cpuModuleClasses  = @[// AVG Color is useless and just an example module
 //                                [AverageColor className],
-                                   [DominantColorModule className],
-                                   [HistogramModule className],
+//                                   NSStringFromClass([DominantColorModule class]),
+//                                   NSStringFromClass([HistogramModule class]),
 //                                   [MotionModule className],
 //                                   [TensorflowFeatureModule className],
 //                                   [TrackerModule className],
@@ -104,8 +104,8 @@
 //        self.cpuModuleClasses = @[];
         
         self.gpuModuleClasses  = @[
-//                                  [GPUHistogramModule className],
-                                  [GPUVisionMobileNet className],
+//                                  NSStringFromClass([GPUHistogramModule class]),
+                                  NSStringFromClass([GPUVisionMobileNet class]),
 //                                  [GPUMPSMobileNet className],
                                    ];
         
@@ -181,7 +181,7 @@
     }
 }
 
-- (void) analyzeFrameCache:(SynopsisVideoFrameCache*)frameCache commandBuffer:(id<MTLCommandBuffer>)frameCommandBuffer completionHandler:(SynopsisAnalyzerPluginFrameAnalyzedCompleteCallback)completionHandler;
+- (void) analyzeFrameCache:(SynopsisVideoFrameCache*)frameCache commandBuffer:(id<MTLCommandBuffer>)frameCommandBuffer completionHandler:(SynopsisAnalyzerPluginFrameAnalyzedCompleteCallback)completionHandler
 {
     static NSUInteger frameSubmit = 0;
     static NSUInteger frameComplete = 0;

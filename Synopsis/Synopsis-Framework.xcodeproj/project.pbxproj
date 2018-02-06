@@ -191,7 +191,6 @@
 		1B7358A71DEF65770053BC06 /* CIEDE2000.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358A51DEF65770053BC06 /* CIEDE2000.cpp */; };
 		1B7358AA1DEF68330053BC06 /* libtensorflow_cc.so in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B7358651DEF5AD20053BC06 /* libtensorflow_cc.so */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1B756AD91FA5160A0050A96F /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B756AD81FA5160A0050A96F /* Vision.framework */; };
-		1B756ADB1FA516590050A96F /* MobileNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1B756ADA1FA516590050A96F /* MobileNet.mlmodel */; };
 		1B8358981F42110600F86F0F /* libblas.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8358971F42110600F86F0F /* libblas.tbd */; };
 		1B8358A41F42285000F86F0F /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8358A31F42285000F86F0F /* opencv2.framework */; };
 		1B8358A51F42285000F86F0F /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8358A31F42285000F86F0F /* opencv2.framework */; };
@@ -215,11 +214,9 @@
 		1BB7F6441FA108F7004ED69F /* GPUHistogramModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BB7F6421FA108F7004ED69F /* GPUHistogramModule.h */; };
 		1BB7F6451FA108F7004ED69F /* GPUHistogramModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BB7F6421FA108F7004ED69F /* GPUHistogramModule.h */; };
 		1BB7F6461FA108F7004ED69F /* GPUHistogramModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB7F6431FA108F7004ED69F /* GPUHistogramModule.m */; };
-		1BB7F6471FA108F7004ED69F /* GPUHistogramModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB7F6431FA108F7004ED69F /* GPUHistogramModule.m */; };
 		1BB7F64A1FA123AC004ED69F /* GPUModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BB7F6481FA123AC004ED69F /* GPUModule.h */; };
 		1BB7F64B1FA123AC004ED69F /* GPUModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BB7F6481FA123AC004ED69F /* GPUModule.h */; };
 		1BB7F64C1FA123AC004ED69F /* GPUModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB7F6491FA123AC004ED69F /* GPUModule.m */; };
-		1BB7F64D1FA123AC004ED69F /* GPUModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB7F6491FA123AC004ED69F /* GPUModule.m */; };
 		1BBA89301FFFF478006CBD51 /* CinemaNetShotFramingClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA89291FFFF477006CBD51 /* CinemaNetShotFramingClassifier.pb */; };
 		1BBA89311FFFF478006CBD51 /* CinemaNetShotFramingClassifier.pb in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA89291FFFF477006CBD51 /* CinemaNetShotFramingClassifier.pb */; };
 		1BBA89321FFFF478006CBD51 /* CinemaNetShotTypeLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA892A1FFFF477006CBD51 /* CinemaNetShotTypeLabels.txt */; };
@@ -304,25 +301,19 @@
 		1BEDA42E2024D79000E4617C /* GZIP.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAA80671D70DCE800464810 /* GZIP.m */; };
 		1BEDA42F2024D79000E4617C /* SynopsisCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B70D081200D4EE000A414AF /* SynopsisCache.m */; };
 		1BEDA4302024D79000E4617C /* NSDictionary+JSONString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B551E6A1EF9E99D004C077B /* NSDictionary+JSONString.m */; };
-		1BEDA4312024D79000E4617C /* CinemaNetShotTypeClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4733420166F060091A751 /* CinemaNetShotTypeClassifier.mlmodel */; };
 		1BEDA4322024D79000E4617C /* NSSortDescriptor+SynopsisMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB10F41D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.mm */; };
 		1BEDA4332024D79000E4617C /* NSPredicate+SynopsisMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1BAA80551D70C9EB00464810 /* NSPredicate+SynopsisMetadata.mm */; };
 		1BEDA4352024D79000E4617C /* Synopsis.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB10FA1D555F5600C22439 /* Synopsis.m */; };
 		1BEDA4362024D79000E4617C /* SynopsisLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4446A61EE1FD3B0075575D /* SynopsisLayer.m */; };
 		1BEDA4372024D79000E4617C /* SynopsisMetadataDecoderVersion0.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B551E5D1EF9E305004C077B /* SynopsisMetadataDecoderVersion0.m */; };
-		1BEDA4382024D79000E4617C /* CinemaNetShotAnglesClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4733320166F050091A751 /* CinemaNetShotAnglesClassifier.mlmodel */; };
 		1BEDA4392024D79000E4617C /* MetadataComparisons.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB10FE1D559BD700C22439 /* MetadataComparisons.mm */; };
 		1BEDA43A2024D79000E4617C /* SynopsisMetadataDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4446961EE1FD090075575D /* SynopsisMetadataDecoder.m */; };
 		1BEDA43B2024D79000E4617C /* SynopsisHistogramLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4446A41EE1FD3B0075575D /* SynopsisHistogramLayer.m */; };
-		1BEDA43C2024D79000E4617C /* CinemaNetShotFramingClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4733520166F060091A751 /* CinemaNetShotFramingClassifier.mlmodel */; };
 		1BEDA43D2024D79000E4617C /* SynopsisMetadataPushDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B551E7A1EFAE956004C077B /* SynopsisMetadataPushDelegate.m */; };
 		1BEDA43E2024D79000E4617C /* SynopsisDominantColorLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4446A21EE1FD3B0075575D /* SynopsisDominantColorLayer.m */; };
 		1BEDA43F2024D79000E4617C /* SynopsisMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAA80591D70DBE400464810 /* SynopsisMetadataItem.m */; };
 		1BEDA4412024D79000E4617C /* SynopsisDenseFeatureLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B4446A01EE1FD3B0075575D /* SynopsisDenseFeatureLayer.mm */; };
-		1BEDA4422024D79000E4617C /* CinemaNetFeatureExtractor.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4733120166F050091A751 /* CinemaNetFeatureExtractor.mlmodel */; };
 		1BEDA4432024D79000E4617C /* SynopsisDenseFeature.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B44469A1EE1FD270075575D /* SynopsisDenseFeature.mm */; };
-		1BEDA4442024D79000E4617C /* PlacesNetClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4732F20166F040091A751 /* PlacesNetClassifier.mlmodel */; };
-		1BEDA4452024D79000E4617C /* CinemaNetShotSubjectClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4733220166F050091A751 /* CinemaNetShotSubjectClassifier.mlmodel */; };
 		1BEDA4482024D79000E4617C /* SynopsisDenseFeatureLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B44469F1EE1FD3B0075575D /* SynopsisDenseFeatureLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BEDA4492024D79000E4617C /* SynopsisDominantColorLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B4446A11EE1FD3B0075575D /* SynopsisDominantColorLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BEDA44A2024D79000E4617C /* SynopsisMetadataItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BAA80581D70DBE400464810 /* SynopsisMetadataItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -420,13 +411,28 @@
 		1BEDA4B72024E2D400E4617C /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BEDA4B52024E2D400E4617C /* Metal.framework */; };
 		1BEDA4B82024E2D400E4617C /* MetalPerformanceShaders.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BEDA4B62024E2D400E4617C /* MetalPerformanceShaders.framework */; };
 		1BEDA4BA2024E2DE00E4617C /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BEDA4B92024E2DE00E4617C /* Vision.framework */; };
+		1BEDA4BC2024ECA200E4617C /* opencv2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B8358A31F42285000F86F0F /* opencv2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1BEDA4C220251BF300E4617C /* GPUModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB7F6491FA123AC004ED69F /* GPUModule.m */; };
+		1BEDA4C320251BF700E4617C /* GPUHistogramModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB7F6431FA108F7004ED69F /* GPUHistogramModule.m */; };
+		1BEDA4C420251C0100E4617C /* GPUVisionMobileNet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3814FF1FA360110017564B /* GPUVisionMobileNet.m */; };
+		1BEDA4C520251C0700E4617C /* CPUModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B73587A1DEF5FE40053BC06 /* CPUModule.mm */; };
+		1BEDA4C620251C0C00E4617C /* AnalyzerPluginProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B7358A21DEF623D0053BC06 /* AnalyzerPluginProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1BEDA4C720251C1400E4617C /* StandardAnalyzerPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B7358821DEF5FE40053BC06 /* StandardAnalyzerPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1BEDA4C820251C1800E4617C /* StandardAnalyzerPlugin.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358831DEF5FE40053BC06 /* StandardAnalyzerPlugin.mm */; };
+		1BEDA4C920251C3D00E4617C /* AverageColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358701DEF5FE40053BC06 /* AverageColor.mm */; };
+		1BEDA4CB20251C4300E4617C /* HistogramModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358761DEF5FE40053BC06 /* HistogramModule.mm */; };
+		1BEDA4CC20251C5000E4617C /* MedianCutOpenCV.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358771DEF5FE40053BC06 /* MedianCutOpenCV.cpp */; };
+		1BEDA4CD20251C5300E4617C /* MotionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B73587C1DEF5FE40053BC06 /* MotionModule.mm */; };
+		1BEDA4CE20251C6000E4617C /* TrackerModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358871DEF5FE40053BC06 /* TrackerModule.mm */; };
+		1BEDA4D120251E6400E4617C /* CIEDE2000.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358A51DEF65770053BC06 /* CIEDE2000.cpp */; };
+		1BEDA4D220251E6400E4617C /* CIEDE2000.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358A51DEF65770053BC06 /* CIEDE2000.cpp */; };
+		1BEDA4D320251E6500E4617C /* CIEDE2000.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358A51DEF65770053BC06 /* CIEDE2000.cpp */; };
 		1BFB12C51F2135BF002C4651 /* NSSortDescriptor+SynopsisMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB10F41D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.mm */; };
 		1BFB12C71F2135BF002C4651 /* GZIP.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAA80671D70DCE800464810 /* GZIP.m */; };
 		1BFB12C81F2135BF002C4651 /* SynopsisMetadataPushDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B551E7A1EFAE956004C077B /* SynopsisMetadataPushDelegate.m */; };
 		1BFB12C91F2135BF002C4651 /* Color+linearRGBColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B4446B01EE1FD5D0075575D /* Color+linearRGBColor.mm */; };
 		1BFB12CB1F2135BF002C4651 /* NSDictionary+JSONString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B551E6A1EF9E99D004C077B /* NSDictionary+JSONString.m */; };
 		1BFB12CD1F2135BF002C4651 /* SynopsisDenseFeatureLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B4446A01EE1FD3B0075575D /* SynopsisDenseFeatureLayer.mm */; };
-		1BFB12CF1F2135BF002C4651 /* CIEDE2000.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358A51DEF65770053BC06 /* CIEDE2000.cpp */; };
 		1BFB12D01F2135BF002C4651 /* SynopsisDominantColorLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4446A21EE1FD3B0075575D /* SynopsisDominantColorLayer.m */; };
 		1BFB12D21F2135BF002C4651 /* MetadataComparisons.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB10FE1D559BD700C22439 /* MetadataComparisons.mm */; };
 		1BFB12D31F2135BF002C4651 /* SynopsisDenseFeature.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B44469A1EE1FD270075575D /* SynopsisDenseFeature.mm */; };
@@ -482,6 +488,16 @@
 			dstSubfolderSpec = 10;
 			files = (
 				1B8358AD1F424BD600F86F0F /* opencv2.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BEDA4BB2024EC9900E4617C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1BEDA4BC2024ECA200E4617C /* opencv2.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2349,7 +2365,7 @@
 		1BED8C2B1FB2115B00CEE001 /* synset_words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = synset_words.txt; sourceTree = "<group>"; };
 		1BED8C2D1FB21EBD00CEE001 /* MPSImage+Float.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MPSImage+Float.h"; sourceTree = "<group>"; };
 		1BED8C2E1FB21EBD00CEE001 /* MPSImage+Float.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MPSImage+Float.m"; sourceTree = "<group>"; };
-		1BEDA46D2024D79000E4617C /* Synopsis--Decoder-iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "Synopsis--Decoder-iOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BEDA46D2024D79000E4617C /* Synopsis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Synopsis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BEDA46E2024D79000E4617C /* Synopsis-iOS copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Synopsis-iOS copy2-Info.plist"; path = "/Users/vade/Documents/Repositories/Trash TV Demo/TrashFramework/Synopsis-Framework/Synopsis/Synopsis-iOS copy2-Info.plist"; sourceTree = "<absolute>"; };
 		1BEDA4AD2024E2BF00E4617C /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.2.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
 		1BEDA4AF2024E2C400E4617C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -5926,7 +5942,7 @@
 				1BBB10DD1D5542A200C22439 /* Synopsis.framework */,
 				1B4446B81EE1FE4A0075575D /* Synopsis.framework */,
 				1BFB13381F2135BF002C4651 /* Synopsis.framework */,
-				1BEDA46D2024D79000E4617C /* Synopsis--Decoder-iOS.framework */,
+				1BEDA46D2024D79000E4617C /* Synopsis.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6103,6 +6119,8 @@
 				1BEDA4A12024E0C100E4617C /* SynopsisVideoFrameMPImage.h in Headers */,
 				1B4446C21EE1FF840075575D /* Synopsis.h in Headers */,
 				1B4446C81EE1FF920075575D /* SynopsisDenseFeature+Private.h in Headers */,
+				1BEDA4C720251C1400E4617C /* StandardAnalyzerPlugin.h in Headers */,
+				1BEDA4C620251C0C00E4617C /* AnalyzerPluginProtocol.h in Headers */,
 				1B4446C41EE1FF8C0075575D /* SynopsisMetadataDecoder.h in Headers */,
 				1B551E661EF9E8E5004C077B /* SynopsisMetadataEncoderVersion0.h in Headers */,
 				1B6EDC581F7ADBE0003D3936 /* SynopsisDirectoryWatcher.h in Headers */,
@@ -6245,6 +6263,7 @@
 				1B4446B41EE1FE4A0075575D /* Frameworks */,
 				1B4446B51EE1FE4A0075575D /* Headers */,
 				1B4446B61EE1FE4A0075575D /* Resources */,
+				1BEDA4BB2024EC9900E4617C /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -6291,7 +6310,7 @@
 			);
 			name = "Synopsis--Decoder-iOS";
 			productName = "Synopsis-iOS";
-			productReference = 1BEDA46D2024D79000E4617C /* Synopsis--Decoder-iOS.framework */;
+			productReference = 1BEDA46D2024D79000E4617C /* Synopsis.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		1BFB12C21F2135BF002C4651 /* Synopsis-Decoder-macOS */ = {
@@ -6553,8 +6572,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BEDA4C320251BF700E4617C /* GPUHistogramModule.m in Sources */,
 				1BEDA49F2024E0BD00E4617C /* SynopsisVideoFrameOpenCV.mm in Sources */,
 				1B4446DB1EE1FFB30075575D /* Color+linearRGBColor.mm in Sources */,
+				1BEDA4CB20251C4300E4617C /* HistogramModule.mm in Sources */,
+				1BEDA4C820251C1800E4617C /* StandardAnalyzerPlugin.mm in Sources */,
 				1BEDA4712024DED900E4617C /* SynopsisMetadataEncoderVersion2.m in Sources */,
 				1BEDA4882024DF5A00E4617C /* huf_decompress.c in Sources */,
 				1B551E801EFAEE00004C077B /* GZIP.m in Sources */,
@@ -6572,15 +6594,20 @@
 				1B4446DA1EE1FFB30075575D /* NSPredicate+SynopsisMetadata.mm in Sources */,
 				1B4446D01EE1FFB30075575D /* Synopsis.m in Sources */,
 				1B4446D51EE1FFB30075575D /* SynopsisLayer.m in Sources */,
+				1BEDA4C920251C3D00E4617C /* AverageColor.mm in Sources */,
 				1BEDA47E2024DF4200E4617C /* fse_decompress.c in Sources */,
 				1B551E611EF9E305004C077B /* SynopsisMetadataDecoderVersion0.m in Sources */,
 				1BEDA4862024DF5100E4617C /* zstd_compress.c in Sources */,
 				1BC4733D20166F060091A751 /* CinemaNetShotAnglesClassifier.mlmodel in Sources */,
 				1BEDA4972024E09800E4617C /* SynopsisVideoFrameCache.m in Sources */,
+				1BEDA4C220251BF300E4617C /* GPUModule.m in Sources */,
+				1BEDA4CD20251C5300E4617C /* MotionModule.mm in Sources */,
 				1BEDA4722024DEDF00E4617C /* SynopsisMetadataDecoderVersion2.m in Sources */,
 				1BEDA4892024DF5A00E4617C /* zstd_decompress.c in Sources */,
 				1B4446D31EE1FFB30075575D /* MetadataComparisons.mm in Sources */,
 				1B4446D11EE1FFB30075575D /* SynopsisMetadataDecoder.m in Sources */,
+				1BEDA4CC20251C5000E4617C /* MedianCutOpenCV.cpp in Sources */,
+				1BEDA4C420251C0100E4617C /* GPUVisionMobileNet.m in Sources */,
 				1BEDA4912024E06C00E4617C /* SynopsisVideoFrame.m in Sources */,
 				1BEDA4702024DEC600E4617C /* SynopsisMetadataEncoder.m in Sources */,
 				1B4446D61EE1FFB30075575D /* SynopsisHistogramLayer.m in Sources */,
@@ -6591,10 +6618,13 @@
 				1B4446D21EE1FFB30075575D /* SynopsisMetadataItem.m in Sources */,
 				1B551E681EF9E8E5004C077B /* SynopsisMetadataEncoderVersion0.m in Sources */,
 				1BEDA47A2024DF3900E4617C /* threading.c in Sources */,
+				1BEDA4C520251C0700E4617C /* CPUModule.mm in Sources */,
 				1B4446D81EE1FFB30075575D /* SynopsisDenseFeatureLayer.mm in Sources */,
+				1BEDA4CE20251C6000E4617C /* TrackerModule.mm in Sources */,
 				1BEDA4822024DF4800E4617C /* entropy_common.c in Sources */,
 				1BC4733920166F060091A751 /* CinemaNetFeatureExtractor.mlmodel in Sources */,
 				1BEDA4852024DF5100E4617C /* huf_compress.c in Sources */,
+				1BEDA4D220251E6400E4617C /* CIEDE2000.cpp in Sources */,
 				1B4446D41EE1FFB30075575D /* SynopsisDenseFeature.mm in Sources */,
 				1BEDA48C2024DFB500E4617C /* xxhash.c in Sources */,
 				1BC4733720166F060091A751 /* PlacesNetClassifier.mlmodel in Sources */,
@@ -6662,7 +6692,6 @@
 				1B2780AA1F228F8500658C0B /* SynopsisMetadataDecoderVersion2.m in Sources */,
 				1B2780EE1F2299EB00658C0B /* threading.c in Sources */,
 				1B7358901DEF5FE40053BC06 /* MedianCutOpenCV.cpp in Sources */,
-				1B756ADB1FA516590050A96F /* MobileNet.mlmodel in Sources */,
 				1BAA80571D70C9EB00464810 /* NSPredicate+SynopsisMetadata.mm in Sources */,
 				1B2780FE1F2299FB00658C0B /* huf_decompress.c in Sources */,
 				1BB7F6461FA108F7004ED69F /* GPUHistogramModule.m in Sources */,
@@ -6689,24 +6718,22 @@
 				1BEDA49C2024E0AE00E4617C /* SynopsisVideoFrameConformSession.m in Sources */,
 				1BEDA4302024D79000E4617C /* NSDictionary+JSONString.m in Sources */,
 				1BEDA4A02024E0BE00E4617C /* SynopsisVideoFrameOpenCV.mm in Sources */,
-				1BEDA4312024D79000E4617C /* CinemaNetShotTypeClassifier.mlmodel in Sources */,
 				1BEDA4322024D79000E4617C /* NSSortDescriptor+SynopsisMetadata.mm in Sources */,
 				1BEDA4332024D79000E4617C /* NSPredicate+SynopsisMetadata.mm in Sources */,
 				1BEDA4352024D79000E4617C /* Synopsis.m in Sources */,
 				1BEDA47D2024DF3C00E4617C /* pool.c in Sources */,
 				1BEDA4362024D79000E4617C /* SynopsisLayer.m in Sources */,
+				1BEDA4D320251E6500E4617C /* CIEDE2000.cpp in Sources */,
 				1BEDA48D2024DFB500E4617C /* xxhash.c in Sources */,
 				1BEDA4832024DF4800E4617C /* entropy_common.c in Sources */,
 				1BEDA4732024DEE000E4617C /* SynopsisMetadataDecoderVersion2.m in Sources */,
 				1BEDA47F2024DF4200E4617C /* fse_decompress.c in Sources */,
 				1BEDA4372024D79000E4617C /* SynopsisMetadataDecoderVersion0.m in Sources */,
 				1BEDA4AC2024E0E200E4617C /* SynopsisVideoFrameConformHelperGPU.m in Sources */,
-				1BEDA4382024D79000E4617C /* CinemaNetShotAnglesClassifier.mlmodel in Sources */,
 				1BEDA4392024D79000E4617C /* MetadataComparisons.mm in Sources */,
 				1BEDA43A2024D79000E4617C /* SynopsisMetadataDecoder.m in Sources */,
 				1BEDA4A42024E0D400E4617C /* SynopsisVideoFrameMPImage.m in Sources */,
 				1BEDA43B2024D79000E4617C /* SynopsisHistogramLayer.m in Sources */,
-				1BEDA43C2024D79000E4617C /* CinemaNetShotFramingClassifier.mlmodel in Sources */,
 				1BEDA43D2024D79000E4617C /* SynopsisMetadataPushDelegate.m in Sources */,
 				1BEDA43E2024D79000E4617C /* SynopsisDominantColorLayer.m in Sources */,
 				1BEDA47B2024DF3900E4617C /* threading.c in Sources */,
@@ -6714,14 +6741,11 @@
 				1BEDA43F2024D79000E4617C /* SynopsisMetadataItem.m in Sources */,
 				1BEDA4412024D79000E4617C /* SynopsisDenseFeatureLayer.mm in Sources */,
 				1BEDA4A82024E0DB00E4617C /* SynopsisVideoFrameConformHelperCPU.mm in Sources */,
-				1BEDA4422024D79000E4617C /* CinemaNetFeatureExtractor.mlmodel in Sources */,
 				1BEDA4432024D79000E4617C /* SynopsisDenseFeature.mm in Sources */,
 				1BEDA48B2024DF5A00E4617C /* zstd_decompress.c in Sources */,
 				1BEDA4922024E06D00E4617C /* SynopsisVideoFrame.m in Sources */,
 				1BEDA4812024DF4600E4617C /* error_private.c in Sources */,
-				1BEDA4442024D79000E4617C /* PlacesNetClassifier.mlmodel in Sources */,
 				1BEDA4792024DF3500E4617C /* zstd_common.c in Sources */,
-				1BEDA4452024D79000E4617C /* CinemaNetShotSubjectClassifier.mlmodel in Sources */,
 				1BEDA4982024E09900E4617C /* SynopsisVideoFrameCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6740,23 +6764,21 @@
 				1BFB12C91F2135BF002C4651 /* Color+linearRGBColor.mm in Sources */,
 				1BFB12CB1F2135BF002C4651 /* NSDictionary+JSONString.m in Sources */,
 				1BFB12CD1F2135BF002C4651 /* SynopsisDenseFeatureLayer.mm in Sources */,
-				1BFB12CF1F2135BF002C4651 /* CIEDE2000.cpp in Sources */,
 				1BC98DCD1F9FA48F00E0F52A /* SynopsisVideoFrameOpenCV.mm in Sources */,
 				1BC98DD91F9FB68300E0F52A /* SynopsisVideoFrameConformSession.m in Sources */,
 				1B2780F71F2299EC00658C0B /* zstd_common.c in Sources */,
 				1BFB12D01F2135BF002C4651 /* SynopsisDominantColorLayer.m in Sources */,
 				1B2780F41F2299EC00658C0B /* pool.c in Sources */,
-				1BB7F64D1FA123AC004ED69F /* GPUModule.m in Sources */,
 				1BFB12D21F2135BF002C4651 /* MetadataComparisons.mm in Sources */,
 				1B2780F11F2299EC00658C0B /* entropy_common.c in Sources */,
 				1BCAACB61F966D040022B1A5 /* SynopsisPythonHelper.m in Sources */,
 				1BFB12D31F2135BF002C4651 /* SynopsisDenseFeature.mm in Sources */,
-				1BB7F6471FA108F7004ED69F /* GPUHistogramModule.m in Sources */,
 				1BB7F63E1F9FF51B004ED69F /* SynopsisVideoFrameConformHelperGPU.m in Sources */,
 				1BFB12D51F2135BF002C4651 /* SynopsisMetadataDecoderVersion0.m in Sources */,
 				1BFB12D91F2135BF002C4651 /* SynopsisHistogramLayer.m in Sources */,
 				1BFB12DA1F2135BF002C4651 /* SynopsisMetadataDecoder.m in Sources */,
 				1BC98DE51F9FCE0A00E0F52A /* SynopsisVideoFrame.m in Sources */,
+				1BEDA4D120251E6400E4617C /* CIEDE2000.cpp in Sources */,
 				1B2780F21F2299EC00658C0B /* error_private.c in Sources */,
 				1BC98DD31F9FAA5600E0F52A /* SynopsisVideoFrameCache.m in Sources */,
 				1BBED62E1F9125A3003CE9C4 /* SynopsisRemoteFileHelper.m in Sources */,
@@ -6788,11 +6810,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Synopsis-iOS",
-					"$(PROJECT_DIR)/Synopsis/OpenCV/lib",
-					"$(PROJECT_DIR)/Synopsis/OpenCV",
+					"\"$(PROJECT_DIR)/Synopsis-iOS\"",
+					"\"$(PROJECT_DIR)/Synopsis/OpenCV\"",
 				);
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = (
 					"$(inherited)",
@@ -6804,8 +6826,8 @@
 				);
 				INFOPLIST_FILE = "Synopsis-iOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(PROJECT_DIR)/Synopsis/OpenCV/include/\"",
 					"\"$(PROJECT_DIR)/Synopsis/Tensorflow/includes\"",
@@ -6830,11 +6852,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Synopsis-iOS",
-					"$(PROJECT_DIR)/Synopsis/OpenCV/lib",
-					"$(PROJECT_DIR)/Synopsis/OpenCV",
+					"\"$(PROJECT_DIR)/Synopsis-iOS\"",
+					"\"$(PROJECT_DIR)/Synopsis/OpenCV\"",
 				);
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = (
 					"$(inherited)",
@@ -6846,8 +6868,8 @@
 				);
 				INFOPLIST_FILE = "Synopsis-iOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(PROJECT_DIR)/Synopsis/OpenCV/include/\"",
 					"\"$(PROJECT_DIR)/Synopsis/Tensorflow/includes\"",
@@ -6907,10 +6929,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -6956,9 +6978,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -7069,14 +7091,14 @@
 				);
 				INFOPLIST_FILE = "Synopsis-iOS copy2-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(PROJECT_DIR)/Synopsis/OpenCV/include/\"",
 					"\"$(PROJECT_DIR)/Synopsis/Tensorflow/includes\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "info.v002.Synopsis-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Synopsis;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -7106,14 +7128,14 @@
 				);
 				INFOPLIST_FILE = "Synopsis-iOS copy2-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(PROJECT_DIR)/Synopsis/OpenCV/include/\"",
 					"\"$(PROJECT_DIR)/Synopsis/Tensorflow/includes\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "info.v002.Synopsis-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Synopsis;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -7145,7 +7167,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Synopsis/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks /usr/local/cuda/lib";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Synopsis/OpenCV/lib",
@@ -7153,7 +7175,7 @@
 					"$(PROJECT_DIR)/Synopsis/Tensorflow/lib",
 					"/usr/local/cuda/lib/**",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = info.v002.Synopsis;
 				PRODUCT_NAME = Synopsis;
 				SKIP_INSTALL = YES;
@@ -7185,7 +7207,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Synopsis/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks /usr/local/cuda/lib";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Synopsis/OpenCV/lib",
@@ -7193,7 +7215,7 @@
 					"$(PROJECT_DIR)/Synopsis/Tensorflow/lib",
 					"/usr/local/cuda/lib/**",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = info.v002.Synopsis;
 				PRODUCT_NAME = Synopsis;
 				SKIP_INSTALL = YES;
