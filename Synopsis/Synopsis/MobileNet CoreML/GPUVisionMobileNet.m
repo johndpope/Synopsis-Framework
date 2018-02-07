@@ -240,7 +240,7 @@
 
 - (NSDictionary*) finalizedAnalysisMetadata;
 {
-    return @{kSynopsisStandardMetadataDescriptionDictKey: self.labels};
+    return @{kSynopsisStandardMetadataDescriptionDictKey: (self.labels) ? self.labels : @[ @"" ] };
 }
 
 @end
