@@ -11,7 +11,7 @@
 #import "CIEDE2000.h"
 #import "DominantColorModule.h"
 #import "MedianCutOpenCV.hpp"
-
+#import "SynopsisDenseFeature+Private.h"
 //#import <Quartz/Quartz.h>
 
 @interface DominantColorModule ()
@@ -20,7 +20,7 @@
     matType bestLables;
     matType centers;
 }
-@property (atomic, readwrite, strong) NSMutableArray* everyDominantColor;
+@property (atomic, readwrite, strong) NSMutableArray<SynopsisDenseFeature*>* everyDominantColor;
 @end
 
 @implementation DominantColorModule
@@ -92,7 +92,8 @@
     auto palette = MedianCutOpenCV::medianCut(allColorCube, k, useCIEDE2000);
     
     NSMutableArray* dominantColors = [NSMutableArray new];
-    
+    NSMutableArray* dominantColorsLAB = [NSMutableArray new];
+
     for ( auto colorCountPair: palette )
     {
         // convert from LAB to BGR
@@ -101,6 +102,8 @@
         cv::Mat closestLABPixel = cv::Mat(1,1, CV_32FC3, labColor);
         cv::Mat bgr(1,1, CV_32FC3);
         cv::cvtColor(closestLABPixel, bgr, FROM_PERCEPTUAL);
+        
+        [dominantColorsLAB addObject: [SynopsisDenseFeature valueWithCVMat:closestLABPixel]];
         
         cv::Vec3f bgrColor = bgr.at<cv::Vec3f>(0,0);
         
@@ -112,7 +115,7 @@
     
     NSMutableDictionary* metadata = [NSMutableDictionary new];
     metadata[kSynopsisStandardMetadataDominantColorValuesDictKey] = dominantColors;
-    metadata[kSynopsisStandardMetadataDescriptionDictKey] = [self matchColorNamesToColors:dominantColors];
+    metadata[kSynopsisStandardMetadataDescriptionDictKey] = [self matchColorNamesToLABColors:dominantColorsLAB];
     return metadata;
 }
 
@@ -219,16 +222,13 @@
                            @(bgrColor[1]), // / 255.0), // G
                            @(bgrColor[0]), // / 255.0), // B
                            ];
-        
-        NSArray* lColor = @[ @(labColor[0]), // L
-                             @(labColor[1]), // A
-                             @(labColor[2]), // B
-                             ];
-        
+
         [dominantColors addObject:color];
+
+        SynopsisDenseFeature* labFeature = [SynopsisDenseFeature valueWithCVMat:closestLABPixel];
         
         // We will process this in finalize
-        [self.everyDominantColor addObject:lColor];
+        [self.everyDominantColor addObject:labFeature];
     }
     
     metadata[[self moduleName]] = dominantColors;
@@ -288,58 +288,33 @@
                            @(bgrColor[0]), // / 255.0), // B
                            ];
         
-        NSArray* lColor = @[ @(labColor[0]), // L
-                             @(labColor[1]), // A
-                             @(labColor[2]), // B
-                             ];
+        SynopsisDenseFeature* labFeature = [SynopsisDenseFeature valueWithCVMat:lab];
         
         [dominantColors addObject:color];
         
         // We will process this in finalize
-        [self.everyDominantColor addObject:lColor];
+        [self.everyDominantColor addObject:labFeature];
     }
     
     metadata[@"DominantColors"] = dominantColors;
-    metadata[@"Description"] = [self matchColorNamesToColors:dominantColors];
+    metadata[@"Description"] = [self matchColorNamesToLABColors:dominantColors];
 
     return metadata;
 }
 
 #pragma mark - Color Helpers
 
--(NSArray*) matchColorNamesToColors:(NSArray*)colorArray
+-(NSArray*) matchColorNamesToLABColors:(NSArray<SynopsisDenseFeature*>*)labColorArray
 {
-    CGColorSpaceRef linear = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
-    NSColorSpace* colorspace = [[NSColorSpace alloc] initWithCGColorSpace:linear];
-
+    NSMutableSet* matchedNamedColors = [NSMutableSet setWithCapacity:labColorArray.count];
     
-    NSMutableArray* dominantNSColors = [NSMutableArray arrayWithCapacity:colorArray.count];
-    
-    for(NSArray* color in colorArray)
+    for(SynopsisDenseFeature* color in labColorArray)
     {
-        CGFloat alpha = 1.0;
-        if(color.count > 3)
-            alpha = [color[3] floatValue];
-        
-        NSColor* domColor = [[NSColor colorWithRed:[color[0] floatValue]
-                                             green:[color[1] floatValue]
-                                              blue:[color[2] floatValue]
-                                            alpha:alpha] colorUsingColorSpace:colorspace];
-        
-        [dominantNSColors addObject:domColor];
-    }
-    
-    NSMutableSet* matchedNamedColors = [NSMutableSet setWithCapacity:dominantNSColors.count];
-    
-    for(NSColor* color in dominantNSColors)
-    {
-        NSString* namedColor = [self closestNamedColorForColor:color];
+        NSString* namedColor = [self closestNamedColorForLABColor:color];
 //        NSLog(@"Found Color %@", namedColor);
         if(namedColor)
             [matchedNamedColors addObject:namedColor];
     }
-    
-    CGColorSpaceRelease(linear);
     
     // Add our hack tag system:
     NSArray* colors = @[@"Colors:"];
@@ -347,67 +322,44 @@
     return colors;
 }
 
-- (NSString*) closestNamedColorForColor:(NSColor*)color
+- (NSString*) closestNamedColorForLABColor:(SynopsisDenseFeature*)color
 {
-    NSColor* matchedColor = nil;
+    SynopsisDenseFeature* matchedColor = nil;
+
+    SynopsisDenseFeature* white = [[SynopsisDenseFeature alloc] initWithFeatureArray:@[ @1.0, @1.0, @1.0 ] ];
+    SynopsisDenseFeature* black = [[SynopsisDenseFeature alloc] initWithFeatureArray:@[ @0.0, @0.0, @0.0 ] ];
+    SynopsisDenseFeature* gray = [[SynopsisDenseFeature alloc] initWithFeatureArray:@[ @0.5, @0.5, @0.5 ] ];
+
+    SynopsisDenseFeature* red = [[SynopsisDenseFeature alloc] initWithFeatureArray:@[ @1.0, @0.0, @0.0 ] ];
+    SynopsisDenseFeature* green = [[SynopsisDenseFeature alloc] initWithFeatureArray:@[ @0.0, @1.0, @0.0 ] ];
+    SynopsisDenseFeature* blue = [[SynopsisDenseFeature alloc] initWithFeatureArray:@[ @0.0, @0.0, @1.0 ] ];
     
-    // White, Grey, Black all are 'calibrated white' color spaces so you cant fetch color components from them
-    // because no one at apple has seen a fucking prism.
-    CGColorSpaceRef linear = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
-    NSColorSpace* colorspace = [[NSColorSpace alloc] initWithCGColorSpace:linear];
-    CGColorSpaceRelease(linear);
-    
-    CGFloat white[4] = {1.0, 1.0, 1.0, 1.0};
-    CGFloat black[4] = {0.0, 0.0, 0.0, 1.0};
-    CGFloat gray[4] = {0.5, 0.5, 0.5, 1.0};
-    
-    CGFloat red[4] = {1.0, 0.0, 0.0, 1.0};
-    CGFloat green[4] = {0.0, 1.0, 0.0, 1.0};
-    CGFloat blue[4] = {0.0, 0.0, 1.0, 1.0};
-    
-    CGFloat cyan[4] = {0.0, 1.0, 1.0, 1.0};
-    CGFloat magenta[4] = {1.0, 0.0, 1.0, 1.0};
-    CGFloat yellow[4] = {1.0, 1.0, 0.0, 1.0};
-    
-    CGFloat orange[4] = {1.0, 0.5, 0.0, 1.0};
-    CGFloat purple[4] = {1.0, 0.0, 1.0, 1.0};
-    
-    NSDictionary* knownColors = @{ @"White" : [NSColor colorWithColorSpace:colorspace components:white count:4], // White
-                                   @"Black" : [NSColor colorWithColorSpace:colorspace components:black count:4], // Black
-                                   @"Gray" : [NSColor colorWithColorSpace:colorspace components:gray count:4], // Gray
-                                   @"Red" : [NSColor colorWithColorSpace:colorspace components:red count:4],
-                                   @"Green" : [NSColor colorWithColorSpace:colorspace components:green count:4],
-                                   @"Blue" : [NSColor colorWithColorSpace:colorspace components:blue count:4],
-                                   @"Cyan" : [NSColor colorWithColorSpace:colorspace components:cyan count:4],
-                                   @"Magenta" : [NSColor colorWithColorSpace:colorspace components:magenta count:4],
-                                   @"Yellow" : [NSColor colorWithColorSpace:colorspace components:yellow count:4],
-                                   @"Orange" : [NSColor colorWithColorSpace:colorspace components:orange count:4],
-                                   @"Purple" : [NSColor colorWithColorSpace:colorspace components:purple count:4],
+    SynopsisDenseFeature* cyan = [[SynopsisDenseFeature alloc] initWithFeatureArray:@[ @0.0, @1.0, @1.0 ] ];
+    SynopsisDenseFeature* magenta = [[SynopsisDenseFeature alloc] initWithFeatureArray:@[ @1.0, @0.0, @1.0 ] ];
+    SynopsisDenseFeature* yellow = [[SynopsisDenseFeature alloc] initWithFeatureArray:@[ @1.0, @1.0, @0.0 ] ];
+
+    SynopsisDenseFeature* orange = [[SynopsisDenseFeature alloc] initWithFeatureArray:@[ @1.0, @0.5, @1.0 ] ];
+    SynopsisDenseFeature* purple = [[SynopsisDenseFeature alloc] initWithFeatureArray:@[ @1.0, @0.0, @0.5 ] ];
+
+    NSDictionary* knownColors = @{ @"White" : white, // White
+                                   @"Black" : black, // Black
+                                   @"Gray" : gray, // Gray
+                                   @"Red" : red,
+                                   @"Green" : green,
+                                   @"Blue" : blue,
+                                   @"Cyan" : cyan,
+                                   @"Magenta" : magenta,
+                                   @"Yellow" : yellow,
+                                   @"Orange" : orange,
+                                   @"Purple" : purple,
                                    };
     
-    //    NSUInteger numberMatches = 0;
-    
     // Longest distance from any float color component
-    CGFloat distance = CGFLOAT_MAX;
+    float distance = FLT_MAX;
     
-    for(NSColor* namedColor in [knownColors allValues])
+    for(SynopsisDenseFeature* namedColor in [knownColors allValues])
     {
-        CGFloat namedRed = [namedColor hueComponent];
-        CGFloat namedGreen = [namedColor saturationComponent];
-        CGFloat namedBlue = [namedColor brightnessComponent];
-        
-        CGFloat red = [color hueComponent];
-        CGFloat green = [color saturationComponent];
-        CGFloat blue = [color brightnessComponent];
-        
-        // Early bail
-        if( red == namedRed && green == namedGreen && blue == namedBlue)
-        {
-            matchedColor = namedColor;
-            break;
-        }
-        
-        CGFloat newDistance = sqrt( pow( fabs(namedRed - red), 2.0) + pow( fabs(namedGreen - green), 2.0) + pow(fabs(namedBlue - blue), 2.0));
+        float newDistance = compareFeatureVector(namedColor, color);
         
         if(newDistance < distance)
         {
