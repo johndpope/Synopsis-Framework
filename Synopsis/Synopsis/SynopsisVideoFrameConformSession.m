@@ -69,7 +69,6 @@
 - (void) conformPixelBuffer:(CVPixelBufferRef)pixelBuffer withTransform:(CGAffineTransform)transform rect:(CGRect)rect               
  completionBlock:(SynopsisVideoFrameConformSessionCompletionBlock)completionBlock
 {    
-
     // Because we have 2 different completion blocks we must coalesce into one, we use
     // dispatch notify to tell us when we are actually done.
     
