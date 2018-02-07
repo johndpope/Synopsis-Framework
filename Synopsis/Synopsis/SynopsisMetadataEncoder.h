@@ -32,6 +32,9 @@ typedef enum : NSInteger {
 @end
 
 @interface SynopsisMetadataEncoder : NSObject
+
++ (CMFormatDescriptionRef) copyMetadataFormatDesc;
+
 @property (readonly) NSUInteger version;
 @property (readonly) SynopsisMetadataEncoderExportOption exportOption;
 
