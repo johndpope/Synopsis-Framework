@@ -128,7 +128,7 @@
         
         NSMutableArray<NSOperationQueue*>* moduleQueues = [NSMutableArray new];
         
-        [self.cpuModules enumerateObjectsUsingBlock:^(CPUModule * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self.cpuModuleClasses enumerateObjectsUsingBlock:^(CPUModule * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
 
             NSOperationQueue* moduleQueue = [[NSOperationQueue alloc] init];
             moduleQueue.maxConcurrentOperationCount = 1;
