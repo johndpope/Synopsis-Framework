@@ -137,48 +137,55 @@
         }];
         
         self.moduleOperationQueues = [moduleQueues copy];
+        
         self.serialDictionaryQueue = dispatch_queue_create("module_queue", DISPATCH_QUEUE_CONCURRENT_WITH_AUTORELEASE_POOL);
     }
     
     return self;
 }
 
+static bool didLazyInitModulesAlready = NO;
 - (void) beginMetadataAnalysisSessionWithQuality:(SynopsisAnalysisQualityHint)qualityHint device:(id<MTLDevice>)device;
 {
 //    dispatch_async(dispatch_get_main_queue(), ^{
 //        cv::namedWindow("OpenCV Debug", CV_WINDOW_NORMAL);
 //    });
     
-    self.device = device;
-
-    for(NSString* classString in self.cpuModuleClasses)
+    if(!didLazyInitModulesAlready)
     {
-        Class moduleClass = NSClassFromString(classString);
+        self.device = device;
         
-        CPUModule* module = [(CPUModule*)[moduleClass alloc] initWithQualityHint:qualityHint];
-        
-        if(module != nil)
+        for(NSString* classString in self.cpuModuleClasses)
         {
-            [self.cpuModules addObject:module];
+            Class moduleClass = NSClassFromString(classString);
             
-            if(self.verboseLog)
-                self.verboseLog([@"Loaded Module: " stringByAppendingString:classString]);
+            CPUModule* module = [(CPUModule*)[moduleClass alloc] initWithQualityHint:qualityHint];
+            
+            if(module != nil)
+            {
+                [self.cpuModules addObject:module];
+                
+                if(self.verboseLog)
+                    self.verboseLog([@"Loaded Module: " stringByAppendingString:classString]);
+            }
         }
-    }
-    
-    for(NSString* classString in self.gpuModuleClasses)
-    {
-        Class moduleClass = NSClassFromString(classString);
         
-        GPUModule* module = [(GPUModule*)[moduleClass alloc] initWithQualityHint:qualityHint device:self.device];
-        
-        if(module != nil)
+        for(NSString* classString in self.gpuModuleClasses)
         {
-            [self.gpuModules addObject:module];
+            Class moduleClass = NSClassFromString(classString);
             
-            if(self.verboseLog)
-                self.verboseLog([@"Loaded Module: " stringByAppendingString:classString]);
+            GPUModule* module = [(GPUModule*)[moduleClass alloc] initWithQualityHint:qualityHint device:self.device];
+            
+            if(module != nil)
+            {
+                [self.gpuModules addObject:module];
+                
+                if(self.verboseLog)
+                    self.verboseLog([@"Loaded Module: " stringByAppendingString:classString]);
+            }
         }
+        
+        didLazyInitModulesAlready = YES;
     }
 }
 
@@ -311,7 +318,7 @@
                 [self.moduleOperationQueues[idx] addOperation:moduleOperation];
             }
         }];
-        
+
         [self.moduleOperationQueues[0] addOperation:cpuCompletionOp];
     }
     
