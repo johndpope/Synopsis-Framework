@@ -136,6 +136,7 @@
             [moduleQueues addObject:moduleQueue];
         }];
         
+        self.moduleOperationQueues = [moduleQueues copy];
         self.serialDictionaryQueue = dispatch_queue_create("module_queue", DISPATCH_QUEUE_CONCURRENT_WITH_AUTORELEASE_POOL);
     }
     
