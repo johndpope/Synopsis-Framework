@@ -51,7 +51,6 @@
     self = [super initWithQualityHint:qualityHint device:device];
     if(self)
     {
-        self.averageFeatureVec = nil;
         
         linear = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
 
@@ -98,6 +97,11 @@
 + (SynopsisVideoFormat) requiredVideoFormat
 {
     return SynopsisVideoFormatBGR8;
+}
+
+- (void) beginAndClearCachedResults
+{
+    self.averageFeatureVec = nil;
 }
 
 - (void) analyzedMetadataForCurrentFrame:(id<SynopsisVideoFrame>)frame previousFrame:(id<SynopsisVideoFrame>)lastFrame commandBuffer:(id<MTLCommandBuffer>)buffer completionBlock:(GPUModuleCompletionBlock)completionBlock;
