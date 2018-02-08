@@ -25,6 +25,7 @@
 {
     CGColorSpaceRef linear;
 }
+
 @property (readwrite, strong) CIContext* context;
 @property (readwrite, strong) VNSequenceRequestHandler* sequenceRequestHandler;
 
@@ -36,6 +37,7 @@
 @property (readwrite, strong) CinemaNetShotTypeClassifier* cinemaNetShotTypeClassifierMLModel;
 @property (readwrite, strong) PlacesNetClassifier* placesNetClassifierMLModel;
 
+@property (readwrite, strong) NSMutableArray<NSNumber*>* averageFeatureVec;
 @property (readwrite, strong) NSArray* labels;
 
 
@@ -49,6 +51,8 @@
     self = [super initWithQualityHint:qualityHint device:device];
     if(self)
     {
+        self.averageFeatureVec = nil;
+        
         linear = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
 
         NSDictionary* opt = @{ kCIContextWorkingColorSpace : (__bridge id)linear,
@@ -112,9 +116,26 @@
             
             NSMutableArray<NSNumber*>*vec = [NSMutableArray new];
             
-            for(NSUInteger i = 0; i < featureVector.count; i++)
+            if(self.averageFeatureVec == nil)
             {
-                vec[i] = featureVector[i];
+                for(NSUInteger i = 0; i < featureVector.count; i++)
+                {
+                    vec[i] = featureVector[i];
+                }
+                
+                self.averageFeatureVec = vec;
+            }
+            
+            else
+            {
+                for(NSUInteger i = 0; i < featureVector.count; i++)
+                {
+                    NSNumber* avgFeatureValue = self.averageFeatureVec[i];
+                    NSNumber* featureValue = featureVector[i];
+                    
+                    self.averageFeatureVec[i] = @( (avgFeatureValue.floatValue + featureValue.floatValue) * 0.5 );
+                    vec[i] = featureValue;
+                }
             }
             
             metadata = [NSMutableDictionary dictionary];
@@ -240,7 +261,10 @@
 
 - (NSDictionary*) finalizedAnalysisMetadata;
 {
-    return @{kSynopsisStandardMetadataDescriptionDictKey: (self.labels) ? self.labels : @[ @"" ] };
+    return @{
+             kSynopsisStandardMetadataFeatureVectorDictKey : self.averageFeatureVec,
+             kSynopsisStandardMetadataDescriptionDictKey: (self.labels) ? self.labels : @[ @"" ],
+             };
 }
 
 @end
