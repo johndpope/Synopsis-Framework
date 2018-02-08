@@ -21,6 +21,13 @@
 
 @implementation HistogramModule
 
+- (void) beginAndClearCachedResults
+{
+    accumulatedHist0 = cv::Mat::zeros( accumulatedHist0.size(), accumulatedHist0.type() );
+    accumulatedHist1 = cv::Mat::zeros( accumulatedHist1.size(), accumulatedHist1.type() );
+    accumulatedHist2 = cv::Mat::zeros( accumulatedHist2.size(), accumulatedHist2.type() );
+}
+
 - (NSDictionary*) analyzedMetadataForCurrentFrame:(id<SynopsisVideoFrame>)frame previousFrame:(id<SynopsisVideoFrame>)lastFrame;
 {
     SynopsisVideoFrameOpenCV* frameCV = (SynopsisVideoFrameOpenCV*)frame;
