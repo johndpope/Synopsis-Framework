@@ -25,6 +25,7 @@
 + (SynopsisVideoFormat) requiredVideoFormat;
 + (SynopsisVideoBacking) requiredVideoBacking;
 
+- (void) beginAndClearCachedResults;
 - (NSDictionary*) analyzedMetadataForCurrentFrame:(id<SynopsisVideoFrame>)frame previousFrame:(id<SynopsisVideoFrame>)lastFrame;
 - (NSDictionary*) finaledAnalysisMetadata;
 

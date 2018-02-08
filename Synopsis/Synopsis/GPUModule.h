@@ -31,6 +31,8 @@ typedef void (^GPUModuleCompletionBlock)(NSDictionary*, NSError*);
 
 - (NSString*) moduleName;
 
+- (void) beginAndClearCachedResults;
+
 - (void) analyzedMetadataForCurrentFrame:(id<SynopsisVideoFrame>)frame previousFrame:(id<SynopsisVideoFrame>)lastFrame commandBuffer:(id<MTLCommandBuffer>)buffer completionBlock:(GPUModuleCompletionBlock)completionBlock;
 
 - (NSDictionary*) finalizedAnalysisMetadata;

@@ -47,6 +47,11 @@
     return SynopsisVideoFormatUnknown;
 }
 
+- (void) beginAndClearCachedResults
+{
+    [NSObject doesNotRecognizeSelector:_cmd];
+}
+
 - (void) analyzedMetadataForCurrentFrame:(id<SynopsisVideoFrame>)frame previousFrame:(id<SynopsisVideoFrame>)lastFrame commandBuffer:(id<MTLCommandBuffer>)buffer completionBlock:(GPUModuleCompletionBlock)completionBlock
 {
     [NSObject doesNotRecognizeSelector:_cmd];

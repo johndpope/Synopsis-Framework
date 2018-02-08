@@ -187,6 +187,14 @@ static bool didLazyInitModulesAlready = NO;
         
         didLazyInitModulesAlready = YES;
     }
+    
+    [self.cpuModules enumerateObjectsUsingBlock:^(CPUModule * _Nonnull module, NSUInteger idx, BOOL * _Nonnull stop) {
+        [module beginAndClearCachedResults];
+    }];
+
+    [self.gpuModules enumerateObjectsUsingBlock:^(GPUModule * _Nonnull module, NSUInteger idx, BOOL * _Nonnull stop) {
+        [module beginAndClearCachedResults];
+    }];
 }
 
 - (void) analyzeFrameCache:(SynopsisVideoFrameCache*)frameCache commandBuffer:(id<MTLCommandBuffer>)frameCommandBuffer completionHandler:(SynopsisAnalyzerPluginFrameAnalyzedCompleteCallback)completionHandler
