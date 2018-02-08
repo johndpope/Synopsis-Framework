@@ -17,9 +17,12 @@
 //#define FROM_PERCEPTUAL cv::COLOR_HLS2BGR
 //#define TO_PERCEPTUAL cv::COLOR_BGR2Luv
 //#define FROM_PERCEPTUAL cv::COLOR_Luv2BGR
+
 #define TO_PERCEPTUAL cv::COLOR_BGR2Lab
 #define FROM_PERCEPTUAL cv::COLOR_Lab2BGR
 
+//#define TO_PERCEPTUAL cv::COLOR_BGR2XYZ
+//#define FROM_PERCEPTUAL cv::COLOR_XYZ2BGR
 
 
 #endif /* Defines_h */
