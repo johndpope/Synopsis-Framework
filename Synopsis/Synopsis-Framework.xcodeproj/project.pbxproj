@@ -191,6 +191,7 @@
 		1B7358A71DEF65770053BC06 /* CIEDE2000.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358A51DEF65770053BC06 /* CIEDE2000.cpp */; };
 		1B7358AA1DEF68330053BC06 /* libtensorflow_cc.so in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B7358651DEF5AD20053BC06 /* libtensorflow_cc.so */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1B756AD91FA5160A0050A96F /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B756AD81FA5160A0050A96F /* Vision.framework */; };
+		1B8027FC202B58770092F40C /* DominantColorModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358721DEF5FE40053BC06 /* DominantColorModule.mm */; };
 		1B8358981F42110600F86F0F /* libblas.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8358971F42110600F86F0F /* libblas.tbd */; };
 		1B8358A41F42285000F86F0F /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8358A31F42285000F86F0F /* opencv2.framework */; };
 		1B8358A51F42285000F86F0F /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8358A31F42285000F86F0F /* opencv2.framework */; };
@@ -6582,6 +6583,7 @@
 				1B551E801EFAEE00004C077B /* GZIP.m in Sources */,
 				1B70D087200D4EE000A414AF /* SynopsisCache.m in Sources */,
 				1BEDA4802024DF4500E4617C /* error_private.c in Sources */,
+				1B8027FC202B58770092F40C /* DominantColorModule.mm in Sources */,
 				1B551E6E1EF9E99D004C077B /* NSDictionary+JSONString.m in Sources */,
 				1BEDA47C2024DF3C00E4617C /* pool.c in Sources */,
 				1BC4733F20166F060091A751 /* CinemaNetShotTypeClassifier.mlmodel in Sources */,

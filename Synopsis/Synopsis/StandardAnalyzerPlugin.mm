@@ -92,8 +92,8 @@
 
         self.cpuModuleClasses  = @[// AVG Color is useless and just an example module
 //                                [AverageColor className],
-//                                   NSStringFromClass([DominantColorModule class]),
-//                                   NSStringFromClass([HistogramModule class]),
+                                   NSStringFromClass([DominantColorModule class]),
+                                   NSStringFromClass([HistogramModule class]),
 //                                   [MotionModule className],
 //                                   [TensorflowFeatureModule className],
 //                                   [TrackerModule className],
