@@ -106,60 +106,56 @@
 
 #pragma mark - Image
 
-- (NSString*) imageKeyForItem:(SynopsisMetadataItem* _Nonnull)metadataItem
+- (NSString*) imageKeyForItem:(SynopsisMetadataItem* _Nonnull)metadataItem atTime:(CMTime)time
 {
-    return [@"Image-" stringByAppendingString:metadataItem.url.absoluteString];
+    NSString* timeString = (NSString*)CFBridgingRelease(CMTimeCopyDescription(kCFAllocatorDefault, time));
+    return [NSString stringWithFormat:@"Image-%@-%@", timeString, metadataItem.url.absoluteString, nil];
 }
 
-- (void) cachedImageForItem:(SynopsisMetadataItem* _Nonnull)metadataItem completionHandler:(SynopsisCacheCompletionHandler _Nullable )handler
+- (void) cachedImageForItem:(SynopsisMetadataItem* _Nonnull)metadataItem atTime:(CMTime)time completionHandler:(SynopsisCacheCompletionHandler _Nullable )handler;
 {
     NSBlockOperation* operation = [NSBlockOperation blockOperationWithBlock:^{
-//
-//        NSString* key = [self imageKeyForItem:metadataItem];
-//
-//        NSImage* cachedImage = nil;
-//        cachedImage = [self.cache objectForKey:key];
-//
-//        if(cachedImage)
-//        {
-//            if(handler)
-//            {
-//                handler(cachedImage, nil);
-//            }
-//        }
-//        // Generate and cache if nil
-//        else if(!cachedImage && self.acceptNewOperations)
-//        {
-//            AVAssetImageGenerator* imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:metadataItem.urlAsset];
-//
-//            imageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
+
+        NSString* key = [self imageKeyForItem:metadataItem atTime:time];
+
+        CGImageRef cachedImage = NULL;
+        cachedImage = CFBridgingRetain( [self.cache objectForKey:key] );
+
+        if(cachedImage)
+        {
+            if(handler)
+            {
+                handler((__bridge id _Nullable)(cachedImage), nil);
+            }
+        }
+        // Generate and cache if nil
+        else if(!cachedImage && self.acceptNewOperations)
+        {
+            AVAssetImageGenerator* imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:metadataItem.urlAsset];
+
+            imageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
 //            imageGenerator.maximumSize = CGSizeMake(300, 300);
-//            imageGenerator.appliesPreferredTrackTransform = YES;
-//
-//            [imageGenerator generateCGImagesAsynchronouslyForTimes:@[ [NSValue valueWithCMTime:kCMTimeZero]] completionHandler:^(CMTime requestedTime, CGImageRef  _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error){
-//
-//                if(error == nil && image != NULL)
-//                {
-//                    NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size:NSMakeSize(CGImageGetWidth(image), CGImageGetHeight(image))];
-//
-//                    if(nsImage)
-//                    {
-//                        [self.cache setObject:nsImage forKey:key];
-//                    }
-//
-//                    if(handler)
-//                        handler(nsImage, nil);
-//
-//                }
-//                else
-//                {
-//                    NSError* error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1 userInfo:nil];
-//
-//                    if(handler)
-//                        handler(nil, error);
-//                }
-//            }];
-//        }
+            imageGenerator.appliesPreferredTrackTransform = YES;
+
+            [imageGenerator generateCGImagesAsynchronouslyForTimes:@[ [NSValue valueWithCMTime:kCMTimeZero]] completionHandler:^(CMTime requestedTime, CGImageRef  _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error){
+
+                if(error == nil && image != NULL)
+                {
+                    [self.cache setObject:(__bridge id _Nonnull)(image) forKey:key];
+
+                    if(handler)
+                        handler((__bridge id _Nullable)(cachedImage), nil);
+
+                }
+                else
+                {
+                    NSError* error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1 userInfo:nil];
+
+                    if(handler)
+                        handler(nil, error);
+                }
+            }];
+        }
     }];
 
     [self.cacheMediaOperationQueue addOperation:operation];
