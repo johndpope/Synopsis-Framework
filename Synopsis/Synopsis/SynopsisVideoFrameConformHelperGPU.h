@@ -12,7 +12,7 @@
 
 @interface SynopsisVideoFrameConformHelperGPU : NSObject
 
-- (instancetype) initWithDevice:(id<MTLDevice>)device inFlightBuffers:(NSUInteger)bufferCount;
+- (instancetype) initWithCommandQueue:(id<MTLCommandQueue>)queue inFlightBuffers:(NSUInteger)bufferCount;
 
 - (void) conformPixelBuffer:(CVPixelBufferRef)pixelbuffer
                   toFormats:(NSArray<SynopsisVideoFormatSpecifier*>*)formatSpecifiers

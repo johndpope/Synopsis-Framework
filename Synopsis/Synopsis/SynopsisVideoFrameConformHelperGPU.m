@@ -19,7 +19,7 @@
 }
 //@property (readwrite, strong) NSOperationQueue* conformQueue;
 
-@property (readwrite, strong) id<MTLDevice>device;
+@property (readwrite, strong) id<MTLCommandQueue>commandQueue;
 @property (readwrite, strong) MPSImageConversion* imageConversion;
 @property (readwrite, strong) MPSImageBilinearScale* scaleForCoreML;
 
@@ -27,16 +27,16 @@
 @end
 
 @implementation SynopsisVideoFrameConformHelperGPU
-- (instancetype) initWithDevice:(id<MTLDevice>)device inFlightBuffers:(NSUInteger)bufferCount
+- (instancetype) initWithCommandQueue:(id<MTLCommandQueue>)queue inFlightBuffers:(NSUInteger)bufferCount;
 
 {
     self = [super init];
     if(self)
     {
-        self.device = device;
+        self.commandQueue = queue;
         
-        CVMetalTextureCacheCreate(kCFAllocatorDefault, NULL, self.device, NULL, &textureCacheRef);
-        self.scaleForCoreML = [[MPSImageBilinearScale alloc] initWithDevice:self.device];
+        CVMetalTextureCacheCreate(kCFAllocatorDefault, NULL, self.commandQueue.device, NULL, &textureCacheRef);
+        self.scaleForCoreML = [[MPSImageBilinearScale alloc] initWithDevice:self.commandQueue.device];
     }
     
     return self;
@@ -61,6 +61,8 @@ static NSUInteger frameComplete = 0;
 {
     frameSubmit++;
 
+    id<MTLCommandBuffer> conformBuffer = self.commandQueue.commandBuffer;
+    
 //    NSBlockOperation* conformOperation = [NSBlockOperation blockOperationWithBlock:^{
 
         CVPixelBufferRetain(pixelBuffer);
@@ -140,12 +142,12 @@ static NSUInteger frameComplete = 0;
             resizeDescriptor.channelFormat = MPSImageFeatureChannelFormatUnorm8;
             resizeDescriptor.cpuCacheMode = MTLCPUCacheModeDefaultCache;
     
-            MPSImage* resizeTarget = [[MPSImage alloc] initWithDevice:self.device imageDescriptor:resizeDescriptor];
+    MPSImage* resizeTarget = [[MPSImage alloc] initWithDevice:self.commandQueue.device imageDescriptor:resizeDescriptor];
             resizeTarget.label = [NSString stringWithFormat:@"%@, %lu", @"Resize", (unsigned long)frameSubmit];
     
-            [self.scaleForCoreML encodeToCommandBuffer:commandBuffer sourceImage:sourceInput destinationImage:resizeTarget];
+            [self.scaleForCoreML encodeToCommandBuffer:conformBuffer sourceImage:sourceInput destinationImage:resizeTarget];
     
-//        [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> commandBuffer) {
+    [conformBuffer addCompletedHandler:^(id<MTLCommandBuffer> commandBuffer) {
     
             if(completionBlock)
             {
@@ -168,9 +170,9 @@ static NSUInteger frameComplete = 0;
                 // We always have to release our pixel buffer
                 CVPixelBufferRelease(pixelBuffer);
             }
-//        }];
+        }];
     
-//        [commandBuffer commit];
+        [conformBuffer commit];
     
 //    }];
 //    

@@ -37,7 +37,7 @@
         self.inFlightBuffers = dispatch_semaphore_create(bufferCount);
 
         self.conformCPUHelper = [[SynopsisVideoFrameConformHelperCPU alloc] initWithFlightBuffers:bufferCount];
-        self.conformGPUHelper = [[SynopsisVideoFrameConformHelperGPU alloc] initWithDevice:self.device inFlightBuffers:bufferCount];
+        self.conformGPUHelper = [[SynopsisVideoFrameConformHelperGPU alloc] initWithCommandQueue:self.commandQueue inFlightBuffers:bufferCount];
 
         self.serialCompletionQueue = dispatch_queue_create("info.synopsis.formatConversion", DISPATCH_QUEUE_SERIAL);
         
