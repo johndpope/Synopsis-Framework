@@ -91,7 +91,7 @@ static ZSTD_DDict* decompressionDict = nil;
         return nil;
     }
     
-    const void* decompressionBuffer = malloc(expectedDecompressedSize);
+    void* decompressionBuffer = malloc(expectedDecompressedSize);
 
     size_t decompressedSize = ZSTD_decompress_usingDDict(decompressionContext, decompressionBuffer, expectedDecompressedSize, data.bytes, data.length, decompressionDict);
     
