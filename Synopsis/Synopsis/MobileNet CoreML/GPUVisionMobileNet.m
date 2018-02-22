@@ -266,8 +266,8 @@
 - (NSDictionary*) finalizedAnalysisMetadata;
 {
     return @{
-             kSynopsisStandardMetadataFeatureVectorDictKey : self.averageFeatureVec,
-             kSynopsisStandardMetadataDescriptionDictKey: (self.labels) ? self.labels : @[ @"" ],
+             kSynopsisStandardMetadataFeatureVectorDictKey : (self.averageFeatureVec) ? self.averageFeatureVec : @[ ],
+             kSynopsisStandardMetadataDescriptionDictKey: (self.labels) ? self.labels : @[ ],
              };
 }
 
