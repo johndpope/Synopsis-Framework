@@ -21,7 +21,6 @@
 #define SYNOPSIS_VERSION_NUMBER  ((SYNOPSIS_VERSION_MAJOR *100*100) + (SYNOPSIS_VERSION_MINOR *100) + SYNOPSIS_VERSION_PATCH)
 #define SYNOPSIS_LIB_VERSION SYNOPSIS_VERSION_MAJOR.SYNOPSIS_VERSION_MINOR.SYNOPSIS_VERSION_PATCH
 
-
 // Identifier Synopsis for AVMetadataItems
 extern NSString* const kSynopsisMetadataIdentifier;
 extern NSString* const kSynopsisMetadataVersionKey;
@@ -32,7 +31,6 @@ extern NSUInteger const kSynopsisMetadataVersionPreAlpha;
 extern NSUInteger const kSynopsisMetadataVersionAlpha1;
 extern NSUInteger const kSynopsisMetadataVersionAlpha2;
 
-
 //extern NSUInteger const kSynopsisMetadataVersionBeta;
 //extern NSUInteger const kSynopsisMetadataVersionOne;
 
@@ -41,7 +39,6 @@ extern NSUInteger const kSynopsisMetadataVersionAlpha2;
 extern NSString* const kSynopsisMetadataHFSAttributeVersionKey;
 extern NSUInteger const kSynopsisMetadataHFSAttributeVersionValue;
 extern NSString* const kSynopsisMetadataHFSAttributeDescriptorKey;
-
 
 // Supported Synopsis NSSortDescriptor Keys
 extern NSString* const kSynopsisStandardMetadataDictKey;
@@ -86,7 +83,6 @@ typedef enum : unsigned int {
     SynopsisFrameCacheFormatOpenCVPerceptual
 } SynopsisFrameCacheFormat;
 
-
 #import <Synopsis/SynopsisVideoFormatConverter.h>
 #import <Synopsis/SynopsisDenseFeature.h>
 #import <Synopsis/MetadataComparisons.h>
@@ -110,19 +106,16 @@ typedef enum : unsigned int {
 #import <Synopsis/NSSortDescriptor+SynopsisMetadata.h>
 #import <Synopsis/NSPredicate+SynopsisMetadata.h>
 
-
 // UI
 #import <Synopsis/SynopsisLayer.h>
 #import <Synopsis/SynopsisDominantColorLayer.h>
 #import <Synopsis/SynopsisHistogramLayer.h>
 #import <Synopsis/SynopsisDenseFeatureLayer.h>
 
-
 // Utilities
-NSArray* SynopsisSupportedFileTypes();
+NSArray* SynopsisSupportedFileTypes(void);
 #import <Synopsis/SynopsisCache.h>
 #import <Synopsis/Color+linearRGBColor.h>
-
 
 #if TARGET_OS_OSX
 // Method to check support files types for metadata introspection
