@@ -45,7 +45,11 @@
 - (void) dealloc
 {
     if(textureCacheRef)
+    {
+        CVMetalTextureCacheFlush(textureCacheRef, 0);
         CFRelease(textureCacheRef);
+        textureCacheRef = NULL;
+    }
 }
 
 
