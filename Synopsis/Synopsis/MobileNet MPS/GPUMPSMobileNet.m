@@ -10,7 +10,6 @@
 #import "GPUMPSMobileNetDataLoader.h"
 #import "SlimMPS.h"
 #import "MPSImage+Float.h"
-#import <Syphon/Syphon.h>
 
 @interface GPUMPSMobileNet ()
 {
@@ -151,8 +150,6 @@
 @property (readwrite, strong) GPUMPSMobileNetDataLoader* conv6_1_s1_b;
 @property (readwrite, strong) GPUMPSMobileNetDataLoader* fc7_w;
 @property (readwrite, strong) GPUMPSMobileNetDataLoader* fc7_b;
-
-@property (readwrite, strong) id<SyphonServerMetal> server;
 
 @end
 
