@@ -68,6 +68,9 @@
 
 @property (readwrite, strong) id<MTLDevice> device;
 
+@property (readwrite, assign) BOOL didLazyInitModulesAlready;
+
+
 @end
 
 @implementation StandardAnalyzerPlugin
@@ -139,19 +142,21 @@
         self.moduleOperationQueues = [moduleQueues copy];
         
         self.serialDictionaryQueue = dispatch_queue_create("module_queue", DISPATCH_QUEUE_CONCURRENT_WITH_AUTORELEASE_POOL);
+        
+        self.didLazyInitModulesAlready = NO;
+        
     }
     
     return self;
 }
 
-static bool didLazyInitModulesAlready = NO;
 - (void) beginMetadataAnalysisSessionWithQuality:(SynopsisAnalysisQualityHint)qualityHint device:(id<MTLDevice>)device;
 {
 //    dispatch_async(dispatch_get_main_queue(), ^{
 //        cv::namedWindow("OpenCV Debug", CV_WINDOW_NORMAL);
 //    });
     
-    if(!didLazyInitModulesAlready)
+    if(!self.didLazyInitModulesAlready)
     {
         self.device = device;
         
@@ -185,7 +190,7 @@ static bool didLazyInitModulesAlready = NO;
             }
         }
         
-        didLazyInitModulesAlready = YES;
+        self.didLazyInitModulesAlready = YES;
     }
     
     [self.cpuModules enumerateObjectsUsingBlock:^(CPUModule * _Nonnull module, NSUInteger idx, BOOL * _Nonnull stop) {
