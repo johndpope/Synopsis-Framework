@@ -204,12 +204,12 @@
 
 - (void) analyzeFrameCache:(SynopsisVideoFrameCache*)frameCache commandBuffer:(id<MTLCommandBuffer>)frameCommandBuffer completionHandler:(SynopsisAnalyzerPluginFrameAnalyzedCompleteCallback)completionHandler
 {
-    static NSUInteger frameSubmit = 0;
-    static NSUInteger frameComplete = 0;
+//    static NSUInteger frameSubmit = 0;
+//    static NSUInteger frameComplete = 0;
 
     NSMutableDictionary* dictionary = [NSMutableDictionary new];
 
-    frameSubmit++;
+//    frameSubmit++;
 //    NSLog(@"Analyzer Submitted frame %lu", frameSubmit);
     
     dispatch_group_t cpuAndGPUCompleted = dispatch_group_create();
@@ -218,7 +218,7 @@
 
     dispatch_group_notify(cpuAndGPUCompleted, self.serialDictionaryQueue, ^{
         
-        frameComplete++;
+//        frameComplete++;
 //        NSLog(@"Analyer Completed frame %lu", frameComplete);
 
         if(completionHandler)
@@ -244,6 +244,8 @@
 
            [self.gpuModules enumerateObjectsUsingBlock:^(GPUModule * _Nonnull module, NSUInteger idx, BOOL * _Nonnull stop) {
                
+               dispatch_group_enter(cpuAndGPUCompleted);
+
                 SynopsisVideoFormat requiredFormat = [[module class] requiredVideoFormat];
                 SynopsisVideoBacking requiredBacking = [[module class] requiredVideoBacking];
                 SynopsisVideoFormatSpecifier* formatSpecifier = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:requiredFormat backing:requiredBacking];
@@ -276,6 +278,9 @@
                             {
                                 [dictionary addEntriesFromDictionary:result];
                             }
+                            
+                            dispatch_group_leave(cpuAndGPUCompleted);
+
                         });
                     }];
                 }
