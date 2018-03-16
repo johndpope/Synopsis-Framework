@@ -64,22 +64,35 @@
 
 
 // We test equality based on the file system object we are represeting.
+
+- (BOOL) isEqualToSynopsisMetadataItem:(SynopsisMetadataItem*)object
+{
+    BOOL equal = [self.url isEqual:object.url];
+    
+    // helpful for debugging even if stupid
+    if(equal)
+        return YES;
+    
+    return NO;
+
+}
+
 - (BOOL) isEqual:(id)object
 {
-    if([object isKindOfClass:[SynopsisMetadataItem class]])
-    {
-        SynopsisMetadataItem* obj = (SynopsisMetadataItem*)object;
-        
-        BOOL equal = [self.url.absoluteURL isEqual:obj.url.absoluteURL];
-        
-        // helpful for debugging even if stupid 
-        if(equal)
-            return YES;
-        
-        return NO;
-    }
+    if(self == object)
+        return YES;
     
-    return [super isEqual:object];
+    return NO;
+    
+//    if(![object isKindOfClass:[SynopsisMetadataItem class]])
+//        return NO;
+//    
+//    return [self isEqualToSynopsisMetadataItem:(SynopsisMetadataItem*)object];
+}
+
+- (NSUInteger) hash
+{
+    return self.url.hash;
 }
 
 - (id) valueForKey:(NSString *)key
