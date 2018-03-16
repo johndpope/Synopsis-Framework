@@ -23,6 +23,8 @@
 @property (readwrite, strong) MPSImageConversion* imageConversion;
 @property (readwrite, strong) MPSImageBilinearScale* scaleForCoreML;
 
+@property (readwrite, atomic, assign) NSUInteger frameSubmit;
+@property (readwrite, atomic, assign) NSUInteger frameComplete;
 
 @end
 
@@ -53,9 +55,6 @@
 }
 
 
-static NSUInteger frameSubmit = 0;
-static NSUInteger frameComplete = 0;
-
 - (void) conformPixelBuffer:(CVPixelBufferRef)pixelBuffer
                   toFormats:(NSArray<SynopsisVideoFormatSpecifier*>*)formatSpecifiers
               withTransform:(CGAffineTransform)transform
@@ -63,7 +62,7 @@ static NSUInteger frameComplete = 0;
               commandBuffer:(id<MTLCommandBuffer>)commandBuffer
             completionBlock:(SynopsisVideoFrameConformSessionCompletionBlock)completionBlock;
 {
-    frameSubmit++;
+    self.frameSubmit++;
 
     id<MTLCommandBuffer> conformBuffer = self.commandQueue.commandBuffer;
     
@@ -86,7 +85,7 @@ static NSUInteger frameComplete = 0;
         assert(inputMTLTexture != NULL);
         
         MPSImage* sourceInput = [[MPSImage alloc] initWithTexture:inputMTLTexture featureChannels:3];
-        sourceInput.label = [NSString stringWithFormat:@"%@, %lu", @"Source", (unsigned long)frameSubmit];
+        sourceInput.label = [NSString stringWithFormat:@"%@, %lu", @"Source", (unsigned long)self.frameSubmit];
         
 #pragma mark - Convert :
         
@@ -147,7 +146,7 @@ static NSUInteger frameComplete = 0;
             resizeDescriptor.cpuCacheMode = MTLCPUCacheModeDefaultCache;
     
     MPSImage* resizeTarget = [[MPSImage alloc] initWithDevice:self.commandQueue.device imageDescriptor:resizeDescriptor];
-            resizeTarget.label = [NSString stringWithFormat:@"%@, %lu", @"Resize", (unsigned long)frameSubmit];
+            resizeTarget.label = [NSString stringWithFormat:@"%@, %lu", @"Resize", (unsigned long)self.frameSubmit];
     
             [self.scaleForCoreML encodeToCommandBuffer:conformBuffer sourceImage:sourceInput destinationImage:resizeTarget];
     
@@ -155,7 +154,7 @@ static NSUInteger frameComplete = 0;
     
             if(completionBlock)
             {
-                frameComplete++;
+                self.frameComplete++;
 //                NSLog(@"Conform Completed frame %lu", frameComplete);
                 SynopsisVideoFrameCache* cache = [[SynopsisVideoFrameCache alloc] init];
                 SynopsisVideoFormatSpecifier* resultFormat = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:SynopsisVideoFormatBGR8 backing:SynopsisVideoBackingGPU];
