@@ -10,6 +10,7 @@
 
 @interface SynopsisVideoFrameCache ()
 @property (readwrite, strong) NSMutableArray* videoCacheArray;
+@property (readwrite, strong) NSLock* arrayLock;
 @end
 @implementation SynopsisVideoFrameCache
 
@@ -18,29 +19,43 @@
     self = [super init];
     if(self)
     {
-        self.videoCacheArray = [NSMutableArray new];
+//        @synchronized(self)
+        {
+            self.videoCacheArray = [NSMutableArray new];
+            self.arrayLock = [[NSLock alloc] init];
+        }
     }
     return self;
 }
 
 - (void) cacheFrame:(id<SynopsisVideoFrame>)frame
 {
-    [self.videoCacheArray addObject:frame];
+//    @synchronized(self)
+    {
+        [self.arrayLock lock];
+        [self.videoCacheArray addObject:frame];
+        [self.arrayLock unlock];
+    }
 }
 
 - (id<SynopsisVideoFrame>) cachedFrameForFormatSpecifier:(SynopsisVideoFormatSpecifier*)formatSpecifier;
 {
-    id<SynopsisVideoFrame> matchingFrame = nil;
-    for(id<SynopsisVideoFrame>frame in self.videoCacheArray)
+//    @synchronized(self)
     {
-        if( [frame.videoFormatSpecifier isEqual:formatSpecifier])
+        [self.arrayLock lock];
+        id<SynopsisVideoFrame> matchingFrame = nil;
+        for(id<SynopsisVideoFrame>frame in self.videoCacheArray)
         {
-            matchingFrame = frame;
-            break;
+            if( [frame.videoFormatSpecifier isEqual:formatSpecifier])
+            {
+                matchingFrame = frame;
+                break;
+            }
         }
+        
+        [self.arrayLock unlock];
+        return matchingFrame;
     }
-    
-    return matchingFrame;
 }
 
 
