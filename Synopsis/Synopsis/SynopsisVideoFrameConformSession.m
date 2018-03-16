@@ -82,43 +82,19 @@
     dispatch_group_t formatConversionGroup = dispatch_group_create();
     dispatch_group_enter(formatConversionGroup);
     
-    __block SynopsisVideoFrameCache* cpuCache = nil;
-    __block NSError* cpuError = nil;
-
-    __block SynopsisVideoFrameCache* gpuCache = nil;
-    __block NSError* gpuError = nil;
+//    __block SynopsisVideoFrameCache* cpuCache = nil;
+//    __block NSError* cpuError = nil;
+//
+//    __block SynopsisVideoFrameCache* gpuCache = nil;
+//    __block NSError* gpuError = nil;
     
     dispatch_group_notify(formatConversionGroup, self.serialCompletionQueue, ^{
         
         if(completionBlock)
         {
-            for(SynopsisVideoFormatSpecifier* format in localCPUFormats)
-            {
-                id<SynopsisVideoFrame> frame = [cpuCache cachedFrameForFormatSpecifier:format];
-                
-                if(frame)
-                {
-                    [allFormatCache cacheFrame:frame];
-                }
-            }
-            for(SynopsisVideoFormatSpecifier* format in localGPUFormats)
-            {
-                id<SynopsisVideoFrame> frame = [gpuCache cachedFrameForFormatSpecifier:format];
-                
-                if(frame)
-                {
-                    [allFormatCache cacheFrame:frame];
-                }
-            }
-
-
             completionBlock(commandBuffer, allFormatCache, nil);
             
-            // Once we are done enqueing all of our commands, we commit our command buffer
-//            [commandBuffer commit];
-            
             dispatch_semaphore_signal(self.inFlightBuffers);
-
         }
     });
     
@@ -132,9 +108,18 @@
                                     withTransform:transform
                                              rect:rect
                                     commandBuffer:commandBuffer
-                                  completionBlock:^(id<MTLCommandBuffer> commandBuffer, SynopsisVideoFrameCache * cache, NSError *err) {
-                                      gpuCache = cache;
-                                      gpuError = err;
+                                  completionBlock:^(id<MTLCommandBuffer> commandBuffer, SynopsisVideoFrameCache * gpuCache, NSError *err) {
+                                      
+                                      for(SynopsisVideoFormatSpecifier* format in localGPUFormats)
+                                      {
+                                          id<SynopsisVideoFrame> frame = [gpuCache cachedFrameForFormatSpecifier:format];
+                                          
+                                          if(frame)
+                                          {
+                                              [allFormatCache cacheFrame:frame];
+                                          }
+                                      }
+                                      
                                       dispatch_group_leave(formatConversionGroup);
                                   }];
     }
@@ -146,9 +131,18 @@
                                         toFormats:localCPUFormats
                                     withTransform:transform
                                              rect:rect
-                                  completionBlock:^(id<MTLCommandBuffer> commandBuffer, SynopsisVideoFrameCache * cache, NSError *err) {
-                                      cpuCache = cache;
-                                      cpuError = err;
+                                  completionBlock:^(id<MTLCommandBuffer> commandBuffer, SynopsisVideoFrameCache * cpuCache, NSError *err) {
+
+                                      for(SynopsisVideoFormatSpecifier* format in localCPUFormats)
+                                      {
+                                          id<SynopsisVideoFrame> frame = [cpuCache cachedFrameForFormatSpecifier:format];
+                                          
+                                          if(frame)
+                                          {
+                                              [allFormatCache cacheFrame:frame];
+                                          }
+                                      }
+                                      
                                       dispatch_group_leave(formatConversionGroup);
                                   }];
     }
