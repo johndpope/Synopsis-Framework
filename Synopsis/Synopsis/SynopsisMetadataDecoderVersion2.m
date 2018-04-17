@@ -7,9 +7,9 @@
 //
 
 #import "SynopsisMetadataDecoderVersion2.h"
-
 #import <Synopsis/Synopsis.h>
 #import "zstd.h"
+#import "Color+linearRGBColor.h"
 
 static ZSTD_DDict* decompressionDict = nil;
 
@@ -134,7 +134,7 @@ static ZSTD_DDict* decompressionDict = nil;
     NSMutableDictionary* optimizedStandardDictionary = [NSMutableDictionary dictionaryWithDictionary:global[kSynopsisStandardMetadataDictKey]];
     
     // Convert all arrays of NSNumbers into linear RGB NSColors once, and only once
-    NSArray* domColors = [ColorHelper linearColorsWithArraysOfRGBComponents:[optimizedStandardDictionary valueForKey:kSynopsisStandardMetadataDominantColorValuesDictKey]];
+    NSArray* domColors = [ColorHelper newLinearColorsWithArraysOfRGBComponents:[optimizedStandardDictionary valueForKey:kSynopsisStandardMetadataDominantColorValuesDictKey]];
     
     optimizedStandardDictionary[kSynopsisStandardMetadataDominantColorValuesDictKey] = domColors;
     

@@ -15,7 +15,7 @@
 
 @implementation ColorHelper
 
-+ (CGColorRef) createColorWithLinearRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat) alpha
++ (CGColorRef) newColorWithLinearRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat) alpha
 {
     CGColorSpaceRef linear = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
     
@@ -28,12 +28,12 @@
     return color;
 }
 
-+ (CGColorRef) createColorWithLinearRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue
++ (CGColorRef) newColorWithLinearRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue
 {
-    return [self createColorWithLinearRed:green green:green blue:blue alpha:1.0];
+    return [self newColorWithLinearRed:green green:green blue:blue alpha:1.0];
 }
 
-+ (NSArray*) linearColorsWithArraysOfRGBComponents:(NSArray*)colorComponentsArray
++ (NSArray*) newLinearColorsWithArraysOfRGBComponents:(NSArray*)colorComponentsArray
 {
 	//NSLog(@"%s",__func__);
 	//NSLog(@"\t\tcolorComponentsArray is %@",colorComponentsArray);
@@ -100,7 +100,6 @@
     *(c) = output[0];
     *(c+1) = output[1];
     *(c+2) = output[2];
-
 }
 
 
