@@ -17,7 +17,7 @@
     CGImageRef cachedImage;
 }
 @property (readwrite) NSURL* url;
-@property (readwrite, strong) AVURLAsset* urlAsset;
+@property (readwrite, strong) AVAsset* asset;
 @property (readwrite, strong) NSDictionary* globalSynopsisMetadata;
 @property (readwrite, strong) SynopsisMetadataDecoder* decoder;
 @end
@@ -30,7 +30,7 @@
     if(self)
     {
         self.url = url;
-        self.urlAsset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetPreferPreciseDurationAndTimingKey : @YES}];
+        self.asset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetPreferPreciseDurationAndTimingKey : @YES}];
         if(! [self commonLoad] )
             return nil;
             
@@ -43,7 +43,7 @@
     self = [super init];
     if(self)
     {
-        self.urlAsset = asset;
+        self.asset = asset;
         if(! [self commonLoad] )
             return nil;
     }
@@ -53,7 +53,7 @@
 
 - (BOOL) commonLoad
 {
-    NSArray* metadataItems = [self.urlAsset metadata];
+    NSArray* metadataItems = [self.asset metadata];
     
     AVMetadataItem* synopsisMetadataItem = nil;
     
