@@ -81,7 +81,7 @@
         //  Generate metadata if we dont have it in the cache
         if(!globalMetadata && self.acceptNewOperations)
         {
-            NSArray* metadataItems = metadataItem.urlAsset.metadata;
+            NSArray* metadataItems = metadataItem.asset.metadata;
             for(AVMetadataItem* metadataItem in metadataItems)
             {
                 globalMetadata = [self.metadataDecoder decodeSynopsisMetadata:metadataItem];
@@ -119,7 +119,7 @@
         NSString* key = [self imageKeyForItem:metadataItem atTime:time];
 
         CGImageRef cachedImage = NULL;
-        cachedImage = CFBridgingRetain( [self.cache objectForKey:key] );
+        cachedImage = (CGImageRef) CFBridgingRetain( [self.cache objectForKey:key] );
 
         if(cachedImage)
         {
@@ -131,7 +131,7 @@
         // Generate and cache if nil
         else if(!cachedImage && self.acceptNewOperations)
         {
-            AVAssetImageGenerator* imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:metadataItem.urlAsset];
+            AVAssetImageGenerator* imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:metadataItem.asset];
 
             imageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
 //            imageGenerator.maximumSize = CGSizeMake(300, 300);
