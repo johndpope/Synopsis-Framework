@@ -7042,6 +7042,7 @@
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/Synopsis/Tensorflow/includes\"";
 				INFOPLIST_FILE = Synopsis/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -7081,6 +7082,7 @@
 				FRAMEWORK_VERSION = A;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/Synopsis/Tensorflow/includes\"";
 				INFOPLIST_FILE = Synopsis/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
