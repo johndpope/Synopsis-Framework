@@ -96,6 +96,10 @@
     NSString* aggregateMetadataAsJSON = [metadata jsonStringWithPrettyPrint:NO];
     NSData* jsonData = [aggregateMetadataAsJSON dataUsingEncoding:NSUTF8StringEncoding];
     
+    if(!jsonData)
+    {
+        return nil;
+    }
     return [self.encoder encodeSynopsisMetadataToData:jsonData];
 }
 
