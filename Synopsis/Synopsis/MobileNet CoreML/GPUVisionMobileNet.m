@@ -21,6 +21,8 @@
 
 #import "GPUVisionMobileNet.h"
 
+#import "SynopsisSlidingWindow.h"
+
 @interface GPUVisionMobileNet ()
 {
     CGColorSpaceRef linear;
@@ -38,10 +40,21 @@
 @property (readwrite, strong) PlacesNetClassifier* placesNetClassifierMLModel;
 
 @property (readwrite, strong) NSMutableArray<NSNumber*>* averageFeatureVec;
+@property (readwrite, strong) NSMutableArray<SynopsisDenseFeature*>* windowAverages;
 @property (readwrite, strong) NSArray* labels;
+
+//_Nullable@property (readwrite, strong) NSMutableArray<SynopsisDenseFeature*> slidingWindowAverage;
+
+//@property (readwrite, strong) SynopsisSlidingWindow* windowA;
+//@property (readwrite, strong) SynopsisSlidingWindow* windowB;
+
+@property (readwrite, strong) NSMutableArray<SynopsisSlidingWindow*>* windows;
 
 
 @end
+
+const NSUInteger stride = 5;
+const NSUInteger numWindows = 2;
 
 @implementation GPUVisionMobileNet
 
@@ -51,6 +64,15 @@
     self = [super initWithQualityHint:qualityHint device:device];
     if(self)
     {
+        self.windowAverages = [NSMutableArray new];
+        self.windows =[NSMutableArray new];
+
+        for(NSUInteger i = 0; i < numWindows; i++)
+        {
+            SynopsisSlidingWindow* aWindow = [[SynopsisSlidingWindow alloc] initWithLength:10 offset:stride * i];
+            [self.windows addObject:aWindow];
+        }
+    
         
         linear = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
 
@@ -142,7 +164,17 @@
                 }
             }
             
+            SynopsisDenseFeature* denseFeatureVector = [[SynopsisDenseFeature alloc] initWithFeatureArray:vec];
+
             metadata = [NSMutableDictionary dictionary];
+
+            [self.windows enumerateObjectsUsingBlock:^(SynopsisSlidingWindow * _Nonnull window, NSUInteger idx, BOOL * _Nonnull stop) {
+                SynopsisDenseFeature* possible = [window appendFeature:denseFeatureVector];
+                if(possible != nil)
+                {
+                    [self.windowAverages addObject:possible];
+                }
+            }];
             
             __block CinemaNetShotAnglesClassifierOutput* anglesOutput = nil;
             __block CinemaNetShotFramingClassifierOutput* framingOutput = nil;
@@ -265,10 +297,21 @@
 
 - (NSDictionary*) finalizedAnalysisMetadata;
 {
+    NSMutableArray* windowAverages = [NSMutableArray arrayWithCapacity:self.windowAverages.count];
+    
+    for(SynopsisDenseFeature* feature in self.windowAverages)
+    {
+        [windowAverages addObject:[feature arrayValue]];
+    }
+    
     return @{
              kSynopsisStandardMetadataFeatureVectorDictKey : (self.averageFeatureVec) ? self.averageFeatureVec : @[ ],
+             kSynopsisStandardMetadataWindowedFrameFeatureVectorDictKey  : (windowAverages) ? windowAverages : @[ ],
              kSynopsisStandardMetadataDescriptionDictKey: (self.labels) ? self.labels : @[ ],
              };
 }
+
+
+
 
 @end
