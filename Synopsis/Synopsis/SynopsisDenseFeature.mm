@@ -90,6 +90,19 @@
     return @(val);
 }
 
+- (NSArray<NSNumber*>*) arrayValue
+{
+    NSUInteger featureCount = [self featureCount];
+    NSMutableArray<NSNumber*>* arrayValue = [NSMutableArray arrayWithCapacity:featureCount];
+    
+    for(int i = 0; i < featureCount; i++)
+    {
+        [arrayValue addObject: @(self.OpenCVMat.at<float>(i,0) )];
+    }
+
+    return  arrayValue;    
+}
+
 
 @end
 

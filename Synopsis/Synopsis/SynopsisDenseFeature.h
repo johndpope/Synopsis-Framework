@@ -21,6 +21,7 @@
 // NSNumber* zerothFeature = someFeature[0];
 
 - (NSNumber*)objectAtIndexedSubscript:(NSUInteger)idx;
+- (NSArray<NSNumber*>*) arrayValue;
 
 
 @end
