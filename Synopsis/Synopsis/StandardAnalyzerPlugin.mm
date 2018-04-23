@@ -22,7 +22,7 @@
 #import "PerceptualHashModule.h"
 #import "TrackerModule.h"
 #import "SaliencyModule.h"
-#import "TensorflowFeatureModule.h"
+//#import "TensorflowFeatureModule.h"
 
 // GPU Module
 #import "GPUHistogramModule.h"
