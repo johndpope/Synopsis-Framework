@@ -35,6 +35,8 @@ NSString* const kSynopsisStandardMetadataDictKey = @"StandardMetadata";
 
 // Keys for standard modules:
 NSString* const kSynopsisStandardMetadataFeatureVectorDictKey = @"Features";
+NSString* const kSynopsisStandardMetadataWindowedFrameFeatureVectorDictKey = @"WindowedFrameFeatures";
+
 NSString* const kSynopsisStandardMetadataLabelsDictKey = @"Labels";
 NSString* const kSynopsisStandardMetadataScoreDictKey = @"Scores";
 NSString* const kSynopsisStandardMetadataDominantColorValuesDictKey = @"DominantColors";

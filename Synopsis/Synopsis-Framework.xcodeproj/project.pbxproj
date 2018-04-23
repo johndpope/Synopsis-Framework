@@ -181,6 +181,8 @@
 		1B4446DB1EE1FFB30075575D /* Color+linearRGBColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B4446B01EE1FD5D0075575D /* Color+linearRGBColor.mm */; };
 		1B4DC18D1FC8CF1000BF10C8 /* libtensorflow_framework.so in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B4DC18C1FC8CF1000BF10C8 /* libtensorflow_framework.so */; };
 		1B4DC1911FC8E53A00BF10C8 /* libtensorflow_framework.so in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B4DC18C1FC8CF1000BF10C8 /* libtensorflow_framework.so */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		1B4E6B4F208E674B00C078A8 /* SynopsisSlidingWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B4E6B4D208E674B00C078A8 /* SynopsisSlidingWindow.h */; };
+		1B4E6B50208E674B00C078A8 /* SynopsisSlidingWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B4E6B4E208E674B00C078A8 /* SynopsisSlidingWindow.mm */; };
 		1B4F9A3F20057639004D242D /* ImageNetLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A3E20057639004D242D /* ImageNetLabels.txt */; };
 		1B4F9A4820069E06004D242D /* PlacesNetLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A4620069E06004D242D /* PlacesNetLabels.txt */; };
 		1B4F9A4920069E06004D242D /* PlacesNetLabels.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F9A4620069E06004D242D /* PlacesNetLabels.txt */; };
@@ -2268,6 +2270,8 @@
 		1B4446DC1EE1FFFC0075575D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B4DC18C1FC8CF1000BF10C8 /* libtensorflow_framework.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libtensorflow_framework.so; sourceTree = "<group>"; };
 		1B4DC18E1FC8D93F00BF10C8 /* libpython.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libpython.tbd; path = usr/lib/libpython.tbd; sourceTree = SDKROOT; };
+		1B4E6B4D208E674B00C078A8 /* SynopsisSlidingWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SynopsisSlidingWindow.h; sourceTree = "<group>"; };
+		1B4E6B4E208E674B00C078A8 /* SynopsisSlidingWindow.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SynopsisSlidingWindow.mm; sourceTree = "<group>"; };
 		1B4F9A3D2005762B004D242D /* ImageNetClassifier.pb */ = {isa = PBXFileReference; lastKnownFileType = file; path = ImageNetClassifier.pb; sourceTree = "<group>"; };
 		1B4F9A3E20057639004D242D /* ImageNetLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ImageNetLabels.txt; sourceTree = "<group>"; };
 		1B4F9A4620069E06004D242D /* PlacesNetLabels.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PlacesNetLabels.txt; sourceTree = "<group>"; };
@@ -5760,6 +5764,8 @@
 				1B4446991EE1FD270075575D /* SynopsisDenseFeature.h */,
 				1B44469A1EE1FD270075575D /* SynopsisDenseFeature.mm */,
 				1B44469B1EE1FD270075575D /* SynopsisDenseFeature+Private.h */,
+				1B4E6B4D208E674B00C078A8 /* SynopsisSlidingWindow.h */,
+				1B4E6B4E208E674B00C078A8 /* SynopsisSlidingWindow.mm */,
 			);
 			name = Metadata;
 			sourceTree = "<group>";
@@ -6191,6 +6197,7 @@
 				1BCAACB31F966D040022B1A5 /* SynopsisPythonHelper.h in Headers */,
 				1BB7F63B1F9FF51B004ED69F /* SynopsisVideoFrameConformHelperGPU.h in Headers */,
 				1BAA80681D70DCE800464810 /* GZIP.h in Headers */,
+				1B4E6B4F208E674B00C078A8 /* SynopsisSlidingWindow.h in Headers */,
 				1B2780AD1F228F9F00658C0B /* SynopsisMetadataEncoderVersion2.h in Headers */,
 				1BB7F6441FA108F7004ED69F /* GPUHistogramModule.h in Headers */,
 				1B7358A31DEF623D0053BC06 /* AnalyzerPluginProtocol.h in Headers */,
@@ -6707,6 +6714,7 @@
 				1BC4734020166F060091A751 /* CinemaNetShotFramingClassifier.mlmodel in Sources */,
 				1BC98DCC1F9FA48F00E0F52A /* SynopsisVideoFrameOpenCV.mm in Sources */,
 				1B0306BF2087C68B000A2DF7 /* zstdmt_compress.c in Sources */,
+				1B4E6B50208E674B00C078A8 /* SynopsisSlidingWindow.mm in Sources */,
 				1B0306C32087C68B000A2DF7 /* zstd_compress.c in Sources */,
 				1B0306C22087C68B000A2DF7 /* zstd_ldm.c in Sources */,
 				1B0306C62087C68B000A2DF7 /* zstd_opt.c in Sources */,
