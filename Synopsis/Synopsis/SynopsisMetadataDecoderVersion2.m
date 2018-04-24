@@ -145,6 +145,31 @@ static ZSTD_DDict* decompressionDict = nil;
     
     optimizedStandardDictionary[kSynopsisStandardMetadataFeatureVectorDictKey] = featureValue;
     
+    NSArray* interestingTimes = optimizedStandardDictionary[kSynopsisStandardMetadataInterestingFeaturesAndTimesDictKey];
+
+    if(interestingTimes)
+    {
+        NSMutableArray* optimizedInterestingTimes = [NSMutableArray arrayWithCapacity:interestingTimes.count];
+
+        for(NSDictionary* interestingFeatureAndTime in interestingTimes)
+        {
+            NSDictionary* timeDict = interestingFeatureAndTime[@"Time"];
+            NSArray<NSNumber*>* feature = interestingFeatureAndTime[@"Feature"];
+            
+            if(timeDict && feature)
+            {
+                SynopsisDenseFeature* optimizedFeature = [[SynopsisDenseFeature alloc] initWithFeatureArray:feature];
+                CMTime time = CMTimeMakeFromDictionary((CFDictionaryRef)timeDict);
+                NSValue* optimizedTime = [NSValue valueWithCMTime:time];
+                [optimizedInterestingTimes addObject:@{ @"Time" : optimizedTime,
+                                                        @"Feature" : optimizedFeature}];
+            }
+        }
+        
+        optimizedStandardDictionary[kSynopsisStandardMetadataInterestingFeaturesAndTimesDictKey] = optimizedInterestingTimes;
+    }
+    
+    
     // Convert histogram bins to cv::Mat
     NSArray* histogramArray = [optimizedStandardDictionary valueForKey:kSynopsisStandardMetadataHistogramDictKey];
     
