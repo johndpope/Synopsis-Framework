@@ -305,14 +305,14 @@ const NSUInteger numWindows = 2;
     [self.windowAverages enumerateObjectsUsingBlock:^(SynopsisDenseFeature * _Nonnull feature, NSUInteger idx, BOOL * _Nonnull stop) {
         CMTime windowTime = [[self.windowAverageTimes objectAtIndex:idx] CMTimeValue];
 
-        [windowAverages addObject: @{ @"WindowFeature" : [feature arrayValue],
-                                      @"WindowFeatureTime" : (NSDictionary*)CFBridgingRelease(CMTimeCopyAsDictionary(windowTime,kCFAllocatorDefault)),
+        [windowAverages addObject: @{ @"Feature" : [feature arrayValue],
+                                      @"Time" : (NSDictionary*)CFBridgingRelease(CMTimeCopyAsDictionary(windowTime,kCFAllocatorDefault)),
                                       }];
     }];
     
     return @{
              kSynopsisStandardMetadataFeatureVectorDictKey : (self.averageFeatureVec) ? self.averageFeatureVec : @[ ],
-             kSynopsisStandardMetadataWindowedFrameFeatureVectorDictKey  : (windowAverages) ? windowAverages : @[ ],
+             kSynopsisStandardMetadataInterestingFeaturesAndTimesDictKey  : (windowAverages) ? windowAverages : @[ ],
              kSynopsisStandardMetadataDescriptionDictKey: (self.labels) ? self.labels : @[ ],
              };
 }
