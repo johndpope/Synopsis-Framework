@@ -15,6 +15,7 @@
 - (instancetype) initWithCommandQueue:(id<MTLCommandQueue>)queue inFlightBuffers:(NSUInteger)bufferCount;
 
 - (void) conformPixelBuffer:(CVPixelBufferRef)pixelbuffer
+                     atTime:(CMTime)time
                   toFormats:(NSArray<SynopsisVideoFormatSpecifier*>*)formatSpecifiers
               withTransform:(CGAffineTransform)transform
                        rect:(CGRect)rect

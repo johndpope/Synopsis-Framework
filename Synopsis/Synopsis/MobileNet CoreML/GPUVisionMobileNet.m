@@ -41,6 +41,7 @@
 
 @property (readwrite, strong) NSMutableArray<NSNumber*>* averageFeatureVec;
 @property (readwrite, strong) NSMutableArray<SynopsisDenseFeature*>* windowAverages;
+@property (readwrite, strong) NSMutableArray<NSValue*>* windowAverageTimes;
 @property (readwrite, strong) NSArray* labels;
 
 //_Nullable@property (readwrite, strong) NSMutableArray<SynopsisDenseFeature*> slidingWindowAverage;
@@ -65,6 +66,7 @@ const NSUInteger numWindows = 2;
     if(self)
     {
         self.windowAverages = [NSMutableArray new];
+        self.windowAverageTimes = [NSMutableArray new];
         self.windows =[NSMutableArray new];
 
         for(NSUInteger i = 0; i < numWindows; i++)
@@ -173,6 +175,7 @@ const NSUInteger numWindows = 2;
                 if(possible != nil)
                 {
                     [self.windowAverages addObject:possible];
+                    [self.windowAverageTimes addObject:[NSValue valueWithCMTime:frame.presentationTimeStamp]];
                 }
             }];
             
@@ -299,10 +302,13 @@ const NSUInteger numWindows = 2;
 {
     NSMutableArray* windowAverages = [NSMutableArray arrayWithCapacity:self.windowAverages.count];
     
-    for(SynopsisDenseFeature* feature in self.windowAverages)
-    {
-        [windowAverages addObject:[feature arrayValue]];
-    }
+    [self.windowAverages enumerateObjectsUsingBlock:^(SynopsisDenseFeature * _Nonnull feature, NSUInteger idx, BOOL * _Nonnull stop) {
+        CMTime windowTime = [[self.windowAverageTimes objectAtIndex:idx] CMTimeValue];
+
+        [windowAverages addObject: @{ @"WindowFeature" : [feature arrayValue],
+                                      @"WindowFeatureTime" : (NSDictionary*)CFBridgingRelease(CMTimeCopyAsDictionary(windowTime,kCFAllocatorDefault)),
+                                      }];
+    }];
     
     return @{
              kSynopsisStandardMetadataFeatureVectorDictKey : (self.averageFeatureVec) ? self.averageFeatureVec : @[ ],

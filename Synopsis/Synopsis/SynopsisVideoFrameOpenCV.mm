@@ -13,18 +13,20 @@
 @interface SynopsisVideoFrameOpenCV ()
 @property (readwrite, strong) SynopsisVideoFormatSpecifier* videoFormatSpecifier;
 @property (readwrite, assign) cv::Mat openCVMatrix;
+@property (readwrite, assign) CMTime presentationTimeStamp;
 @property (readwrite, strong) NSString* label;
 @end
 
 @implementation SynopsisVideoFrameOpenCV
 
-- (instancetype) initWithCVMat:(cv::Mat)mat formatSpecifier:(SynopsisVideoFormatSpecifier*)formatSpecifier;
+- (instancetype) initWithCVMat:(cv::Mat)mat formatSpecifier:(SynopsisVideoFormatSpecifier*)formatSpecifier presentationTimeStamp:(CMTime)pts
 {
     self = [super init];
     if(self)
     {
         self.openCVMatrix = mat;
         self.videoFormatSpecifier = formatSpecifier;
+        self.presentationTimeStamp = pts;
     }
     
     return self;

@@ -8,9 +8,7 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 #import <Synopsis/SynopsisVideoFrame.h>
-
 @interface SynopsisVideoFrameCache : NSObject
-
 - (void) cacheFrame:(id<SynopsisVideoFrame>)frame;
 - (id<SynopsisVideoFrame>) cachedFrameForFormatSpecifier:(SynopsisVideoFormatSpecifier*)formatSpecifier;
 

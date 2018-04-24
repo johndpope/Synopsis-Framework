@@ -12,6 +12,8 @@
 
 @interface SynopsisVideoFrameOpenCV : NSObject<SynopsisVideoFrame>
 @property (readonly) SynopsisVideoFormatSpecifier* videoFormatSpecifier;
-- (instancetype) initWithCVMat:(cv::Mat)mat formatSpecifier:(SynopsisVideoFormatSpecifier*)formatSpecifier;
+@property (readonly) CMTime presentationTimeStamp;
+
+- (instancetype) initWithCVMat:(cv::Mat)mat formatSpecifier:(SynopsisVideoFormatSpecifier*)formatSpecifier presentationTimeStamp:(CMTime)pts;
 - (cv::Mat)mat;
 @end

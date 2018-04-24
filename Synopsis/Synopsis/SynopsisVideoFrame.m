@@ -15,7 +15,7 @@
 
 @implementation SynopsisVideoFormatSpecifier
 
-- (instancetype) initWithFormat:(SynopsisVideoFormat)format backing:(SynopsisVideoBacking)backing
+- (instancetype) initWithFormat:(SynopsisVideoFormat)format backing:(SynopsisVideoBacking)backing 
 {
     self = [super init];
     if(self)

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreMedia/CoreMedia.h>
 
 typedef enum : unsigned int {
     SynopsisVideoFormatUnknown = 0,
@@ -32,5 +33,6 @@ typedef enum : unsigned int {
 @protocol SynopsisVideoFrame <NSObject>
 @property (readonly) SynopsisVideoFormatSpecifier* videoFormatSpecifier;
 - (NSString*) label;
+- (CMTime) presentationTimeStamp;
 @end
 

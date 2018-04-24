@@ -66,7 +66,7 @@
     return self;
 }
 
-- (void) conformPixelBuffer:(CVPixelBufferRef)pixelBuffer withTransform:(CGAffineTransform)transform rect:(CGRect)rect               
+- (void) conformPixelBuffer:(CVPixelBufferRef)pixelBuffer atTime:(CMTime)time withTransform:(CGAffineTransform)transform rect:(CGRect)rect               
  completionBlock:(SynopsisVideoFrameConformSessionCompletionBlock)completionBlock
 {    
     // Because we have 2 different completion blocks we must coalesce into one, we use
@@ -78,7 +78,7 @@
     NSArray<SynopsisVideoFormatSpecifier*>* localGPUFormats = [self.gpuOnlyFormatSpecifiers allObjects];
 
     SynopsisVideoFrameCache* allFormatCache = [[SynopsisVideoFrameCache alloc] init];
-
+    
     dispatch_group_t formatConversionGroup = dispatch_group_create();
     dispatch_group_enter(formatConversionGroup);
     
@@ -104,6 +104,7 @@
     {
         dispatch_group_enter(formatConversionGroup);
         [self.conformGPUHelper conformPixelBuffer:pixelBuffer
+                                           atTime:time
                                         toFormats:localGPUFormats
                                     withTransform:transform
                                              rect:rect
@@ -128,6 +129,7 @@
     {
         dispatch_group_enter(formatConversionGroup);
         [self.conformCPUHelper conformPixelBuffer:pixelBuffer
+                                           atTime:time
                                         toFormats:localCPUFormats
                                     withTransform:transform
                                              rect:rect

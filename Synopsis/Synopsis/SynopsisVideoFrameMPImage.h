@@ -11,7 +11,8 @@
 
 @interface SynopsisVideoFrameMPImage : NSObject<SynopsisVideoFrame>
 @property (readonly) SynopsisVideoFormatSpecifier* videoFormatSpecifier;
-- (instancetype) initWithMPSImage:(MPSImage*)image formatSpecifier:(SynopsisVideoFormatSpecifier*)formatSpecifier;
+@property (readonly) CMTime presentationTimeStamp;
+- (instancetype) initWithMPSImage:(MPSImage*)image formatSpecifier:(SynopsisVideoFormatSpecifier*)formatSpecifier presentationTimeStamp:(CMTime)pts;
 - (MPSImage*) mpsImage;
 @end
 

@@ -9,6 +9,7 @@
 #import <CoreVideo/CoreVideo.h>
 #import <Synopsis/SynopsisVideoFrameCache.h>
 #import <Metal/Metal.h>
+#import <CoreMedia/CoreMedia.h>
 
 typedef void(^SynopsisVideoFrameConformSessionCompletionBlock)(id<MTLCommandBuffer> commandBuffer, SynopsisVideoFrameCache*, NSError*);
 
@@ -20,7 +21,7 @@ typedef void(^SynopsisVideoFrameConformSessionCompletionBlock)(id<MTLCommandBuff
 - (instancetype) initWithRequiredFormatSpecifiers:(NSArray<SynopsisVideoFormatSpecifier*>*)formatSpecifiers device:(id<MTLDevice>)device inFlightBuffers:(NSUInteger)bufferCount;
 @property (readonly, strong) id<MTLDevice>device;
 
-- (void) conformPixelBuffer:(CVPixelBufferRef)pixelbuffer withTransform:(CGAffineTransform)transform rect:(CGRect)rect completionBlock:(SynopsisVideoFrameConformSessionCompletionBlock)completionBlock;
+- (void) conformPixelBuffer:(CVPixelBufferRef)pixelbuffer atTime:(CMTime)time withTransform:(CGAffineTransform)transform rect:(CGRect)rect completionBlock:(SynopsisVideoFrameConformSessionCompletionBlock)completionBlock;
 
 - (void) blockForPendingConforms;
 - (void) cancelPendingConforms;

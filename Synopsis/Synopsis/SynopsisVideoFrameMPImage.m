@@ -9,16 +9,18 @@
 #import "SynopsisVideoFrameMPImage.h"
 @interface SynopsisVideoFrameMPImage ()
 @property (readwrite, strong) SynopsisVideoFormatSpecifier* videoFormatSpecifier;
+@property (readwrite, assign) CMTime presentationTimeStamp;
 @property (readwrite, strong) MPSImage* image;
 @end
 
 @implementation SynopsisVideoFrameMPImage
-- (instancetype) initWithMPSImage:(MPSImage*)image formatSpecifier:(SynopsisVideoFormatSpecifier*)formatSpecifier
+- (instancetype) initWithMPSImage:(MPSImage*)image formatSpecifier:(SynopsisVideoFormatSpecifier*)formatSpecifier presentationTimeStamp:(CMTime)pts;
 {
     self = [super init];
     if(self)
     {
         self.image = image;
+        self.presentationTimeStamp = pts;
         self.videoFormatSpecifier = formatSpecifier;        
     }
     return self;
