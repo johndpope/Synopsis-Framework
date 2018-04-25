@@ -24,6 +24,23 @@
 
 @implementation SynopsisMetadataEncoder
 
++ (CMFormatDescriptionRef) copyMetadataFormatDesc
+{
+    CMFormatDescriptionRef metadataFormatDescriptionValid = NULL;
+    NSArray *specs = @[@{(__bridge NSString *)kCMMetadataFormatDescriptionMetadataSpecificationKey_Identifier : kSynopsisMetadataIdentifier,
+                         (__bridge NSString *)kCMMetadataFormatDescriptionMetadataSpecificationKey_DataType : (__bridge NSString *)kCMMetadataBaseDataType_RawData,
+                         }];
+    
+    OSStatus err = CMMetadataFormatDescriptionCreateWithMetadataSpecifications(kCFAllocatorDefault, kCMMetadataFormatType_Boxed, (__bridge CFArrayRef)specs, &metadataFormatDescriptionValid);
+    if(err)
+    {
+        NSLog(@"Error creating CMMetdataFormatDesc");
+    }
+    
+    return metadataFormatDescriptionValid;
+}
+
+
 - (instancetype) initWithVersion:(NSUInteger)version exportOption:(SynopsisMetadataEncoderExportOption)exportOption
 {
     self = [super init];
@@ -79,6 +96,10 @@
     NSString* aggregateMetadataAsJSON = [metadata jsonStringWithPrettyPrint:NO];
     NSData* jsonData = [aggregateMetadataAsJSON dataUsingEncoding:NSUTF8StringEncoding];
     
+    if(!jsonData)
+    {
+        return nil;
+    }
     return [self.encoder encodeSynopsisMetadataToData:jsonData];
 }
 

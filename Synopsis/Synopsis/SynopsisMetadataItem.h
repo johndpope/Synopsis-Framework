@@ -14,11 +14,12 @@
 
 @interface SynopsisMetadataItem : NSObject<NSCopying>
 @property (readonly) NSURL* url;
-@property (readonly) AVURLAsset* urlAsset;
+@property (readonly) AVAsset* asset;
 
 // Re-use this during playback if you can!
 @property (readonly) SynopsisMetadataDecoder* decoder;
 
 - (instancetype) initWithURL:(NSURL *)url;
+- (instancetype) initWithAsset:(AVAsset *)asset;
 
 @end

@@ -7,9 +7,9 @@
 //
 
 #import "SynopsisMetadataDecoderVersion2.h"
-
 #import <Synopsis/Synopsis.h>
 #import "zstd.h"
+#import "Color+linearRGBColor.h"
 
 static ZSTD_DDict* decompressionDict = nil;
 
@@ -91,7 +91,7 @@ static ZSTD_DDict* decompressionDict = nil;
         return nil;
     }
     
-    const void* decompressionBuffer = malloc(expectedDecompressedSize);
+    void* decompressionBuffer = malloc(expectedDecompressedSize);
 
     size_t decompressedSize = ZSTD_decompress_usingDDict(decompressionContext, decompressionBuffer, expectedDecompressedSize, data.bytes, data.length, decompressionDict);
     
@@ -134,7 +134,7 @@ static ZSTD_DDict* decompressionDict = nil;
     NSMutableDictionary* optimizedStandardDictionary = [NSMutableDictionary dictionaryWithDictionary:global[kSynopsisStandardMetadataDictKey]];
     
     // Convert all arrays of NSNumbers into linear RGB NSColors once, and only once
-    NSArray* domColors = [ColorHelper linearColorsWithArraysOfRGBComponents:[optimizedStandardDictionary valueForKey:kSynopsisStandardMetadataDominantColorValuesDictKey]];
+    NSArray* domColors = [ColorHelper newLinearColorsWithArraysOfRGBComponents:[optimizedStandardDictionary valueForKey:kSynopsisStandardMetadataDominantColorValuesDictKey]];
     
     optimizedStandardDictionary[kSynopsisStandardMetadataDominantColorValuesDictKey] = domColors;
     
@@ -144,6 +144,31 @@ static ZSTD_DDict* decompressionDict = nil;
     SynopsisDenseFeature* featureValue = [[SynopsisDenseFeature alloc] initWithFeatureArray:featureArray];
     
     optimizedStandardDictionary[kSynopsisStandardMetadataFeatureVectorDictKey] = featureValue;
+    
+    NSArray* interestingTimes = optimizedStandardDictionary[kSynopsisStandardMetadataInterestingFeaturesAndTimesDictKey];
+
+    if(interestingTimes)
+    {
+        NSMutableArray* optimizedInterestingTimes = [NSMutableArray arrayWithCapacity:interestingTimes.count];
+
+        for(NSDictionary* interestingFeatureAndTime in interestingTimes)
+        {
+            NSDictionary* timeDict = interestingFeatureAndTime[@"Time"];
+            NSArray<NSNumber*>* feature = interestingFeatureAndTime[@"Feature"];
+            
+            if(timeDict && feature)
+            {
+                SynopsisDenseFeature* optimizedFeature = [[SynopsisDenseFeature alloc] initWithFeatureArray:feature];
+                CMTime time = CMTimeMakeFromDictionary((CFDictionaryRef)timeDict);
+                NSValue* optimizedTime = [NSValue valueWithCMTime:time];
+                [optimizedInterestingTimes addObject:@{ @"Time" : optimizedTime,
+                                                        @"Feature" : optimizedFeature}];
+            }
+        }
+        
+        optimizedStandardDictionary[kSynopsisStandardMetadataInterestingFeaturesAndTimesDictKey] = optimizedInterestingTimes;
+    }
+    
     
     // Convert histogram bins to cv::Mat
     NSArray* histogramArray = [optimizedStandardDictionary valueForKey:kSynopsisStandardMetadataHistogramDictKey];

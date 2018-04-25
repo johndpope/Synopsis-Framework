@@ -7,6 +7,7 @@
 //
 
 #import <Synopsis/SynopsisMetadataItem.h>
+#import <CoreMedia/CMTime.h>
 
 typedef void (^SynopsisCacheCompletionHandler)(id _Nullable cachedValue, NSError * _Nullable error);
 
@@ -21,7 +22,7 @@ typedef void (^SynopsisCacheCompletionHandler)(id _Nullable cachedValue, NSError
 - (void) returnCachedAndUncachedResults;
 
 - (void) cachedGlobalMetadataForItem:(SynopsisMetadataItem* _Nonnull)metadataItem completionHandler:(SynopsisCacheCompletionHandler _Nullable )handler;
-- (void) cachedImageForItem:(SynopsisMetadataItem* _Nonnull)metadataItem completionHandler:(SynopsisCacheCompletionHandler _Nullable )handler;
+- (void) cachedImageForItem:(SynopsisMetadataItem* _Nonnull)metadataItem atTime:(CMTime)time completionHandler:(SynopsisCacheCompletionHandler _Nullable )handler;
 - (void) cachedPlayerForItem:(SynopsisMetadataItem* _Nonnull)metadataItem completionHandler:(SynopsisCacheCompletionHandler _Nullable )handler;
 
 @end

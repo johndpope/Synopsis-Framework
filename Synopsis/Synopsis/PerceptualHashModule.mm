@@ -6,6 +6,8 @@
 //  Copyright © 2016 metavisual. All rights reserved.
 //
 
+#import <opencv2/opencv.hpp>
+#import "SynopsisVideoFrameOpenCV.h"
 #import "PerceptualHashModule.h"
 
 @interface PerceptualHashModule()
@@ -43,13 +45,19 @@
     return kSynopsisStandardMetadataPerceptualHashDictKey;//@"PerceptualHash";
 }
 
-- (SynopsisFrameCacheFormat) currentFrameFormat
++ (SynopsisVideoBacking) requiredVideoBacking
 {
-    return SynopsisFrameCacheFormatOpenCVGray8;
+    return SynopsisVideoBackingCPU;
 }
 
-- (NSDictionary*) analyzedMetadataForCurrentFrame:(matType)frame previousFrame:(matType)lastFrame
++ (SynopsisVideoFormat) requiredVideoFormat
 {
+    return SynopsisVideoFormatGray8;
+}
+
+- (NSDictionary*) analyzedMetadataForCurrentFrame:(id<SynopsisVideoFrame>)frame previousFrame:(id<SynopsisVideoFrame>)lastFrame;
+{
+    SynopsisVideoFrameOpenCV* frameCV = (SynopsisVideoFrameOpenCV*)frame;
     // Its unclear if RGB hashing is of any benefit, since generally
     // speaking (and some testing confirms) that the GRADIENT's in
     // the RGB channels are similar, even if the values are different.
@@ -66,9 +74,9 @@
     
     // Perhaps difference each frame with the last ?
     
-//    result = [self differenceHashRGBInCVMat:frame];
-//    result = [self differenceHashGreyInCVMat:frame];
-    return [self perceptualHashGreyInCVMat:frame];
+//    result = [self differenceHashRGBInCVMat:frameCV.mat];
+//    result = [self differenceHashGreyInCVMat:frameCV.mat];
+    return [self perceptualHashGreyInCVMat:frameCV.mat];
 }
 
 - (NSDictionary*) finaledAnalysisMetadata
@@ -111,11 +119,7 @@
     matType eightByEight;
     cv::resize(image, eightByEight, cv::Size(8,8));
     
-#if USE_OPENCL
-    cv::Mat imageMat = eightByEight.getMat(cv::ACCESS_READ);
-#else
     cv::Mat imageMat = eightByEight;
-#endif
     
     unsigned long long differenceHashR = 0;
     unsigned long long differenceHashG = 0;
@@ -142,10 +146,6 @@
         }
     }
     
-#if USE_OPENCL
-    imageMat.release();
-#endif
-    
     return @{@"Hash R" : [NSString stringWithFormat:@"%16llx", differenceHashR],
              @"Hash G" : [NSString stringWithFormat:@"%16llx", differenceHashG],
              @"Hash B" : [NSString stringWithFormat:@"%16llx", differenceHashB],
@@ -158,11 +158,7 @@
     matType eightByEight;
     cv::resize(image, eightByEight, cv::Size(8,8));
     
-#if USE_OPENCL
-    cv::Mat imageMat = eightByEight.getMat(cv::ACCESS_READ);
-#else
     cv::Mat imageMat = eightByEight;
-#endif
     
     unsigned long long differenceHash = 0;
     unsigned char lastValue = 127;
@@ -192,10 +188,6 @@
         cv::addWeighted(imageMat, 0.5, averageImageForHash, 0.5, 0.0, averageImageForHash);
     }
     
-#if USE_OPENCL
-    imageMat.release();
-#endif
-    
     // Experiment with different accumulation strategies for our Hash?
     differenceHashAccumulated = differenceHashAccumulated ^ differenceHash;
     
@@ -217,11 +209,7 @@
     
     cv::dct(thirtyTwo, dct);
     
-#if USE_OPENCL
-    cv::Mat dctMat = dct.getMat(cv::ACCESS_READ);
-#else
     cv::Mat dctMat = dct;
-#endif
     
     // sample only the top left to get lowest frequency components in an 8x8
     // Setup a rectangle to define your region of interest
@@ -253,10 +241,6 @@
     NSString* hashString = [NSString stringWithFormat:@"%16llx", differenceHash];
     
     [self.everyHash addObject:hashString];
-    
-#if USE_OPENCL
-    dctMat.release();
-#endif
     
     return @{
              [self moduleName] : hashString,

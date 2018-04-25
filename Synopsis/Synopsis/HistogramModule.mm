@@ -6,6 +6,8 @@
 //  Copyright © 2016 metavisual. All rights reserved.
 //
 
+#import <opencv2/opencv.hpp>
+#import "SynopsisVideoFrameOpenCV.h"
 #import "HistogramModule.h"
 
 @interface HistogramModule ()
@@ -19,9 +21,17 @@
 
 @implementation HistogramModule
 
-- (NSDictionary*) analyzedMetadataForCurrentFrame:(matType)frame previousFrame:(matType)lastFrame
+- (void) beginAndClearCachedResults
 {
-    return [self detectHistogramInCVMat:frame];
+    accumulatedHist0 = cv::Mat::zeros( accumulatedHist0.size(), accumulatedHist0.type() );
+    accumulatedHist1 = cv::Mat::zeros( accumulatedHist1.size(), accumulatedHist1.type() );
+    accumulatedHist2 = cv::Mat::zeros( accumulatedHist2.size(), accumulatedHist2.type() );
+}
+
+- (NSDictionary*) analyzedMetadataForCurrentFrame:(id<SynopsisVideoFrame>)frame previousFrame:(id<SynopsisVideoFrame>)lastFrame;
+{
+    SynopsisVideoFrameOpenCV* frameCV = (SynopsisVideoFrameOpenCV*)frame;
+    return [self detectHistogramInCVMat:frameCV.mat];
 }
 
 - (NSString*) moduleName
@@ -29,9 +39,15 @@
     return kSynopsisStandardMetadataHistogramDictKey;//@"Histogram";
 }
 
-- (SynopsisFrameCacheFormat) currentFrameFormat
+
++ (SynopsisVideoBacking) requiredVideoBacking
 {
-    return SynopsisFrameCacheFormatOpenCVBGR8;
+    return SynopsisVideoBackingCPU;
+}
+
++ (SynopsisVideoFormat) requiredVideoFormat
+{
+    return SynopsisVideoFormatBGR8;
 }
 
 - (NSDictionary*) finaledAnalysisMetadata

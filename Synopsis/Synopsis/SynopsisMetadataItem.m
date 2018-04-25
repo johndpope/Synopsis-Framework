@@ -17,7 +17,7 @@
     CGImageRef cachedImage;
 }
 @property (readwrite) NSURL* url;
-@property (readwrite, strong) AVURLAsset* urlAsset;
+@property (readwrite, strong) AVAsset* asset;
 @property (readwrite, strong) NSDictionary* globalSynopsisMetadata;
 @property (readwrite, strong) SynopsisMetadataDecoder* decoder;
 @end
@@ -30,31 +30,52 @@
     if(self)
     {
         self.url = url;
-        self.urlAsset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetPreferPreciseDurationAndTimingKey : @YES}];
-        
-        
-        NSArray* metadataItems = [self.urlAsset metadata];
-        
-        AVMetadataItem* synopsisMetadataItem = nil;
-        
-        for(AVMetadataItem* metadataItem in metadataItems)
-        {
-            if([metadataItem.identifier isEqualToString:kSynopsisMetadataIdentifier])
-            {
-                synopsisMetadataItem = metadataItem;
-                break;
-            }
-        }
-        
-        if(synopsisMetadataItem)
-        {
-            self.decoder = [[SynopsisMetadataDecoder alloc] initWithMetadataItem:synopsisMetadataItem];
-
-            self.globalSynopsisMetadata = [self.decoder decodeSynopsisMetadata:synopsisMetadataItem];
-        }
+        self.asset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetPreferPreciseDurationAndTimingKey : @YES}];
+        if(! [self commonLoad] )
+            return nil;
+            
     }
     
     return self;
+}
+- (instancetype) initWithAsset:(AVAsset *)asset
+{
+    self = [super init];
+    if(self)
+    {
+        self.asset = asset;
+        if(! [self commonLoad] )
+            return nil;
+    }
+    
+    return self;
+}
+
+- (BOOL) commonLoad
+{
+    NSArray* metadataItems = [self.asset metadata];
+    
+    AVMetadataItem* synopsisMetadataItem = nil;
+    
+    for(AVMetadataItem* metadataItem in metadataItems)
+    {
+        if([metadataItem.identifier isEqualToString:kSynopsisMetadataIdentifier])
+        {
+            synopsisMetadataItem = metadataItem;
+            break;
+        }
+    }
+    
+    if(synopsisMetadataItem)
+    {
+        self.decoder = [[SynopsisMetadataDecoder alloc] initWithMetadataItem:synopsisMetadataItem];
+        
+        self.globalSynopsisMetadata = [self.decoder decodeSynopsisMetadata:synopsisMetadataItem];
+        
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone

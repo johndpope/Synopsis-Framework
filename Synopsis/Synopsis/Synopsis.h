@@ -8,7 +8,7 @@
 
 
 #ifndef INCLUDE_ENCODER
-#error "INCLUDE_ENCODER is not defined in your precprocessor macros. Please choose if you want metadata analysis and encoding included or not"
+#warning "INCLUDE_ENCODER is not defined in your precprocessor macros. Please choose if you want metadata analysis and encoding included or not"
 #endif
 
 #include "TargetConditionals.h"
@@ -40,8 +40,10 @@ extern NSString* const kSynopsisMetadataHFSAttributeVersionKey;
 extern NSUInteger const kSynopsisMetadataHFSAttributeVersionValue;
 extern NSString* const kSynopsisMetadataHFSAttributeDescriptorKey;
 
-// Supported Synopsis NSSortDescriptor Keys
 extern NSString* const kSynopsisStandardMetadataDictKey;
+// Global Only
+extern NSString* const kSynopsisStandardMetadataInterestingFeaturesAndTimesDictKey;
+
 extern NSString* const kSynopsisStandardMetadataFeatureVectorDictKey;
 extern NSString* const kSynopsisStandardMetadataLabelsDictKey;
 extern NSString* const kSynopsisStandardMetadataScoreDictKey;
@@ -76,25 +78,22 @@ typedef enum : NSUInteger {
     SynopsisAnalysisQualityHintOriginal = NSUIntegerMax,
 } SynopsisAnalysisQualityHint;
 
-typedef enum : unsigned int {
-    SynopsisFrameCacheFormatOpenCVBGR8 = 0,
-    SynopsisFrameCacheFormatOpenCVBGRF32,
-    SynopsisFrameCacheFormatOpenCVGray8,
-    SynopsisFrameCacheFormatOpenCVPerceptual
-} SynopsisFrameCacheFormat;
-
-#import <Synopsis/SynopsisVideoFormatConverter.h>
+#import <Synopsis/SynopsisVideoFrame.h>
+#import <Synopsis/SynopsisVideoFrameCache.h>
+#import <Synopsis/SynopsisVideoFrameConformSession.h>
 #import <Synopsis/SynopsisDenseFeature.h>
 #import <Synopsis/MetadataComparisons.h>
 
 // Spotlight, Metadata, Sorting and Filtering Objects
 
-#if TARGET_OS_OSX
+
 #if INCLUDE_ENCODER
 #import <Synopsis/AnalyzerPluginProtocol.h>
 #import <Synopsis/StandardAnalyzerPlugin.h>
 #endif
-#endif
+
+#define ZSTD_STATIC_LINKING_ONLY
+#define ZSTD_MULTITHREAD
 
 #if INCLUDE_ENCODER
 #import <Synopsis/SynopsisMetadataEncoder.h>
@@ -123,5 +122,3 @@ NSArray* SynopsisSupportedFileTypes(void);
 #import <Synopsis/SynopsisRemoteFileHelper.h>
 #import <Synopsis/SynopsisPythonHelper.h>
 #endif
-
-

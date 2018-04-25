@@ -6,6 +6,8 @@
 //  Copyright © 2016 metavisual. All rights reserved.
 //
 
+#import <opencv2/opencv.hpp>
+#import "SynopsisVideoFrameOpenCV.h"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/saliency.hpp"
 
@@ -38,17 +40,25 @@
     return kSynopsisStandardMetadataSaliencyDictKey;//@"Saliency";
 }
 
-- (SynopsisFrameCacheFormat) currentFrameFormat
++ (SynopsisVideoBacking) requiredVideoBacking
 {
-    return SynopsisFrameCacheFormatOpenCVBGR8;
+    return SynopsisVideoBackingCPU;
 }
 
-- (NSDictionary*) analyzedMetadataForCurrentFrame:(matType)frame previousFrame:(matType)lastFrame
++ (SynopsisVideoFormat) requiredVideoFormat
 {
+    return SynopsisVideoFormatBGR8;
+}
+
+- (NSDictionary*) analyzedMetadataForCurrentFrame:(id<SynopsisVideoFrame>)frame previousFrame:(id<SynopsisVideoFrame>)lastFrame;
+{
+    SynopsisVideoFrameOpenCV* frameCV = (SynopsisVideoFrameOpenCV*)frame;
+    SynopsisVideoFrameOpenCV* previousFrameCV = (SynopsisVideoFrameOpenCV*)lastFrame;
+
     if(! self.algoInitted)
     {
-        saliencyAlgorithm->setImageWidth( frame.size().width );
-        saliencyAlgorithm->setImageHeight( frame.size().height );
+        saliencyAlgorithm->setImageWidth( frameCV.mat.size().width );
+        saliencyAlgorithm->setImageHeight( frameCV.mat.size().height );
 
 //        saliencyAlgorithm->setImagesize(frame.size().width, frame.size().height);
 //        saliencyAlgorithm->init();
@@ -57,7 +67,7 @@
     }
     
     matType saliencyMap;
-    if( saliencyAlgorithm->computeSaliency( frame, saliencyMap ) )
+    if( saliencyAlgorithm->computeSaliency( frameCV.mat, saliencyMap ) )
     {
 //        matType binaryMap;
 //        saliencyAlgorithm->computeBinaryMap(saliencyMap, binaryMap);

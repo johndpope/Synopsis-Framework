@@ -9,14 +9,14 @@
 #import "SynopsisMetadataEncoderVersion2.h"
 #import "SynopsisMetadataDecoder.h"
 #import <Synopsis/Synopsis.h>
+
 #import "zstd.h"
 
-
-static ZSTD_CDict* compressionDict = nil;
 
 @interface SynopsisMetadataEncoderVersion2 ()
 {
     ZSTD_CCtx* compressionContext;
+    ZSTD_CDict* compressionDict;
 }
 @end
 
@@ -27,15 +27,12 @@ static ZSTD_CDict* compressionDict = nil;
     self = [super init];
     if(self)
     {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
 
-            NSURL* pathToCompressionDict = [[NSBundle bundleForClass:[self class]] URLForResource:@"dictionary" withExtension:@"zstddict"];
-
-            NSData* dictionaryData = [NSData dataWithContentsOfURL:pathToCompressionDict];
-            
-            compressionDict = ZSTD_createCDict(dictionaryData.bytes, dictionaryData.length, 1);
-        });
+        NSURL* pathToCompressionDict = [[NSBundle bundleForClass:[self class]] URLForResource:@"dictionary" withExtension:@"zstddict"];
+        
+        NSData* dictionaryData = [NSData dataWithContentsOfURL:pathToCompressionDict];
+        
+        compressionDict = ZSTD_createCDict(dictionaryData.bytes, dictionaryData.length, 1);
         
         if(compressionDict == nil)
         {
@@ -50,7 +47,10 @@ static ZSTD_CDict* compressionDict = nil;
         {
             return nil;
         }
-
+#if defined(ZSTD_MULTITHREAD)
+        ZSTD_CCtx_setParameter(compressionContext, ZSTD_p_nbWorkers, 2);
+#endif
+        
     }
     return self;
 }
@@ -60,6 +60,13 @@ static ZSTD_CDict* compressionDict = nil;
     if(compressionContext != nil)
     {
         ZSTD_freeCCtx(compressionContext);
+        compressionContext = nil;
+    }
+    
+    if(compressionDict != nil)
+    {
+        ZSTD_freeCDict(compressionDict);
+        compressionDict = nil;
     }
 }
 
@@ -95,7 +102,7 @@ static ZSTD_CDict* compressionDict = nil;
 
     size_t expectedCompressionSize = ZSTD_compressBound(metadata.length);
     
-    const void* compressionBuffer = malloc(expectedCompressionSize);
+    void* compressionBuffer = malloc(expectedCompressionSize);
     
     size_t const compressedSize = ZSTD_compress_usingCDict(compressionContext, compressionBuffer, expectedCompressionSize, metadata.bytes, metadata.length, compressionDict);
     

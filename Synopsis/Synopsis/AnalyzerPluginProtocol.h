@@ -9,10 +9,9 @@
 #import <Synopsis/Synopsis.h>
 #import <CoreFoundation/CoreFoundation.h>
 #import <AVFoundation/AVFoundation.h>
+#import <Metal/Metal.h>
 
 #pragma mark - Plugin Particulars
-
-@class SynopsisVideoFormatConverter;
 
 typedef void (^LogBlock)(NSString* log);
 
@@ -50,6 +49,8 @@ typedef void (^LogBlock)(NSString* log);
 // Perhaps Muxed comes in the future.
 @property (readonly) NSString* pluginMediaType;
 
+@property (readonly) NSArray<SynopsisVideoFormatSpecifier*>*pluginFormatSpecfiers;
+
 // Logging callbacks fo inclusion in the UI
 @property (copy) LogBlock errorLog;
 @property (copy) LogBlock successLog;
@@ -67,13 +68,13 @@ typedef void(^SynopsisAnalyzerPluginFrameAnalyzedCompleteCallback)(NSDictionary*
 // This is where one might initialize resources that exist over the lifetime of the module
 // For example, feature detectors, Metal/OpenGL/CL/Cuda contexts
 // Memory pools, etc.
-- (void) beginMetadataAnalysisSessionWithQuality:(SynopsisAnalysisQualityHint)qualityHint;
+- (void) beginMetadataAnalysisSessionWithQuality:(SynopsisAnalysisQualityHint)qualityHint device:(id<MTLDevice>)device;
 
 // Analyze a sample buffer.
 // The resulting dictionary is aggregated with all other plugins and added to the
 // This method will be called once per frame, once per enabled module.
 
-- (void) analyzeCurrentCVPixelBufferRef:(SynopsisVideoFormatConverter*)converter completionHandler:(SynopsisAnalyzerPluginFrameAnalyzedCompleteCallback)completionHandler;
+- (void) analyzeFrameCache:(SynopsisVideoFrameCache*)frameCache commandBuffer:(id<MTLCommandBuffer>)commandBuffer completionHandler:(SynopsisAnalyzerPluginFrameAnalyzedCompleteCallback)completionHandler;
 
 // Finalize any calculations required to return global metadata
 // Global Metadata is metadata that describes the entire file, not the individual frames or samples

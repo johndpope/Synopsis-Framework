@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreMedia/CoreMedia.h>
 #import <Synopsis/Synopsis.h>
+#import "AnalyzerPluginProtocol.h"
 
 @interface StandardAnalyzerPlugin : NSObject <AnalyzerPluginProtocol>
 
@@ -24,6 +25,10 @@
 @property (readonly) NSUInteger pluginVersionMinor;
 @property (readonly) NSString* pluginMediaType;
 
+
+@property (readonly) NSArray<SynopsisVideoFormatSpecifier*>*pluginFormatSpecfiers;
+
+
 // Logging callbacks fo inclusion in the UI
 @property (copy) LogBlock errorLog;
 @property (copy) LogBlock successLog;
@@ -32,13 +37,12 @@
 
 #pragma mark -
 
-@property (readonly) NSArray* moduleClasses;
+@property (readonly) NSArray* cpuModuleClasses;
 
-@property (readonly) BOOL hasModules;
 
-- (void) beginMetadataAnalysisSessionWithQuality:(SynopsisAnalysisQualityHint)qualityHint;
+- (void) beginMetadataAnalysisSessionWithQuality:(SynopsisAnalysisQualityHint)qualityHint device:(id<MTLDevice>)device;
 
-- (void) analyzeCurrentCVPixelBufferRef:(SynopsisVideoFormatConverter*)converter completionHandler:(SynopsisAnalyzerPluginFrameAnalyzedCompleteCallback)completionHandler;
+- (void) analyzeFrameCache:(SynopsisVideoFrameCache*)frameCache commandBuffer:(id<MTLCommandBuffer>)commandBuffer completionHandler:(SynopsisAnalyzerPluginFrameAnalyzedCompleteCallback)completionHandler;
 
 - (NSDictionary*) finalizeMetadataAnalysisSessionWithError:(NSError**)error;
 

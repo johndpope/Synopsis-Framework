@@ -6,6 +6,9 @@
 //  Copyright © 2016 metavisual. All rights reserved.
 //
 
+#import <opencv2/opencv.hpp>
+#import "SynopsisVideoFrameOpenCV.h"
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #pragma clang diagnostic ignored "-Wconversion"
@@ -331,9 +334,14 @@
     return kSynopsisStandardMetadataFeatureVectorDictKey;//@"Feature";
 }
 
-- (SynopsisFrameCacheFormat) currentFrameFormat
++ (SynopsisVideoBacking) requiredVideoBacking
 {
-    return SynopsisFrameCacheFormatOpenCVBGRF32;
+    return SynopsisVideoBackingCPU;
+}
+
++ (SynopsisVideoFormat) requiredVideoFormat
+{
+    return SynopsisVideoFormatBGRF32;
 }
 
 - (NSArray<NSString*>*)labelArrayFromLabelFileName:(NSString*)labelName
@@ -365,13 +373,15 @@
     return [mutableLabels copy];
 }
 
-- (NSDictionary*) analyzedMetadataForCurrentFrame:(matType)frame previousFrame:(matType)lastFrame
+- (NSDictionary*) analyzedMetadataForCurrentFrame:(id<SynopsisVideoFrame>)frame previousFrame:(id<SynopsisVideoFrame>)lastFrame;
 {
-    self.frameCount++;
-    cv::Mat frameMat = frame;
-
-    [self submitAndCacheCurrentVideoCurrentFrame:(matType)frame previousFrame:(matType)lastFrame];
+    SynopsisVideoFrameOpenCV* frameCV = (SynopsisVideoFrameOpenCV*)frame;
+    SynopsisVideoFrameOpenCV* previousFrameCV = (SynopsisVideoFrameOpenCV*)lastFrame;
     
+    self.frameCount++;
+
+    [self submitAndCacheCurrentVideoCurrentFrame:frameCV.mat previousFrame:previousFrameCV.mat];
+
     // Actually run the image through the model.
     std::vector<tensorflow::Tensor> cinemaNetCoreOutputTensors;
     std::vector<tensorflow::Tensor> cinemaNetShotAnglesOutputTensors;
@@ -625,7 +635,7 @@
 
 #pragma mark - From Old TF Plugin
 
-- (void) submitAndCacheCurrentVideoCurrentFrame:(matType)frame previousFrame:(matType)lastFrame
+- (void) submitAndCacheCurrentVideoCurrentFrame:(cv::Mat)frame previousFrame:(cv::Mat)lastFrame
 {
     
 #pragma mark - Memory Copy from BGRF32

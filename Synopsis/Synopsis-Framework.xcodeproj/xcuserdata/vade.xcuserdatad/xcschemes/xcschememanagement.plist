@@ -9,15 +9,10 @@
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
-		<key>Synopsis-iOS copy.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
-		</dict>
 		<key>Synopsis-iOS.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>6</integer>
+			<integer>3</integer>
 		</dict>
 		<key>Synopsis-macOS-Decoder-Only.xcscheme</key>
 		<dict>
@@ -43,6 +38,11 @@
 			<true/>
 		</dict>
 		<key>1BBB10DC1D5542A200C22439</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1BEDA42B2024D79000E4617C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
