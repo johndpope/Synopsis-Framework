@@ -435,6 +435,12 @@
 		1BEDA4D120251E6400E4617C /* CIEDE2000.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358A51DEF65770053BC06 /* CIEDE2000.cpp */; };
 		1BEDA4D220251E6400E4617C /* CIEDE2000.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358A51DEF65770053BC06 /* CIEDE2000.cpp */; };
 		1BEDA4D320251E6500E4617C /* CIEDE2000.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7358A51DEF65770053BC06 /* CIEDE2000.cpp */; };
+		1BF8581E2090F6B400294C29 /* SynopsisSlidingWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B4E6B4E208E674B00C078A8 /* SynopsisSlidingWindow.mm */; };
+		1BF8581F2090F6B500294C29 /* SynopsisSlidingWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B4E6B4E208E674B00C078A8 /* SynopsisSlidingWindow.mm */; };
+		1BF858202090F6B600294C29 /* SynopsisSlidingWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B4E6B4E208E674B00C078A8 /* SynopsisSlidingWindow.mm */; };
+		1BF858212090F6E700294C29 /* SynopsisSlidingWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B4E6B4D208E674B00C078A8 /* SynopsisSlidingWindow.h */; };
+		1BF858222090F6E700294C29 /* SynopsisSlidingWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B4E6B4D208E674B00C078A8 /* SynopsisSlidingWindow.h */; };
+		1BF858232090F6E800294C29 /* SynopsisSlidingWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B4E6B4D208E674B00C078A8 /* SynopsisSlidingWindow.h */; };
 		1BFB12C51F2135BF002C4651 /* NSSortDescriptor+SynopsisMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB10F41D555AEE00C22439 /* NSSortDescriptor+SynopsisMetadata.mm */; };
 		1BFB12C71F2135BF002C4651 /* GZIP.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAA80671D70DCE800464810 /* GZIP.m */; };
 		1BFB12C81F2135BF002C4651 /* SynopsisMetadataPushDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B551E7A1EFAE956004C077B /* SynopsisMetadataPushDelegate.m */; };
@@ -6158,6 +6164,7 @@
 				1BEDA4C720251C1400E4617C /* StandardAnalyzerPlugin.h in Headers */,
 				1BEDA4C620251C0C00E4617C /* AnalyzerPluginProtocol.h in Headers */,
 				1B4446C41EE1FF8C0075575D /* SynopsisMetadataDecoder.h in Headers */,
+				1BF858222090F6E700294C29 /* SynopsisSlidingWindow.h in Headers */,
 				1B551E661EF9E8E5004C077B /* SynopsisMetadataEncoderVersion0.h in Headers */,
 				1BEDA4742024DEE600E4617C /* SynopsisMetadataEncoderVersion2.h in Headers */,
 				1B4446CD1EE1FF990075575D /* NSSortDescriptor+SynopsisMetadata.h in Headers */,
@@ -6233,6 +6240,7 @@
 				1BEDA49A2024E0A800E4617C /* SynopsisVideoFrameConformSession.h in Headers */,
 				1BEDA4522024D79000E4617C /* NSDictionary+JSONString.h in Headers */,
 				1BEDA4532024D79000E4617C /* Synopsis.h in Headers */,
+				1BF858232090F6E800294C29 /* SynopsisSlidingWindow.h in Headers */,
 				1BEDA4542024D79000E4617C /* SynopsisDenseFeature+Private.h in Headers */,
 				1BEDA49E2024E0B600E4617C /* SynopsisVideoFrameOpenCV.h in Headers */,
 				1BEDA4552024D79000E4617C /* SynopsisMetadataDecoder.h in Headers */,
@@ -6266,6 +6274,7 @@
 				1BCAACB41F966D040022B1A5 /* SynopsisPythonHelper.h in Headers */,
 				1BFB131F1F2135BF002C4651 /* NSSortDescriptor+SynopsisMetadata.h in Headers */,
 				1B70D083200D4EE000A414AF /* SynopsisCache.h in Headers */,
+				1BF858212090F6E700294C29 /* SynopsisSlidingWindow.h in Headers */,
 				1BFB13221F2135BF002C4651 /* SynopsisLayer.h in Headers */,
 				1BFB13231F2135BF002C4651 /* SynopsisDenseFeatureLayer.h in Headers */,
 				1BFB13241F2135BF002C4651 /* GZIP.h in Headers */,
@@ -6604,6 +6613,7 @@
 				1BEDA49F2024E0BD00E4617C /* SynopsisVideoFrameOpenCV.mm in Sources */,
 				1B4446DB1EE1FFB30075575D /* Color+linearRGBColor.mm in Sources */,
 				1B0306C82087C68C000A2DF7 /* zstdmt_compress.c in Sources */,
+				1BF8581E2090F6B400294C29 /* SynopsisSlidingWindow.mm in Sources */,
 				1B0306A92087C672000A2DF7 /* fse_decompress.c in Sources */,
 				1BEDA4CB20251C4300E4617C /* HistogramModule.mm in Sources */,
 				1BEDA4C820251C1800E4617C /* StandardAnalyzerPlugin.mm in Sources */,
@@ -6754,6 +6764,7 @@
 				1BEDA42E2024D79000E4617C /* GZIP.m in Sources */,
 				1BEDA42F2024D79000E4617C /* SynopsisCache.m in Sources */,
 				1B0306E22087C69D000A2DF7 /* cover.c in Sources */,
+				1BF858202090F6B600294C29 /* SynopsisSlidingWindow.mm in Sources */,
 				1BEDA49C2024E0AE00E4617C /* SynopsisVideoFrameConformSession.m in Sources */,
 				1BEDA4302024D79000E4617C /* NSDictionary+JSONString.m in Sources */,
 				1B0306BB2087C67B000A2DF7 /* pool.c in Sources */,
@@ -6817,6 +6828,7 @@
 				1B0306B42087C67A000A2DF7 /* error_private.c in Sources */,
 				1BCAACB61F966D040022B1A5 /* SynopsisPythonHelper.m in Sources */,
 				1BFB12D31F2135BF002C4651 /* SynopsisDenseFeature.mm in Sources */,
+				1BF8581F2090F6B500294C29 /* SynopsisSlidingWindow.mm in Sources */,
 				1BB7F63E1F9FF51B004ED69F /* SynopsisVideoFrameConformHelperGPU.m in Sources */,
 				1B0306DC2087C69C000A2DF7 /* cover.c in Sources */,
 				1BFB12D51F2135BF002C4651 /* SynopsisMetadataDecoderVersion0.m in Sources */,
