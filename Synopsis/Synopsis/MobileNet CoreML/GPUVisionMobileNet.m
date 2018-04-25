@@ -303,10 +303,10 @@ const NSUInteger numWindows = 2;
     NSMutableArray* windowAverages = [NSMutableArray arrayWithCapacity:self.windowAverages.count];
     
     [self.windowAverages enumerateObjectsUsingBlock:^(SynopsisDenseFeature * _Nonnull feature, NSUInteger idx, BOOL * _Nonnull stop) {
-        CMTime windowTime = [[self.windowAverageTimes objectAtIndex:idx] CMTimeValue];
+        NSValue* windowTime = [self.windowAverageTimes objectAtIndex:idx];
 
         [windowAverages addObject: @{ @"Feature" : [feature arrayValue],
-                                      @"Time" : (NSDictionary*)CFBridgingRelease(CMTimeCopyAsDictionary(windowTime,kCFAllocatorDefault)),
+                                      @"Time" : (NSDictionary*) CFBridgingRelease(CMTimeCopyAsDictionary([windowTime CMTimeValue], kCFAllocatorDefault)),
                                       }];
     }];
     
