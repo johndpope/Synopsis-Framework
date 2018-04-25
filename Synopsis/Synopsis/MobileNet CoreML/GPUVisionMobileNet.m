@@ -65,15 +65,7 @@ const NSUInteger numWindows = 2;
     self = [super initWithQualityHint:qualityHint device:device];
     if(self)
     {
-        self.windowAverages = [NSMutableArray new];
-        self.windowAverageTimes = [NSMutableArray new];
-        self.windows =[NSMutableArray new];
-
-        for(NSUInteger i = 0; i < numWindows; i++)
-        {
-            SynopsisSlidingWindow* aWindow = [[SynopsisSlidingWindow alloc] initWithLength:10 offset:stride * i];
-            [self.windows addObject:aWindow];
-        }
+       
     
         
         linear = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
@@ -126,6 +118,16 @@ const NSUInteger numWindows = 2;
 - (void) beginAndClearCachedResults
 {
     self.averageFeatureVec = nil;
+    
+    self.windowAverages = [NSMutableArray new];
+    self.windowAverageTimes = [NSMutableArray new];
+    self.windows =[NSMutableArray new];
+    
+    for(NSUInteger i = 0; i < numWindows; i++)
+    {
+        SynopsisSlidingWindow* aWindow = [[SynopsisSlidingWindow alloc] initWithLength:10 offset:stride * i];
+        [self.windows addObject:aWindow];
+    }
 }
 
 - (void) analyzedMetadataForCurrentFrame:(id<SynopsisVideoFrame>)frame previousFrame:(id<SynopsisVideoFrame>)lastFrame commandBuffer:(id<MTLCommandBuffer>)buffer completionBlock:(GPUModuleCompletionBlock)completionBlock;
