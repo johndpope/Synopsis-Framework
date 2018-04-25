@@ -19,12 +19,13 @@
 }
 //@property (readwrite, strong) NSOperationQueue* conformQueue;
 
+@property (readwrite, strong, atomic) dispatch_queue_t serialCompletionQueue;
 @property (readwrite, strong) id<MTLCommandQueue>commandQueue;
 @property (readwrite, strong) MPSImageConversion* imageConversion;
 @property (readwrite, strong) MPSImageBilinearScale* scaleForCoreML;
 
-@property (readwrite, atomic, assign) NSUInteger frameSubmit;
-@property (readwrite, atomic, assign) NSUInteger frameComplete;
+//@property (readwrite, atomic, assign) NSUInteger frameSubmit;
+//@property (readwrite, atomic, assign) NSUInteger frameComplete;
 
 @end
 
@@ -36,6 +37,7 @@
     if(self)
     {
         self.commandQueue = queue;
+        self.serialCompletionQueue = dispatch_queue_create("info.synopsis.gpu.conformQueue", DISPATCH_QUEUE_SERIAL);
         
         CVMetalTextureCacheCreate(kCFAllocatorDefault, NULL, self.commandQueue.device, NULL, &textureCacheRef);
         self.scaleForCoreML = [[MPSImageBilinearScale alloc] initWithDevice:self.commandQueue.device];
@@ -63,7 +65,7 @@
               commandBuffer:(id<MTLCommandBuffer>)commandBuffer
             completionBlock:(SynopsisVideoFrameConformSessionCompletionBlock)completionBlock;
 {
-    self.frameSubmit++;
+//    self.frameSubmit++;
 
     id<MTLCommandBuffer> conformBuffer = self.commandQueue.commandBuffer;
     
@@ -86,7 +88,7 @@
         assert(inputMTLTexture != NULL);
         
         MPSImage* sourceInput = [[MPSImage alloc] initWithTexture:inputMTLTexture featureChannels:3];
-        sourceInput.label = [NSString stringWithFormat:@"%@, %lu", @"Source", (unsigned long)self.frameSubmit];
+//        sourceInput.label = [NSString stringWithFormat:@"%@, %lu", @"Source", (unsigned long)self.frameSubmit];
         
 #pragma mark - Convert :
         
@@ -147,16 +149,17 @@
             resizeDescriptor.cpuCacheMode = MTLCPUCacheModeDefaultCache;
     
     MPSImage* resizeTarget = [[MPSImage alloc] initWithDevice:self.commandQueue.device imageDescriptor:resizeDescriptor];
-            resizeTarget.label = [NSString stringWithFormat:@"%@, %lu", @"Resize", (unsigned long)self.frameSubmit];
+//            resizeTarget.label = [NSString stringWithFormat:@"%@, %lu", @"Resize", (unsigned long)self.frameSubmit];
     
             [self.scaleForCoreML encodeToCommandBuffer:conformBuffer sourceImage:sourceInput destinationImage:resizeTarget];
     
     [conformBuffer addCompletedHandler:^(id<MTLCommandBuffer> commandBuffer) {
     
+        dispatch_async(self.serialCompletionQueue, ^{
             if(completionBlock)
             {
-                self.frameComplete++;
-//                NSLog(@"Conform Completed frame %lu", frameComplete);
+                //                self.frameComplete++;
+                //                NSLog(@"Conform Completed frame %lu", frameComplete);
                 SynopsisVideoFrameCache* cache = [[SynopsisVideoFrameCache alloc] init];
                 SynopsisVideoFormatSpecifier* resultFormat = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:SynopsisVideoFormatBGR8 backing:SynopsisVideoBackingGPU];
                 SynopsisVideoFrameMPImage* result = [[SynopsisVideoFrameMPImage alloc] initWithMPSImage:resizeTarget formatSpecifier:resultFormat presentationTimeStamp:time];
@@ -174,9 +177,12 @@
                 // We always have to release our pixel buffer
                 CVPixelBufferRelease(pixelBuffer);
             }
-        }];
+        });
+        
+
+    }];
     
-        [conformBuffer commit];
+    [conformBuffer commit];
     
 //    }];
 //    
