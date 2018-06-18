@@ -77,18 +77,20 @@
     if(metadata == nil)
     {
         // try an different decoder
-        if([self.decoder isMemberOfClass:[SynopsisMetadataDecoderVersion0 class]])
+        NSMutableArray<Class>* availableDecoderClasses = @[[SynopsisMetadataDecoderVersion0 class],
+                                                           [SynopsisMetadataDecoderVersion2 class]];
+        
+        for(Class decoderClass in availableDecoderClasses)
         {
-        	self.decoder = [[SynopsisMetadataDecoderVersion2 alloc] init];
+            self.decoder = [[decoderClass alloc] init];
             self.decoder.vendOptimizedMetadata = self.vendOptimizedMetadata;
+            
+            metadata = [self.decoder decodeSynopsisMetadata:metadataItem];
+            
+            if(metadata)
+                break;
         }
-        else if([self.decoder isMemberOfClass:[SynopsisMetadataDecoderVersion2 class]])
-        {
-            self.decoder = [[SynopsisMetadataDecoderVersion0 alloc] init];
-            self.decoder.vendOptimizedMetadata = self.vendOptimizedMetadata;
-        }
-
-        metadata = [self.decoder decodeSynopsisMetadata:metadataItem];
+    
         if(metadata == nil)
         {
             NSLog(@"Cant find a viable decoder for this metadata");
