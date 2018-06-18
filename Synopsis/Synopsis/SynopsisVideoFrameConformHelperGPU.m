@@ -12,6 +12,8 @@
 #import <CoreImage/CoreImage.h>
 #import <MetalPerformanceShaders/MetalPerformanceShaders.h>
 #import <Metal/Metal.h>
+#import <CoreVideo/CVMetalTexture.h>
+#import <CoreVideo/CVMetalTextureCache.h>
 
 @interface SynopsisVideoFrameConformHelperGPU ()
 {
@@ -153,7 +155,7 @@
     
             [self.scaleForCoreML encodeToCommandBuffer:conformBuffer sourceImage:sourceInput destinationImage:resizeTarget];
     
-    [conformBuffer addCompletedHandler:^(id<MTLCommandBuffer> commandBuffer) {
+    [conformBuffer addScheduledHandler:^(id<MTLCommandBuffer> commandBuffer) {
     
         dispatch_async(self.serialCompletionQueue, ^{
             if(completionBlock)
