@@ -47,6 +47,12 @@ static inline float inverseL1Distance(const cv::Mat a, const cv::Mat b)
 
 float compareFeatureVector(SynopsisDenseFeature* featureVec1, SynopsisDenseFeature* featureVec2)
 {
+    // If our features are nil, then early bail with 0 similarity
+    if(!featureVec1 || ! featureVec2)
+        return 0.0;
+
+    
+    // If our features are exist but dont have compariable results early bail with 0 similarity
     if(featureVec1.featureCount != featureVec2.featureCount)
         return 0.0;
     
