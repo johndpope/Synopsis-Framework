@@ -16,9 +16,10 @@ NSString* const kSynopsisMetadataIdentifier = @"mdta/info.synopsis.metadata";
 NSString* const kSynopsisMetadataVersionKey = @"info.synopsis.metadata.version";
 NSUInteger const kSynopsisMetadataVersionValue = SYNOPSIS_VERSION_NUMBER;
 
-NSUInteger const kSynopsisMetadataVersionPreAlpha = 0;
+NSUInteger const kSynopsisMetadataVersionAlpha3 = SYNOPSIS_VERSION_NUMBER;
+NSUInteger const kSynopsisMetadataVersionAlpha2 = 2;
 NSUInteger const kSynopsisMetadataVersionAlpha1 = 1;
-NSUInteger const kSynopsisMetadataVersionAlpha2 = SYNOPSIS_VERSION_NUMBER;
+NSUInteger const kSynopsisMetadataVersionPreAlpha = 0;
 
 // HFS+ Extended attribute keys and values
 NSString* const kSynopsisMetadataHFSAttributeVersionKey = @"info_synopsis_version";

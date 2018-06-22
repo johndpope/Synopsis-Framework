@@ -11,6 +11,7 @@
 #import "SynopsisMetadataDecoder.h"
 #import "SynopsisMetadataDecoderVersion0.h"
 #import "SynopsisMetadataDecoderVersion2.h"
+#import "SynopsisMetadataDecoderVersion3.h"
 
 
 @interface SynopsisMetadataDecoder ()
@@ -77,8 +78,10 @@
     if(metadata == nil)
     {
         // try an different decoder
-        NSMutableArray<Class>* availableDecoderClasses = @[[SynopsisMetadataDecoderVersion0 class],
-                                                           [SynopsisMetadataDecoderVersion2 class]];
+        NSArray<Class>* availableDecoderClasses = @[[SynopsisMetadataDecoderVersion3 class],
+                                                    [SynopsisMetadataDecoderVersion2 class],
+                                                    [SynopsisMetadataDecoderVersion0 class],
+                                                    ];
         
         for(Class decoderClass in availableDecoderClasses)
         {
