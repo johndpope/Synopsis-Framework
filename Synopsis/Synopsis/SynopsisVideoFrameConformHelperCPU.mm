@@ -111,10 +111,35 @@
     SynopsisVideoFrameCache* cache = [[SynopsisVideoFrameCache alloc] init];
 
     // TODO: Use These!
-//    BOOL doBGR = NO;
-//    BOOL doFloat = NO;
-//    BOOL doGray = NO;
-//    BOOL doPerceptual = NO;
+    BOOL doBGR = NO;
+    BOOL doFloat = NO;
+    BOOL doGray = NO;
+    BOOL doPerceptual = NO;
+
+    for(SynopsisVideoFormatSpecifier* specifier in formatSpecifiers)
+    {
+        switch(specifier.format)
+        {
+            case SynopsisVideoFormatUnknown:
+                break;
+
+            case SynopsisVideoFormatBGR8:
+                doBGR = YES;
+                break;
+                
+            case SynopsisVideoFormatBGRF32:
+                doFloat = YES;
+                break;
+            
+            case SynopsisVideoFormatGray8:
+                doGray = YES;
+                break;
+            
+            case SynopsisVideoFormatPerceptual:
+                doPerceptual = YES;
+                break;
+        }
+    }
     
     cv::Mat BGRAImage = [self imageFromBaseAddress:baseAddress width:width height:height bytesPerRow:bytesPerRow];
     
@@ -138,34 +163,45 @@
     
     // Convert 8 bit BGR to Grey
     cv::Mat grayImage;
-    cv::cvtColor(BGRImage, grayImage, cv::COLOR_BGR2GRAY);
     
-    SynopsisVideoFormatSpecifier* gray = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:SynopsisVideoFormatGray8 backing:SynopsisVideoBackingCPU];
-    SynopsisVideoFrameOpenCV* videoFrameGray = [[SynopsisVideoFrameOpenCV alloc] initWithCVMat:grayImage formatSpecifier:gray presentationTimeStamp:time];
-    [cache cacheFrame:videoFrameGray];
-
+    if(doGray)
+    {
+        cv::cvtColor(BGRImage, grayImage, cv::COLOR_BGR2GRAY);
+        
+        SynopsisVideoFormatSpecifier* gray = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:SynopsisVideoFormatGray8 backing:SynopsisVideoBackingCPU];
+        SynopsisVideoFrameOpenCV* videoFrameGray = [[SynopsisVideoFrameOpenCV alloc] initWithCVMat:grayImage formatSpecifier:gray presentationTimeStamp:time];
+        [cache cacheFrame:videoFrameGray];
+    }
     
     // Convert 8 Bit BGR to Float BGR
     cv::Mat BGR32Image;
-    BGRImage.convertTo(BGR32Image, CV_32FC3, 1.0/255.0);
-    
-    SynopsisVideoFormatSpecifier* floatBGR = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:SynopsisVideoFormatBGRF32 backing:SynopsisVideoBackingCPU];
-    SynopsisVideoFrameOpenCV* videoFrameBGRF32 = [[SynopsisVideoFrameOpenCV alloc] initWithCVMat:BGR32Image formatSpecifier:floatBGR presentationTimeStamp:time];
-    [cache cacheFrame:videoFrameBGRF32];
 
+    if(doFloat || doPerceptual)
+    {
+        BGRImage.convertTo(BGR32Image, CV_32FC3, 1.0/255.0);
+        
+        SynopsisVideoFormatSpecifier* floatBGR = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:SynopsisVideoFormatBGRF32 backing:SynopsisVideoBackingCPU];
+        SynopsisVideoFrameOpenCV* videoFrameBGRF32 = [[SynopsisVideoFrameOpenCV alloc] initWithCVMat:BGR32Image formatSpecifier:floatBGR presentationTimeStamp:time];
+        [cache cacheFrame:videoFrameBGRF32];
+    }
+    
     // Convert Float BGR to Float Perceptual
     cv::Mat perceptualImage;
-    cv::cvtColor(BGR32Image, perceptualImage, TO_PERCEPTUAL);
     
-    SynopsisVideoFormatSpecifier* perceptualFormat = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:SynopsisVideoFormatPerceptual backing:SynopsisVideoBackingCPU];
-    SynopsisVideoFrameOpenCV* videoFramePerceptual = [[SynopsisVideoFrameOpenCV alloc] initWithCVMat:perceptualImage formatSpecifier:perceptualFormat presentationTimeStamp:time];
-    [cache cacheFrame:videoFramePerceptual];
-
+    if(doPerceptual)
+    {
+        cv::cvtColor(BGR32Image, perceptualImage, TO_PERCEPTUAL);
+        
+        SynopsisVideoFormatSpecifier* perceptualFormat = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:SynopsisVideoFormatPerceptual backing:SynopsisVideoBackingCPU];
+        SynopsisVideoFrameOpenCV* videoFramePerceptual = [[SynopsisVideoFrameOpenCV alloc] initWithCVMat:perceptualImage formatSpecifier:perceptualFormat presentationTimeStamp:time];
+        [cache cacheFrame:videoFramePerceptual];
+    }
+        
     BGRAImage.release();
     BGRImage.release();
+    grayImage.release();
     BGR32Image.release();
     perceptualImage.release();
-    grayImage.release();
     
     return cache;
 }
