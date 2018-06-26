@@ -81,11 +81,11 @@
 - (NSData*) encodeSynopsisMetadataToData:(NSData*)metadata
 {
 
-    size_t expectedCompressionSize = ZSTD_compressBound(metadata.length);
+    const size_t expectedCompressionSize = ZSTD_compressBound(metadata.length);
     
-    void* compressionBuffer = malloc(expectedCompressionSize);
+    UInt8* compressionBuffer = malloc(expectedCompressionSize);
 
-    size_t const compressedSize = ZSTD_compressCCtx(compressionContext, compressionBuffer, expectedCompressionSize, metadata.bytes, metadata.length, 1);
+    size_t const compressedSize = ZSTD_compressCCtx(compressionContext, compressionBuffer, expectedCompressionSize, metadata.bytes, (size_t) metadata.length, 1);
     
     // Hit error on compression use ZSTD_getErrorName for error reporting eventually.
     if(ZSTD_isError(compressedSize))
