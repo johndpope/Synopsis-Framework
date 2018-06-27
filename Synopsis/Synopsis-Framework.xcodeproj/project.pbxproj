@@ -2458,7 +2458,7 @@
 			path = zstd;
 			sourceTree = "<group>";
 		};
-		1B2781001F22BFD600658C0B /* Alpha3 */ = {
+		1B2781001F22BFD600658C0B /* Alpha 2 */ = {
 			isa = PBXGroup;
 			children = (
 				1B2781011F22BFEB00658C0B /* dictionary.zstddict */,
@@ -2467,7 +2467,7 @@
 				1B2780AB1F228F9F00658C0B /* SynopsisMetadataEncoderVersion2.h */,
 				1B2780AC1F228F9F00658C0B /* SynopsisMetadataEncoderVersion2.m */,
 			);
-			name = Alpha3;
+			name = "Alpha 2";
 			sourceTree = "<group>";
 		};
 		1B44391C1EE1E25C0075575D /* includes */ = {
@@ -5668,8 +5668,8 @@
 		1B551E621EF9E309004C077B /* InternalMetadataCodec */ = {
 			isa = PBXGroup;
 			children = (
-				1BA1A55E20DD75E000B3AA59 /* Alpha 3 */,
-				1B2781001F22BFD600658C0B /* Alpha3 */,
+				1BA1A55E20DD75E000B3AA59 /* Alpha 4 */,
+				1B2781001F22BFD600658C0B /* Alpha 2 */,
 				1B2780A41F228F3600658C0B /* Alpha1 */,
 			);
 			name = InternalMetadataCodec;
@@ -5762,7 +5762,7 @@
 			name = Categories;
 			sourceTree = "<group>";
 		};
-		1BA1A55E20DD75E000B3AA59 /* Alpha 3 */ = {
+		1BA1A55E20DD75E000B3AA59 /* Alpha 4 */ = {
 			isa = PBXGroup;
 			children = (
 				1BA1A56020DD75E700B3AA59 /* SynopsisMetadataDecoderVersion3.h */,
@@ -5770,7 +5770,7 @@
 				1BA1A56120DD75E700B3AA59 /* SynopsisMetadataEncoderVersion3.h */,
 				1BA1A55F20DD75E700B3AA59 /* SynopsisMetadataEncoderVersion3.m */,
 			);
-			name = "Alpha 3";
+			name = "Alpha 4";
 			sourceTree = "<group>";
 		};
 		1BA2EDE71F06D71D00C353E6 /* MobileNet */ = {
