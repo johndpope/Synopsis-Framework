@@ -359,6 +359,7 @@
     
     // Scale our transformmed buffer
     CVPixelBufferRef scaledBuffer;
+    CVPixelBufferPoolFlush(scaledPixelBufferPool, kCVPixelBufferPoolFlushExcessBuffers);
     CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, scaledPixelBufferPool, &scaledBuffer);
     
     CVPixelBufferLockBaseAddress(scaledBuffer, 0);
@@ -441,6 +442,8 @@
     }
     
     CVPixelBufferRef transformedBuffer;
+
+    CVPixelBufferPoolFlush(transformPixelBufferPool, kCVPixelBufferPoolFlushExcessBuffers);
     CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, transformPixelBufferPool, &transformedBuffer);
     
     CVPixelBufferLockBaseAddress(transformedBuffer, 0);
@@ -521,6 +524,7 @@
     }
     
     CVPixelBufferRef transformedBuffer;
+    CVPixelBufferPoolFlush(transformPixelBufferPool, kCVPixelBufferPoolFlushExcessBuffers);
     CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, transformPixelBufferPool, &transformedBuffer);
     
     CVPixelBufferLockBaseAddress(transformedBuffer, 0);
