@@ -35,7 +35,7 @@
             return nil;
         }
 #if defined(ZSTD_MULTITHREAD)
-        ZSTD_CCtx_setParameter(compressionContext, ZSTD_p_nbWorkers, 1);
+        ZSTD_CCtx_setParameter(compressionContext, ZSTD_p_nbWorkers, 2);
 #endif
         
     }
@@ -80,7 +80,6 @@
 
 - (NSData*) encodeSynopsisMetadataToData:(NSData*)metadata
 {
-
     const size_t expectedCompressionSize = ZSTD_compressBound(metadata.length);
     
     UInt8* compressionBuffer = malloc(expectedCompressionSize);
