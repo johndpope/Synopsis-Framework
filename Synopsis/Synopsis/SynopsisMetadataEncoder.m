@@ -41,7 +41,6 @@
     return metadataFormatDescriptionValid;
 }
 
-
 - (instancetype) initWithVersion:(NSUInteger)version exportOption:(SynopsisMetadataEncoderExportOption)exportOption
 {
     self = [super init];
@@ -65,7 +64,6 @@
         {
             self.encoder = [[SynopsisMetadataEncoderVersion3 alloc] init];
         }
-
 
         self.version = version;
         self.exportOption = exportOption;

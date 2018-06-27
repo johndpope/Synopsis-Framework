@@ -89,6 +89,7 @@
     // Hit error on compression use ZSTD_getErrorName for error reporting eventually.
     if(ZSTD_isError(compressedSize))
     {
+        free(compressionBuffer);
         return nil;
     }
     
