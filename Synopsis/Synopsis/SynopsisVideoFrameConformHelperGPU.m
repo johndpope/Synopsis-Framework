@@ -68,6 +68,9 @@
             completionBlock:(SynopsisVideoFrameConformSessionCompletionBlock)completionBlock;
 {
 
+    id<MTLCommandBuffer> conformBuffer = self.commandQueue.commandBuffer;
+
+    
     CVPixelBufferRetain(pixelBuffer);
     
     // Create our metal texture from our CVPixelBuffer
@@ -148,32 +151,38 @@
     MPSImage* resizeTarget = [[MPSImage alloc] initWithDevice:self.commandQueue.device imageDescriptor:resizeDescriptor];
     //            resizeTarget.label = [NSString stringWithFormat:@"%@, %lu", @"Resize", (unsigned long)self.frameSubmit];
     
-    [self.scaleForCoreML encodeToCommandBuffer:commandBuffer sourceImage:sourceInput destinationImage:resizeTarget];
+    [self.scaleForCoreML encodeToCommandBuffer:conformBuffer sourceImage:sourceInput destinationImage:resizeTarget];
     
+    [conformBuffer addScheduledHandler:^(id<MTLCommandBuffer> conformBuffer) {
+        
+        dispatch_async(self.serialCompletionQueue, ^{
+            if(completionBlock)
+            {
+                //                self.frameComplete++;
+                //                NSLog(@"Conform Completed frame %lu", frameComplete);
+                SynopsisVideoFrameCache* cache = [[SynopsisVideoFrameCache alloc] init];
+                SynopsisVideoFormatSpecifier* resultFormat = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:SynopsisVideoFormatBGR8 backing:SynopsisVideoBackingGPU];
+                SynopsisVideoFrameMPImage* result = [[SynopsisVideoFrameMPImage alloc] initWithMPSImage:resizeTarget formatSpecifier:resultFormat presentationTimeStamp:time];
+                
+                [cache cacheFrame:result];
+                
+                completionBlock(commandBuffer, cache, nil);
+                
+                //            if(deleteSource)
+                //                CGColorSpaceRelease(source);
+                
+                // Release our CVMetalTextureRef
+                CFRelease(inputCVTexture);
+                
+                // We always have to release our pixel buffer
+                CVPixelBufferRelease(pixelBuffer);
+            }
+        });
+        
+    }];
     
-    dispatch_async(self.serialCompletionQueue, ^{
-        if(completionBlock)
-        {
-            //                self.frameComplete++;
-            //                NSLog(@"Conform Completed frame %lu", frameComplete);
-            SynopsisVideoFrameCache* cache = [[SynopsisVideoFrameCache alloc] init];
-            SynopsisVideoFormatSpecifier* resultFormat = [[SynopsisVideoFormatSpecifier alloc] initWithFormat:SynopsisVideoFormatBGR8 backing:SynopsisVideoBackingGPU];
-            SynopsisVideoFrameMPImage* result = [[SynopsisVideoFrameMPImage alloc] initWithMPSImage:resizeTarget formatSpecifier:resultFormat presentationTimeStamp:time];
-            
-            [cache cacheFrame:result];
-            
-            completionBlock(commandBuffer, cache, nil);
-            
-            //            if(deleteSource)
-            //                CGColorSpaceRelease(source);
-            
-            // Release our CVMetalTextureRef
-            CFRelease(inputCVTexture);
-            
-            // We always have to release our pixel buffer
-            CVPixelBufferRelease(pixelBuffer);
-        }
-    });
+    [conformBuffer commit];
+
 }
 
 
